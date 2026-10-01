@@ -15,6 +15,7 @@ import Card from '../../components/ui/Card.astro';
 import FeatureTile from '../../components/ui/FeatureTile.astro';
 import Button from '../../components/ui/Button.astro';
 import Icon from '../../components/ui/Icon.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
 import { partnerClubs, sawtooth } from '../../data/clubs';
 import { contact, images } from '../../data/org';
 
@@ -45,16 +46,26 @@ const infrastructure = [
       <div class="partner">
         <figure class="partner__media">
           <img
-            src={images.sawtoothLogo}
-            alt="Sawtooth Ultimate"
-            width="738"
-            height="477"
+            src={images.rosterBoise}
+            alt="The Sawtooth roster on a park field with the foothills behind them."
+            width="1750"
+            height="1318"
             loading="lazy"
             decoding="async"
           />
         </figure>
 
         <div class="partner__body">
+          <Eyebrow>Current partner club</Eyebrow>
+          <img
+            class="partner__logo"
+            src={images.sawtoothDisc}
+            alt="Sawtooth Ultimate"
+            width="1268"
+            height="1267"
+            loading="lazy"
+            decoding="async"
+          />
           <h2 class="partner__title">{sawtooth.name}</h2>
           <p class="partner__text">
             Sawtooth is Idaho’s premier competitive Open club team. Named after the
@@ -91,10 +102,10 @@ const infrastructure = [
 
         <figure class="columns__media">
           <img
-            src={images.huddle}
-            alt="A club team huddled together on the field before a game."
-            width="1200"
-            height="1200"
+            src={images.boiseLandscape}
+            alt="Line drawing of the Boise cityscape beneath a mountain and a hand."
+            width="1280"
+            height="1126"
             loading="lazy"
             decoding="async"
           />
@@ -161,23 +172,30 @@ const infrastructure = [
   }
 
   .partner__media {
-    display: grid;
-    place-items: center;
     margin: 0;
-    padding: var(--space-5);
-    background: var(--surface-inverse);
+    overflow: hidden;
     border-radius: var(--radius-lg);
+    border: var(--border-width) solid var(--line-subtle);
+    box-shadow: var(--shadow-sm);
   }
 
   .partner__media img {
-    inline-size: min(100%, 20rem);
-    block-size: auto;
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
   }
 
   .partner__body {
     display: grid;
     gap: var(--space-3);
     justify-items: start;
+  }
+
+  /* Circular Sawtooth mark: black line art, so it reads on the light section. */
+  .partner__logo {
+    inline-size: min(100%, 8rem);
+    block-size: auto;
   }
 
   .partner__title {
@@ -233,16 +251,19 @@ const infrastructure = [
   }
 
   .columns__media {
+    display: grid;
+    place-items: center;
     margin: 0;
-    overflow: hidden;
+    padding: var(--space-5);
+    background: var(--surface-inverse);
     border-radius: var(--radius-lg);
-    border: var(--border-width) solid var(--line-subtle);
   }
 
+  /* Line art on a dark plate, so the black strokes stay legible. */
   .columns__media img {
-    inline-size: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
+    inline-size: min(100%, 22rem);
+    block-size: auto;
+    filter: invert(1) opacity(0.85);
   }
 
   /* -------------------------------------------------------------

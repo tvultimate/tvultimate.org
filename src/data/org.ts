@@ -20,36 +20,61 @@ export const org = {
 } as const;
 
 /**
- * Brand assets, recovered from the previous site.
+ * Brand and editorial assets, recovered from the archived previous site.
  *
- * Provenance for every file — which page it came from and where it is
- * contextually accurate — is recorded in `public/img/manifest.json`. Check
- * `contexts` before placing an image: an image is only correct on the pages
- * listed there. In particular `action` and `roster` are Sawtooth club photos
- * and must not be used as Battle of Idaho tournament imagery.
+ * Provenance for every file — which page it came from, what it depicts, and
+ * where it is contextually accurate — is recorded in `public/img/manifest.json`.
+ *
+ * Check `contexts` before placing an image. In particular `action` and
+ * `roster` are Sawtooth club-team photos and must NOT be used as Battle of
+ * Idaho tournament imagery: the old site captioned them generically, which is
+ * how that mislabelling happened in the first place.
  */
 export const images = {
   /** Organisation mark. Safe anywhere. */
   logo: '/img/logo-tvu.png',
   logoSmall: '/img/logo-tvu-200.png',
+  /** Circular rainbow badge, alternative treatment. */
+  logoRoundel: '/img/logo-tvu-roundel.png',
 
   /** Sawtooth mark, luminance converted to alpha. Dark grounds only. */
   sawtoothLogo: '/img/logo-sawtooth-mark.png',
   sawtoothLogoSmall: '/img/logo-sawtooth-400.png',
-  /** Sawtooth mark on its original black field. For light grounds. */
-  sawtoothLogoOpaque: '/img/logo-sawtooth.png',
+  /** Circular Sawtooth mountain-and-disc line mark. Black strokes. */
+  sawtoothDisc: '/img/sawtooth-disc-mark.png',
+  /** Boise cityscape beneath a hand and mountain, in line art. */
+  boiseLandscape: '/img/boise-landscape-mark.png',
 
   /** Boise skyline silhouette, inverted in CSS for the dark footer. */
   skyline: '/img/boise-skyline.png',
 
-  /** Sawtooth roster posing on the field. Club-team context only. */
+  /** Battle of Idaho sponsors. */
+  sponsorErth: '/img/logo-erth-beverage-co.png',
+  sponsorStevenson: '/img/logo-stevenson-real-estate.png',
+  sponsorGoldsteins: '/img/logo-goldsteins-bagels.png',
+
+  /** Sawtooth roster on grass. Club-team context only. */
   roster: '/img/team-roster.jpg',
-  /** Club team huddle with the Boise foothills behind. Club-team context. */
+  /** Sawtooth roster with the Boise foothills behind. Club-team context. */
+  rosterBoise: '/img/team-roster-boise.jpg',
+  /** Players in numbered jerseys in a huddle. Club-team context. */
   huddle: '/img/team-huddle.jpg',
   /** A Sawtooth player diving for a disc. Club-team context, NOT tournament. */
   action: '/img/action-lay.jpg',
-  /** Overhead aerial of a circle of players. Fits youth and media services. */
+  /** Same dive, published on the team-dues page. */
+  actionDues: '/img/action-lay-team-dues.jpg',
+
+  /** Overhead aerial of a circle of players. Media-services context. */
   aerialCircle: '/img/aerial-circle.jpg',
+  /** Aerial of a group spelling letters on turf. Youth-programme context. */
+  aerialYouth: '/img/aerial-youth.jpg',
+  /** Wide aerial of a crowd in team colours. Media-services context. */
+  aerialTournament: '/img/aerial-tournament.jpg',
+
+  /** Youth players and coaches in a huddle. Youth-programme context. */
+  youthHuddle: '/img/youth-team-huddle.jpg',
+  /** A youth player taking instruction from teammates. Clinic context. */
+  youthCoaching: '/img/youth-coaching.jpg',
 } as const;
 
 export const contact = {
@@ -71,8 +96,8 @@ export const links = {
 } as const;
 
 /**
- * Donation destinations. `page` is where the fund is described in full;
- * `href` is the external donation form.
+ * Donation destinations. `page` is where the fund is described in full and
+ * `href` is the canonical Zeffy donation form URL.
  */
 export const funds = {
   general: {
@@ -120,3 +145,15 @@ export type Fund = (typeof funds)[keyof typeof funds];
 
 /** Presentation order for fund cards. */
 export const fundOrder = ['general', 'youth', 'sawtooth', 'sponsorship', 'dues'] as const;
+
+/**
+ * The Zeffy form slug for a fund, extracted from its canonical donation URL.
+ *
+ * Zeffy is addressed by this slug in both the embed endpoint and the hosted
+ * page, so deriving it keeps one source of truth: a fund's `href` is written
+ * once and everything else follows. Deriving rather than storing a second copy
+ * is what stops the embedded form and the outbound link from drifting apart —
+ * they once did, when an internal slug was passed here by mistake.
+ */
+export const zeffySlug = (href: string): string =>
+  new URL(href).pathname.replace(/^\/(?:[a-z]{2}-[A-Z]{2}\/)?donation-form\//, '');

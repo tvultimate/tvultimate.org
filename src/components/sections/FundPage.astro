@@ -1,19 +1,23 @@
 ---
 /**
- * A donation fund page: what the fund pays for, and the external form.
+ * A donation fund page: what the fund pays for, and the embedded form.
  *
- * Every fund page renders from the same two components and the same `funds`
- * entry, so adding a fund means adding one object in `data/org.ts`.
+ * Every fund page renders from this component and the same `funds` entry, so
+ * adding a fund means adding one object in `data/funds.ts` plus a route
+ * wrapper.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/sections/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import Container from '../../components/ui/Container.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
 import Button from '../../components/ui/Button.astro';
 import Card from '../../components/ui/Card.astro';
 import Eyebrow from '../../components/ui/Eyebrow.astro';
+import DonationEmbed from '../react/DonationEmbed';
 import { fundDetails, type FundSlug } from '../../data/funds';
+import { zeffySlug } from '../../data/org';
 
 interface Props {
   slug: FundSlug;
@@ -27,7 +31,7 @@ const fund = fundDetails[slug];
   <PageHero eyebrow="Donations and Dues" title={fund.name} lede={fund.blurb}>
     <div class="fundpage__actions">
       <Button href={fund.href} variant="solid" size="lg" external>
-        Give to this fund
+        Give on Zeffy
       </Button>
       <Button href="/donations-and-dues/" variant="quiet" size="lg">
         All funds
@@ -65,7 +69,7 @@ const fund = fundDetails[slug];
               permitted by law.
             </p>
             <Button href={fund.href} size="lg" external>
-              Donate now
+              Donate on Zeffy
             </Button>
           </Card>
 
@@ -79,6 +83,25 @@ const fund = fundDetails[slug];
           </Card>
         </aside>
       </div>
+    </Container>
+  </Section>
+
+  <!-- Give directly on this page. -->
+  <Section tone="sunken">
+    <Container narrow>
+      <SectionHeader
+        eyebrow="Give"
+        title={`Donate to ${fund.name}`}
+        lede="Payments are processed securely by Zeffy. The form below is embedded on this page so you do not have to leave the site."
+      />
+      <DonationEmbed
+        client:visible
+        slug={zeffySlug(fund.href)}
+        title={`Donation form for ${fund.name}`}
+      />
+      <p class="fundpage__secure">
+        Zeffy processes card details directly — they never touch this site.
+      </p>
     </Container>
   </Section>
 </BaseLayout>
@@ -187,6 +210,13 @@ const fund = fundDetails[slug];
   .fundpage__card-blurb a {
     font-weight: 600;
     color: var(--text-accent);
+  }
+
+  .fundpage__secure {
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--text-tertiary);
+    text-align: center;
   }
 
   @media (min-width: 48rem) {

@@ -1,114 +1,331 @@
 {
-  "$comment": "Provenance for every image in this directory. Filenames describe what the image shows, NOT where it sat on the old site. Read `contexts` before placing an image on a page: an image is contextually correct only where it is listed.",
+  "$comment": "Provenance for every image in this directory. Filenames describe what the image shows, NOT where it sat on the old site. Check `contexts` before placing one: an image is accurate only on the listed pages. `explicitlyNot` records pages where it would mislead.",
   "recoveredFrom": {
     "site": "https://www.tvultimate.org (Google Sites)",
-    "capture": "https://web.archive.org/web/20261001175042/https://www.tvultimate.org/",
+    "capture": "https://web.archive.org/web/20261001231304/https://www.tvultimate.org/",
     "captured": "2026-10-01",
-    "note": "The Wayback Machine captured the home page only. Every other page returns 404 from the archive, and Google's image CDN returns 403 to direct requests, so the archive is the sole source for the bytes. Images that appeared on uncaptured pages could not be recovered and are listed under `unrecovered`."
+    "note": "All twelve pages are captured. Google's image CDN returns 403 to direct requests, so the archive is the sole source for the bytes. Each page's nested assets were written to a distinct Google URL, so the same picture appears under several ids; identical files are noted in `duplicatesOf`."
   },
   "images": {
     "logo-tvu.png": {
+      "file": "logo-tvu.png",
       "role": "logo",
       "alt": "Treasure Valley Ultimate",
-      "sourcePage": "Site masthead (all pages)",
-      "originalFilename": "AMxu72sfIjepGS_c23DU4NzKdaQ...",
-      "contexts": ["/", "/partner-clubs/", "/battle-of-idaho/", "/youth-community/", "/resources-and-media/", "/donations-and-dues/"],
-      "note": "Organisation mark. Safe everywhere."
-    },
-    "logo-tvu-200.png": {
-      "role": "logo",
-      "alt": "Treasure Valley Ultimate",
-      "sourcePage": "Site masthead (all pages)",
-      "contexts": ["/", "/partner-clubs/", "/battle-of-idaho/"],
-      "note": "Width-limited variant of logo-tvu.png."
-    },
-    "logo-sawtooth.png": {
-      "role": "logo",
-      "alt": "Sawtooth Ultimate",
-      "sourcePage": "/ (home page) — Partner Club Spotlight block",
-      "originalFilename": "AMxu72s1ox_rb-SrV1ZBVO...",
-      "contexts": ["/partner-clubs/sawtooth-ultimate/", "/partner-clubs/"],
-      "note": "Sawtooth Ultimate mark, white artwork on an opaque black field."
-    },
-    "logo-sawtooth-mark.png": {
-      "role": "logo",
-      "alt": "Sawtooth Ultimate",
-      "sourcePage": "/ (home page) — Partner Club Spotlight block",
-      "originalFilename": "AMxu72s1ox_rb-SrV1ZBVO...",
-      "contexts": ["/partner-clubs/sawtooth-ultimate/", "/", "/partner-clubs/"],
-      "note": "logo-sawtooth.png with luminance converted to alpha, so it sits on any background. Dark grounds only."
-    },
-    "logo-sawtooth-400.png": {
-      "role": "logo",
-      "alt": "Sawtooth Ultimate",
-      "sourcePage": "/ (home page) — Partner Club Spotlight block",
-      "originalFilename": "AMxu72s1ox_rb-SrV1ZBVO...",
-      "contexts": ["/partner-clubs/sawtooth-ultimate/", "/"],
-      "note": "400px transparent variant."
+      "describes": "The organisation mark: a circular rainbow TVU with the Sawtooth ridgeline.",
+      "sourcePage": "Site chrome (all pages)",
+      "sourceId": "AMxu72tPy3y9MTk7a39Q",
+      "contexts": [
+        "/"
+      ],
+      "width": 500,
+      "height": 500,
+      "bytes": 92708
     },
     "boise-skyline.png": {
+      "file": "boise-skyline.png",
       "role": "illustration",
       "alt": "Boise skyline",
-      "sourcePage": "Site footer (all pages)",
-      "originalFilename": "AMxu72sfGRA7JoP-eWhLU3...",
-      "contexts": ["/"],
-      "note": "Black skyline silhouette. Inverted in CSS so it reads on the dark footer."
+      "describes": "Boise skyline silhouette; inverted in CSS to sit on the dark footer.",
+      "sourcePage": "Site chrome (all pages)",
+      "sourceId": "AMxu72vNCQcchveGt2CK",
+      "contexts": [
+        "/"
+      ],
+      "width": 2034,
+      "height": 536,
+      "bytes": 71527
+    },
+    "logo-stevenson-real-estate.png": {
+      "file": "logo-stevenson-real-estate.png",
+      "role": "logo",
+      "alt": "Stevenson Real Estate",
+      "describes": "Battle of Idaho sponsor. Teal serif wordmark.",
+      "sourcePage": "/battle-of-idaho/, /battle-of-idaho/battle-of-idaho-sponsorship/",
+      "sourceId": "AMxu72tNHHZzQMltjcrc",
+      "contexts": [
+        "/battle-of-idaho/",
+        "/battle-of-idaho/battle-of-idaho-sponsorship/"
+      ],
+      "width": 424,
+      "height": 100,
+      "bytes": 3765
+    },
+    "logo-erth-beverage-co.png": {
+      "file": "logo-erth-beverage-co.png",
+      "role": "logo",
+      "alt": "ERTH Beverage Co.",
+      "describes": "Battle of Idaho sponsor. Teal block wordmark.",
+      "sourcePage": "/battle-of-idaho/, /battle-of-idaho/battle-of-idaho-sponsorship/",
+      "sourceId": "AMxu72ssfY0HBHrt1Wlq",
+      "contexts": [
+        "/battle-of-idaho/",
+        "/battle-of-idaho/battle-of-idaho-sponsorship/"
+      ],
+      "width": 232,
+      "height": 134,
+      "bytes": 16898
+    },
+    "logo-goldsteins-bagels.png": {
+      "file": "logo-goldsteins-bagels.png",
+      "role": "logo",
+      "alt": "Goldstein's Bagels & Bialys",
+      "describes": "A bagel shop shown on the old tournament page, not listed among the sponsors in the copy. Kept in case it is relevant.",
+      "sourcePage": "/battle-of-idaho/",
+      "sourceId": "AMxu72tfzNH_lGvEbfqh",
+      "contexts": [
+        "/battle-of-idaho/"
+      ],
+      "width": 1280,
+      "height": 492,
+      "bytes": 17818
+    },
+    "sawtooth-disc-mark.png": {
+      "file": "sawtooth-disc-mark.png",
+      "role": "logo",
+      "alt": "Sawtooth Ultimate",
+      "describes": "Circular Sawtooth mountain-and-disc line mark.",
+      "sourcePage": "/partner-clubs/, /partner-clubs/sawtooth-ultimate/",
+      "sourceId": "AMxu72tl9TyRlPuIRPQy",
+      "contexts": [
+        "/partner-clubs/",
+        "/partner-clubs/sawtooth-ultimate/"
+      ],
+      "width": 1268,
+      "height": 1267,
+      "bytes": 150591
+    },
+    "boise-landscape-mark.png": {
+      "file": "boise-landscape-mark.png",
+      "role": "illustration",
+      "alt": "Boise cityscape and mountain",
+      "describes": "Line illustration of the Boise skyline beneath a hand and mountain. Used beside the Sawtooth text on the partner page.",
+      "sourcePage": "/partner-clubs/",
+      "sourceId": "AMxu72vTSooXmloD_THV",
+      "contexts": [
+        "/partner-clubs/"
+      ],
+      "width": 1280,
+      "height": 1126,
+      "bytes": 174193
     },
     "action-lay.jpg": {
+      "file": "action-lay.jpg",
       "role": "photo",
-      "alt": "A Sawtooth player diving to catch a disc.",
-      "sourcePage": "/ (home page) — hero image, directly below the main heading",
-      "originalFilename": "AMxu72u3PenIUPxFZgBZyQ...",
-      "contexts": ["/partner-clubs/sawtooth-ultimate/"],
+      "alt": "A Sawtooth player diving for a disc.",
+      "describes": "A Sawtooth player fully extended, reaching for a disc in flight.",
+      "sourcePage": "/partner-clubs/, /partner-clubs/sawtooth-ultimate/",
+      "sourceId": "AMxu72uxG0bd0UNrQJ1d",
+      "contexts": [
+        "/partner-clubs/",
+        "/partner-clubs/sawtooth-ultimate/"
+      ],
       "explicitlyNot": [
         "/battle-of-idaho/",
         "/battle-of-idaho/battle-of-idaho-sponsorship/"
       ],
-      "note": "IMPORTANT: this is a Sawtooth club-team photo, not a Battle of Idaho photo. Do not use it as tournament imagery. Originally captioned generically as the home page hero, which is why it was previously mislabelled as a tournament shot."
+      "width": 2048,
+      "height": 1143,
+      "bytes": 455403
     },
     "team-roster.jpg": {
+      "file": "team-roster.jpg",
       "role": "photo",
-      "alt": "The Sawtooth Ultimate roster posing on the field.",
-      "sourcePage": "/ (home page) — card image for the Events programme",
-      "originalFilename": "AMxu72sOeQ_2J_JpJrBDho...",
-      "contexts": ["/partner-clubs/", "/partner-clubs/sawtooth-ultimate/", "/"],
-      "explicitlyNot": ["/battle-of-idaho/"],
-      "note": "A team photo, not an events photo — the old site's Events card happened to use it."
+      "alt": "The Sawtooth roster posing on the field.",
+      "describes": "The full Sawtooth roster in blue and white, posing on grass.",
+      "sourcePage": "/partner-clubs/, /partner-clubs/sawtooth-ultimate/",
+      "sourceId": "AMxu72te3fEa2eFUnOFM",
+      "contexts": [
+        "/partner-clubs/",
+        "/partner-clubs/sawtooth-ultimate/"
+      ],
+      "explicitlyNot": [
+        "/battle-of-idaho/"
+      ],
+      "width": 1280,
+      "height": 1280,
+      "bytes": 299969
     },
     "team-huddle.jpg": {
+      "file": "team-huddle.jpg",
       "role": "photo",
-      "alt": "A club team huddled on the field with the Boise foothills behind.",
-      "sourcePage": "/ (home page) — card image for Competitive Club Sponsorship",
-      "originalFilename": "AMxu72uxCjcmEVZBfveY62...",
-      "contexts": ["/partner-clubs/"],
-      "note": "Boise foothills are clearly visible in this shot, which makes it useful as a place-specific image."
+      "alt": "A club team huddled on the field.",
+      "describes": "Players in numbered black jerseys standing in a tight huddle.",
+      "sourcePage": "/partner-clubs/",
+      "sourceId": "AMxu72stf7UuwpmgG7aV",
+      "contexts": [
+        "/partner-clubs/"
+      ],
+      "width": 1280,
+      "height": 1280,
+      "bytes": 223426
+    },
+    "team-roster-boise.jpg": {
+      "file": "team-roster-boise.jpg",
+      "role": "photo",
+      "alt": "The Sawtooth roster with the Boise foothills behind them.",
+      "describes": "Sawtooth in white jerseys on a park field with the foothills and Owyhee-style ridges behind. The most place-specific image we have.",
+      "sourcePage": "/partner-clubs/, /partner-clubs/sawtooth-ultimate/",
+      "sourceId": "AMxu72trsM19dPkfumk5",
+      "contexts": [
+        "/partner-clubs/",
+        "/partner-clubs/sawtooth-ultimate/"
+      ],
+      "width": 1750,
+      "height": 1318,
+      "bytes": 322647
     },
     "aerial-circle.jpg": {
+      "file": "aerial-circle.jpg",
       "role": "photo",
-      "alt": "Overhead aerial of players standing in a circle on grass.",
-      "sourcePage": "/ (home page) — card image for Youth Development",
-      "originalFilename": "AMxu72sPlqdr2-0DrwLiWA...",
-      "contexts": ["/youth-community/", "/resources-and-media/"],
-      "note": "Aerial drone work, matching the media services described on the Resources and Media page. Players appear to be a mixed or youth group, which is why it sat under Youth Development."
+      "alt": "Overhead aerial of players standing in a circle.",
+      "describes": "Overhead drone shot of a circle of players on grass. Directly illustrates the aerial media services.",
+      "sourcePage": "/resources-and-media/, /youth-community/",
+      "sourceId": "AMxu72tctBTLvVmpRGTf",
+      "contexts": [
+        "/resources-and-media/",
+        "/youth-community/"
+      ],
+      "width": 1157,
+      "height": 1157,
+      "bytes": 298120
+    },
+    "aerial-youth.jpg": {
+      "file": "aerial-youth.jpg",
+      "role": "photo",
+      "alt": "Overhead aerial of youth players forming letters on a field.",
+      "describes": "Aerial shot of a large group spelling out letters on a turf field. Youth-programme imagery.",
+      "sourcePage": "/youth-community/",
+      "sourceId": "AMxu72v_oZ_4daFpkOb0",
+      "contexts": [
+        "/youth-community/"
+      ],
+      "width": 1280,
+      "height": 720,
+      "bytes": 246488
+    },
+    "youth-team-huddle.jpg": {
+      "file": "youth-team-huddle.jpg",
+      "role": "photo",
+      "alt": "A youth team huddled on the field.",
+      "describes": "A mixed group of young players and coaches in pink and blue jerseys, arms raised in a huddle on a winter field.",
+      "sourcePage": "/youth-community/, /donations-and-dues/",
+      "sourceId": "AMxu72tA64Nyyo587qem",
+      "contexts": [
+        "/youth-community/",
+        "/donations-and-dues/"
+      ],
+      "width": 1080,
+      "height": 1080,
+      "bytes": 173203
+    },
+    "youth-coaching.jpg": {
+      "file": "youth-coaching.jpg",
+      "role": "photo",
+      "alt": "A coach instructing players during a stoppage in play.",
+      "describes": "A high-school-age player in a blue kit listening to instruction from teammates on the sideline. Directly illustrates the clinics programme.",
+      "sourcePage": "/youth-community/",
+      "sourceId": "AMxu72t5peMaSrSGqQeD8",
+      "contexts": [
+        "/youth-community/"
+      ],
+      "width": 1280,
+      "height": 719,
+      "bytes": 253167
+    },
+    "action-lay-team-dues.jpg": {
+      "file": "action-lay-team-dues.jpg",
+      "role": "photo",
+      "alt": "A Sawtooth player diving for a disc near the end zone.",
+      "describes": "Same diving action shot as action-lay.jpg, published on the team-dues page.",
+      "sourcePage": "/donations-and-dues/team-dues/",
+      "sourceId": "AMxu72uDF-jDqNUQZS_0",
+      "contexts": [
+        "/donations-and-dues/team-dues/"
+      ],
+      "width": 2048,
+      "height": 1143,
+      "bytes": 491522
+    },
+    "aerial-tournament.jpg": {
+      "file": "aerial-tournament.jpg",
+      "role": "photo",
+      "alt": "Aerial view of a large group arranged in an arc on a field.",
+      "describes": "Wide aerial of a crowd in team colours arranged in an arc.",
+      "sourcePage": "/resources-and-media/",
+      "sourceId": "AMxu72sYrBdRZFDn09xm",
+      "contexts": [
+        "/resources-and-media/"
+      ],
+      "width": 640,
+      "height": 162,
+      "bytes": 28927
+    },
+    "logo-tvu-roundel.png": {
+      "file": "logo-tvu-roundel.png",
+      "role": "logo",
+      "alt": "Treasure Valley Ultimate",
+      "describes": "Circular TVU rainbow badge, alternative to the primary mark.",
+      "sourcePage": "",
+      "sourceId": "AMxu72t2t8ABQTpqBizp",
+      "contexts": [],
+      "width": 494,
+      "height": 500,
+      "bytes": 91364
+    },
+    "logo-sawtooth-mark.png": {
+      "file": "logo-sawtooth-mark.png",
+      "role": "logo",
+      "alt": "Sawtooth Ultimate",
+      "describes": "Sawtooth mark with luminance converted to alpha, for dark grounds.",
+      "sourcePage": "/partner-clubs/sawtooth-ultimate/",
+      "sourceId": "AMxu72ujvRmDX-ZDSDjA",
+      "contexts": [
+        "/partner-clubs/sawtooth-ultimate/",
+        "/partner-clubs/"
+      ],
+      "width": 738,
+      "height": 477,
+      "bytes": 25254
+    },
+    "logo-sawtooth-400.png": {
+      "file": "logo-sawtooth-400.png",
+      "role": "logo",
+      "alt": "Sawtooth Ultimate",
+      "describes": "Sawtooth mark with luminance converted to alpha, for dark grounds.",
+      "sourcePage": "/partner-clubs/sawtooth-ultimate/",
+      "sourceId": "AMxu72ujvRmDX-ZDSDjA",
+      "contexts": [
+        "/partner-clubs/sawtooth-ultimate/",
+        "/partner-clubs/"
+      ],
+      "width": 400,
+      "height": 259,
+      "bytes": 20436
+    },
+    "logo-tvu-200.png": {
+      "file": "logo-tvu-200.png",
+      "role": "logo",
+      "alt": "Treasure Valley Ultimate",
+      "describes": "Width-limited variant of the primary mark.",
+      "sourcePage": "Site chrome (all pages)",
+      "sourceId": "AMxu72tPy3y9MTk7a39Q",
+      "contexts": [
+        "/"
+      ],
+      "width": 200,
+      "height": 200,
+      "bytes": 58926
     }
   },
   "unrecovered": {
-    "$comment": "Referenced on pages the Wayback Machine never captured. Bytes are unrecoverable without the site owner supplying replacements.",
-    "battleOfIdahoPage": {
-      "count": 4,
-      "note": "Four images sat on /battle-of-idaho/. None could be recovered, so that page currently carries no photography. This is the reason it has no hero image."
-    },
-    "youthCommunityPage": { "count": 2 },
-    "resourcesAndMediaPage": { "count": 4 },
-    "partnerClubsPage": { "count": 3 },
-    "donationsPage": { "count": 3 }
-  },
-  "missingLogos": {
-    "$comment": "Logos the design calls for that were not present on the old site.",
-    "sponsors": [
-      "ERTH. Beverage Co",
-      "Stevenson Real Estate"
+    "$comment": "Assets that could not be downloaded. All five are decorative marks on the Sawtooth page.",
+    "ids": [
+      "AMxu72sX5ZwUx0X2-EUR",
+      "AMxu72triqcpjgauuGu3",
+      "AMxu72to0i-enW2xs86H",
+      "AMxu72uaTpyR1FTQk_rg",
+      "AMxu72sZ6XSMIlfNmZxU"
     ],
-    "note": "Neither sponsor logo appeared anywhere on the old site, and the tournament page was never archived. Sponsor names are rendered as text in the facts widget until logos are supplied. Drop files in this directory named erth-beverage-co.* and stevenson-real-estate.* and add entries to data/tournament.ts to use them."
+    "note": "None were essential; the Sawtooth page renders well without them."
   }
 }

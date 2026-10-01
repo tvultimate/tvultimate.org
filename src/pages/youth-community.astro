@@ -91,10 +91,10 @@ const uses = [
 
         <figure class="cover__media">
           <img
-            src={images.aerialCircle}
-            alt="An overhead aerial view of players standing in a circle on a field."
-            width="1157"
-            height="1157"
+            src={images.youthCoaching}
+            alt="A youth player listening to instruction from teammates on the sideline."
+            width="1280"
+            height="719"
             loading="lazy"
             decoding="async"
           />
@@ -117,6 +117,29 @@ const uses = [
           Email {contact.youth.email}
         </Button>
       </div>
+
+      <ul class="strip">
+        <li class="strip__item">
+          <img
+            src={images.youthHuddle}
+            alt="A youth team and their coaches in a huddle on the field."
+            width="1080"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+          />
+        </li>
+        <li class="strip__item">
+          <img
+            src={images.aerialYouth}
+            alt="Aerial view of young players forming letters on a turf field."
+            width="1280"
+            height="720"
+            loading="lazy"
+            decoding="async"
+          />
+        </li>
+      </ul>
     </Container>
   </Section>
 </BaseLayout>
@@ -205,6 +228,30 @@ const uses = [
     font-size: var(--text-md);
     line-height: var(--leading-relaxed);
     color: var(--text-secondary);
+  }
+
+  /* Supporting photography strip. */
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-4);
+    padding: 0;
+    margin: var(--space-7) 0 0;
+    list-style: none;
+  }
+
+  .strip__item {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: var(--border-width) solid var(--line-subtle);
+  }
+
+  .strip__item img {
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
   }
 
   @media (min-width: 48rem) {

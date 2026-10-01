@@ -1,0 +1,88 @@
+/*
+ * Donation embed.
+ *
+ * Styles live here rather than in the component because Astro's scoped styles
+ * do not reach into a framework island.
+ *
+ * Theming note: Zeffy owns the interior of the iframe, so its accent colour is
+ * set in the Zeffy dashboard, not here. What this file themes is everything
+ * the site controls — the frame, its chrome, the container, and the states
+ * around it — so the widget reads as part of the page rather than a bolt-on.
+ */
+
+.embed {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.embed__placeholder {
+  display: grid;
+  place-items: center;
+  min-block-size: 28rem;
+  padding: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  text-align: center;
+  background: var(--surface-raised);
+  border: var(--border-width) dashed var(--line-default);
+  border-radius: var(--radius-lg);
+}
+
+.embed__frame {
+  inline-size: 100%;
+  /*
+    A fixed minimum so the container does not jump when the form mounts.
+    Zeffy paginates internally, so a single tall height is correct here.
+  */
+  min-block-size: 44rem;
+  block-size: 100%;
+  background: var(--surface-raised);
+  border: var(--border-width) solid var(--line-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  /* The form is a framed document, not part of our page flow. */
+  color-scheme: light;
+}
+
+/*
+  Once the frame reports ready, drop the placeholder chrome so the form does
+  not appear to sit inside a second box.
+*/
+.embed[data-ready] .embed__frame {
+  border-color: var(--line-accent);
+  box-shadow: var(--shadow-md);
+}
+
+.embed__fallback {
+  padding: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  text-align: center;
+  background: var(--surface-raised);
+  border: var(--border-width) solid var(--line-default);
+  border-radius: var(--radius-lg);
+}
+
+.embed__fallback-link {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.embed__fallback-link a {
+  color: var(--text-accent);
+  font-weight: 600;
+  text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.embed__fallback-link a:hover {
+  text-decoration-color: currentColor;
+}
+
+@media (min-width: 48rem) {
+  .embed__frame {
+    min-block-size: 48rem;
+  }
+}

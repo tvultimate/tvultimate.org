@@ -13,18 +13,13 @@ export const tournament = {
   location: 'Heroes Park',
   address: '3064 W Malta Dr, Meridian, ID 83646',
   /**
-   * Sponsors.
-   *
-   * Neither sponsor's logo appeared anywhere on the previous site, so `logo`
-   * is unset and the facts widget renders these as a text wordmark instead.
-   * Drop a file into `public/img/` (named `erth-beverage-co.*` and
-   * `stevenson-real-estate.*`) and set `logo` to switch to the real marks —
-   * see `public/img/manifest.json` under `missingLogos`.
+   * Sponsors. Logos recovered from the archived tournament page — see
+   * `public/img/manifest.json` for provenance.
    */
   sponsors: [
-    { name: 'ERTH. Beverage Co', logo: undefined },
-    { name: 'Stevenson Real Estate', logo: undefined },
-  ] as { name: string; logo: string | undefined }[],
+    { name: 'ERTH. Beverage Co', logo: '/img/logo-erth-beverage-co.png' },
+    { name: 'Stevenson Real Estate', logo: '/img/logo-stevenson-real-estate.png' },
+  ],
   intro:
     'An ultimate frisbee tournament dedicated to growing the sport in our state. This event is perfect for all levels of teams looking for a fun and competitive weekend on the field.',
 } as const;
@@ -120,10 +115,5 @@ export const directors = [
   { name: 'Jason Burner', role: 'General', detail: 'MMP' },
 ] as const;
 
-/**
- * Sponsor wall. Rendered as real logos where a file exists, and as wordmarks
- * where one does not — see `public/img/manifest.json` for what is missing.
- */
-export const sponsorLogos = tournament.sponsors.filter(
-  (sponsor): sponsor is { name: string; logo: string } => Boolean(sponsor.logo),
-);
+/** Sponsor logos, for the sponsor wall on the tournament page. */
+export const sponsorLogos = tournament.sponsors;

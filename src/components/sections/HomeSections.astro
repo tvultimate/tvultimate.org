@@ -90,17 +90,29 @@ const ctas = {
       </div>
 
       {/*
-        This is a Sawtooth club-team photo, not a Battle of Idaho photo. The
-        old site captioned it as a generic hero, which is how it ended up
-        mislabelled as tournament imagery. Keeping it on the club-team
-        sections where it is actually accurate. See public/img/manifest.json.
+        No photography here on purpose. Every sports image recovered from the
+        old site is a Sawtooth club-team shot; the four that actually appeared
+        on the tournament page were lost with the archive. Presenting a club
+        photo as tournament imagery is exactly the mislabelling this project
+        is trying to avoid, so the tournament panel stays typographic and the
+        sponsor wall carries the visual weight. See public/img/manifest.json.
       */}
-      <figure class="feature__media">
+      <figure class="feature__media feature__media--marks">
         <img
-          src={images.action}
-          alt="A Sawtooth player diving to catch a disc."
-          width="2048"
-          height="1143"
+          class="feature__mark"
+          src={images.sawtoothDisc}
+          alt="Sawtooth Ultimate mark"
+          width="1268"
+          height="1267"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          class="feature__mark"
+          src={images.logoRoundel}
+          alt="Treasure Valley Ultimate mark"
+          width="494"
+          height="500"
           loading="lazy"
           decoding="async"
         />
@@ -293,6 +305,27 @@ const ctas = {
     inline-size: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+  }
+
+  /* Two marks side by side instead of a photograph. */
+  .feature__media--marks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    background: color-mix(in oklab, var(--color-pine-800) 40%, transparent);
+    aspect-ratio: auto;
+  }
+
+  .feature__media--marks img {
+    aspect-ratio: auto;
+    block-size: auto;
+    max-block-size: 12rem;
+    inline-size: auto;
+    max-inline-size: 100%;
+    margin-inline: auto;
+    object-fit: contain;
   }
 
   /* -------------------------------------------------------------

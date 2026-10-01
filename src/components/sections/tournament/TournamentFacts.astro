@@ -10,8 +10,8 @@
 import Icon from '../../ui/Icon.astro';
 
 interface Sponsor {
-  name: string;
-  logo?: string;
+  readonly name: string;
+  readonly logo: string;
 }
 
 interface Fact {
@@ -21,7 +21,7 @@ interface Fact {
   note?: string;
   href?: string;
   /** Renders a row of sponsor logos instead of a text value. */
-  logos?: Sponsor[];
+  logos?: readonly Sponsor[];
 }
 
 interface Props {
@@ -46,19 +46,15 @@ const { facts } = Astro.props;
             <ul class="sponsors">
               {fact.logos.map((sponsor) => (
                 <li class="sponsors__item">
-                  {sponsor.logo ? (
-                    <img
-                      class="sponsors__logo"
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    /* No logo on file: render the name as a wordmark rather
-                       than describing the logo in text. */
-                    <span class="sponsors__wordmark">{sponsor.name}</span>
-                  )}
+                  <img
+                    class="sponsors__logo"
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    width="200"
+                    height="120"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </li>
               ))}
             </ul>
@@ -84,14 +80,20 @@ const { facts } = Astro.props;
     margin: 0;
   }
 
+  /*
+  Written in semantic tokens so the widget adapts to whatever ground it sits
+  on. A translucent dark fill fixed to the old dark section looked murky once
+  the widget moved onto the light page surface.
+*/
   .facts__item {
     display: grid;
     gap: var(--space-2);
     align-content: start;
     padding: var(--space-4);
-    background: color-mix(in oklab, var(--color-pine-900) 55%, transparent);
-    border: var(--border-width) solid var(--line-inverse);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .facts__label {
@@ -102,12 +104,12 @@ const { facts } = Astro.props;
     font-weight: 700;
     letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
-    color: var(--color-pine-300);
+    color: var(--text-tertiary);
   }
 
   .facts__icon {
     font-size: var(--text-sm);
-    color: var(--color-sunset-300);
+    color: var(--text-warm);
   }
 
   .facts__value {
@@ -119,11 +121,11 @@ const { facts } = Astro.props;
     font-weight: 700;
     letter-spacing: var(--tracking-snug);
     line-height: var(--leading-snug);
-    color: var(--color-pine-50);
+    color: var(--text-primary);
   }
 
   .facts__value a {
-    color: var(--color-disc-300);
+    color: var(--text-link);
     text-underline-offset: 0.2em;
   }
 
@@ -133,7 +135,7 @@ const { facts } = Astro.props;
     font-weight: 400;
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-snug);
-    color: var(--color-pine-200);
+    color: var(--text-secondary);
     text-wrap: pretty;
   }
 
@@ -145,7 +147,7 @@ const { facts } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-3) var(--space-5);
+    gap: var(--space-2) var(--space-3);
     padding: 0;
     margin: 0;
     list-style: none;
@@ -153,27 +155,24 @@ const { facts } = Astro.props;
 
   .sponsors__item {
     margin: 0;
-  }
-
-  .sponsors__logo {
-    block-size: 2rem;
-    inline-size: auto;
-    max-inline-size: 9rem;
-    object-fit: contain;
-    object-position: left center;
+    line-height: 0;
   }
 
   /*
-    Stand-in for a missing logo. Set in the display face at a larger size so
-    it occupies the same visual weight a real mark would, rather than reading
-    as small body text.
+    Sponsor marks are shown as supplied: each is a different aspect ratio and
+    a different colour treatment, so normalising height keeps them on one
+    baseline rather than normalising width, which would let the widest mark
+    dominate. The white plate carries logos that are dark-on-transparent.
   */
-  .sponsors__wordmark {
-    font-family: var(--font-display);
-    font-size: var(--text-md);
-    font-weight: 700;
-    letter-spacing: var(--tracking-snug);
-    line-height: 1.2;
-    color: var(--color-pine-50);
+  .sponsors__logo {
+    display: block;
+    block-size: 2.25rem;
+    inline-size: auto;
+    max-inline-size: 100%;
+    object-fit: contain;
+    object-position: left center;
+    padding: var(--space-1) var(--space-2);
+    background: var(--surface-bright);
+    border-radius: var(--radius-xs);
   }
 </style>

@@ -115,37 +115,54 @@ Two Astro-specific gotchas worth knowing:
 
 ## Assets
 
-Brand images in `public/img/` were recovered from the previous site. **Read
-`public/img/manifest.json` before placing one** — it records which page each
-image came from and the pages where it is contextually correct.
+Brand images in `public/img/` were recovered from the archived previous site.
+**Read `public/img/manifest.json` before placing one** — it records what each
+image depicts, the page it came from, and the pages where it is contextually
+accurate (`contexts`), plus pages where it would mislead (`explicitlyNot`).
 
-Filenames describe what the image shows, not where it sat:
+Filenames describe the subject, not where the image sat on the old site. The
+previous pass named them by position (`program-events.jpg`), which is how a
+club-team photo came to be labelled as tournament imagery.
 
-| File                       | Shows                                            |
-| :------------------------- | :----------------------------------------------- |
-| `logo-tvu.png`             | The Treasure Valley Ultimate mark                |
-| `logo-sawtooth.png`        | The Sawtooth mark on its original black field     |
-| `logo-sawtooth-mark.png`   | Sawtooth mark with alpha; for dark grounds only   |
-| `boise-skyline.png`        | Boise skyline silhouette                          |
-| `action-lay.jpg`           | A Sawtooth player diving for a disc               |
-| `team-roster.jpg`          | The Sawtooth roster posing on the field           |
-| `team-huddle.jpg`          | A club team huddle, Boise foothills behind        |
-| `aerial-circle.jpg`        | Overhead aerial of players in a circle            |
+Key images:
 
-**`action-lay.jpg` and `team-roster.jpg` are club-team photos, not Battle of
-Idaho photos.** They were captioned generically on the old home page, which is
-how they came to be mislabelled as tournament imagery. The tournament pages
-carry no photography for the same reason — the Wayback Machine captured only
-the home page, so the four images that were on the tournament page could not be
-recovered.
+| File                          | Shows                                              |
+| :---------------------------- | :------------------------------------------------- |
+| `logo-tvu.png`                | The organisation mark — a rainbow TVU, Sawtooth ridgeline |
+| `logo-tvu-roundel.png`        | Circular TVU badge, alternative treatment          |
+| `sawtooth-disc-mark.png`      | Sawtooth mountain-and-disc circle, black line art  |
+| `logo-sawtooth-mark.png`      | Sawtooth mark with alpha. Dark grounds only        |
+| `logo-erth-beverage-co.png`   | Battle of Idaho sponsor                            |
+| `logo-stevenson-real-estate.png` | Battle of Idaho sponsor                         |
+| `team-roster-boise.jpg`       | Sawtooth on a park field, foothills behind         |
+| `youth-coaching.jpg`          | A youth player taking instruction                  |
+| `aerial-circle.jpg`           | Overhead drone shot of players in a circle         |
+| `boise-landscape-mark.png`    | Boise cityscape in line art                       |
 
-### Missing logos
+**The Battle of Idaho pages carry no photography.** The four images that were on
+the old tournament page were lost with the archive, and every sports image we
+did recover is Sawtooth club-team photography. Rather than present a club photo
+as tournament imagery, that page is typographic and leads with the sponsor wall.
 
-Neither sponsor logo (ERTH. Beverage Co, Stevenson Real Estate) appeared
-anywhere on the old site. `tournament.sponsors` in `src/data/tournament.ts` has
-a `logo` field set to `undefined` for both; the facts widget renders the name as
-a wordmark instead. To switch to real marks, drop files into `public/img/` and
-set `logo` to the path.
+## Donations
+
+Each fund page embeds its Zeffy donation form directly, via Zeffy's
+`/embed/donation-form/<slug>` endpoint, so a donor can give without leaving the
+site. The page also keeps a plain link to the form on Zeffy as an accessibility
+guarantee and as a fallback if the iframe is blocked.
+
+`src/components/react/DonationEmbed.tsx` mounts the frame only when it scrolls
+into view — a payment form is the heaviest third-party asset on the site, and
+most visitors scroll past it.
+
+The form slug is **derived from the fund's canonical URL** in `data/org.ts`
+(`zeffySlug()`) rather than stored separately. An earlier version passed the
+fund's internal slug, which silently pointed every embedded form at the wrong
+Zeffy form; deriving it means the embed and the outbound link cannot drift.
+
+Zeffy owns the interior of the iframe, so its accent colour is set in the Zeffy
+dashboard, not in this repo. What the site themes is the frame and everything
+around it — see `src/styles/embed.css`.
 
 ## Content notes
 
