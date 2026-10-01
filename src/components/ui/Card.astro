@@ -1,0 +1,88 @@
+---
+/**
+ * The shared card surface. Every card-shaped block on the site uses this so
+ * border, radius, elevation, and padding stay identical.
+ */
+
+interface Props {
+  /** `flush` removes inner padding for cards that hold their own media. */
+  flush?: boolean;
+  /** `interactive` adds hover affordance for cards that are themselves links. */
+  interactive?: boolean;
+  /** Adds an accent bar on the leading edge, for "key point" cards. */
+  accentEdge?: boolean;
+  as?: 'div' | 'article' | 'li' | 'section';
+  class?: string;
+}
+
+const {
+  flush = false,
+  interactive = false,
+  accentEdge = false,
+  as: Tag = 'div',
+  class: className,
+} = Astro.props;
+---
+
+<Tag
+  class:list={[
+    'card',
+    flush && 'card--flush',
+    interactive && 'card--interactive',
+    accentEdge && 'card--accent-edge',
+    className,
+  ]}
+>
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    padding: var(--space-5);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    transition:
+      box-shadow var(--motion-base) var(--ease-out-soft),
+      border-color var(--motion-base) var(--ease-out-soft),
+      transform var(--motion-base) var(--ease-out-soft);
+  }
+
+  .card--flush {
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .card--interactive:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--line-accent);
+    transform: translateY(-0.1875rem);
+  }
+
+  .card--accent-edge {
+    padding-inline-start: calc(var(--space-5) + var(--space-2));
+  }
+
+  .card--accent-edge::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--space-4);
+    inset-inline-start: 0;
+    inline-size: 0.1875rem;
+    background: var(--color-sunset-400);
+    border-start-start-radius: var(--radius-pill);
+    border-end-start-radius: var(--radius-pill);
+  }
+
+  /* On inverse grounds the raised surface inverts too. */
+  :global(.on-inverse) .card {
+    background: var(--surface-raised);
+    border-color: var(--line-default);
+  }
+</style>

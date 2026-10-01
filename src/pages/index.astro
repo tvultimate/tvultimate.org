@@ -1,11 +1,62 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+/**
+ * Home page. Opens with the feature hero, then the shared home sections.
+ */
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import HomeSections from '../components/sections/HomeSections.astro';
+import Button from '../components/ui/Button.astro';
+import { org } from '../data/org';
+import { tournament } from '../data/tournament';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title={`${org.name} — ${org.tagline}`}
+  description={org.description}
+>
+  <PageHero eyebrow="501(c)(3) non-profit" variant="feature">
+    <h1 class="home__title">
+      <span class="sr-only">{org.tagline}</span>
+      <span aria-hidden="true">{org.headline.lead}</span>
+      <span class="home__title-accent" aria-hidden="true">{org.headline.accent}</span>
+    </h1>
+
+    <p class="home__lede">{org.description}</p>
+
+    <div class="home__actions">
+      <Button href="/donations-and-dues/" size="lg">Support our Mission</Button>
+      <Button href="/battle-of-idaho/" variant="inverse" size="lg">
+        {`${tournament.edition} ${tournament.name}`}
+      </Button>
+    </div>
+  </PageHero>
+
+  <HomeSections />
+</BaseLayout>
+
+<style>
+  .home__title {
+    font-size: var(--text-4xl);
+    color: var(--color-pine-50);
+  }
+
+  .home__title-accent {
+    display: block;
+    color: var(--color-sunset-300);
+  }
+
+  .home__lede {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-100);
+    max-inline-size: 40ch;
+  }
+
+  .home__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-2);
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+/**
+ * A responsive auto-fitting grid. Sections declare a minimum track width and
+ * get sensible column counts without writing their own grid CSS.
+ */
+
+interface Props {
+  /** Minimum track width before columns wrap. */
+  min?: string;
+  gap?: string;
+  class?: string;
+}
+
+const {
+  min = '16rem',
+  gap = 'var(--space-4)',
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={['grid', className]} style={`--grid-min: ${min}; --grid-gap: ${gap};`}>
+  <slot />
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--grid-gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min)), 1fr));
+    align-items: stretch;
+  }
+</style>

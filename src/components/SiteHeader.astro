@@ -1,0 +1,630 @@
+---
+/**
+ * Sticky site header with a two-tier menu: primary sections across the top,
+ * and a sub-navigation bar for the pages inside a section.
+ *
+ * Pure Astro — the disclosure is a native `<details>` element, so the menu
+ * works with zero client JavaScript.
+ */
+
+import Icon from './ui/Icon.astro';
+import { navSections } from '../data/navigation';
+import { org, images } from '../data/org';
+
+/** Current path, normalised to always end in `/` so comparisons are exact. */
+const path = Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+
+/**
+ * The active section, plus its children if any. A section is active when the
+ * current path matches it or sits underneath it.
+ */
+const activeSection =
+  navSections.find(
+    (section) =>
+      path === section.href ||
+      (section.href !== '/' && path.startsWith(section.href)),
+  ) ?? navSections[0];
+---
+
+<header class="masthead">
+  <div class="masthead__bar">
+    <div class="masthead__inner">
+      <a class="masthead__brand" href="/">
+        <img
+          class="masthead__logo"
+          src={images.logoSmall}
+          alt=""
+          width="96"
+          height="96"
+          decoding="async"
+        />
+        <span class="masthead__brand-text">
+          <span class="masthead__brand-name">{org.name}</span>
+          <span class="masthead__brand-sub">{org.status}</span>
+        </span>
+      </a>
+
+      <nav class="masthead__rail" aria-label="Main navigation">
+        <ul class="masthead__rail-list">
+          {
+            navSections.map((section) => (
+              <li>
+                <a
+                  class="masthead__rail-link"
+                  href={section.href}
+                  aria-current={
+                    activeSection.href === section.href ? 'page' : undefined
+                  }
+                >
+                  {section.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="masthead__actions">
+        <a class="masthead__donate" href="/donations-and-dues/">Donate</a>
+
+        {/* Native disclosure: the mobile menu needs no JavaScript at all. */}
+        <details class="masthead__menu">
+          <summary class="masthead__menu-summary">
+            <span class="masthead__menu-label">Menu</span>
+            <span class="masthead__menu-icon" aria-hidden="true">
+              <span />
+              <span />
+            </span>
+            <span class="sr-only">Toggle main menu</span>
+          </summary>
+
+          <div class="masthead__panel">
+            <ul class="masthead__list">
+              {
+                navSections.map((section) => (
+                  <li class="masthead__item">
+                    <a
+                      class="masthead__link"
+                      href={section.href}
+                      aria-current={path === section.href ? 'page' : undefined}
+                    >
+                      <span class="masthead__link-text">
+                        <span class="masthead__link-label">{section.label}</span>
+                        {section.summary && (
+                          <span class="masthead__link-summary">{section.summary}</span>
+                        )}
+                      </span>
+                      <Icon name="arrow" class="masthead__link-arrow" />
+                    </a>
+
+                    {section.children && (
+                      <ul class="masthead__sublist">
+                        {section.children
+                          .filter((child) => child.href !== section.href)
+                          .map((child) => (
+                            <li>
+                              <a
+                                class="masthead__subitem"
+                                href={child.href}
+                                aria-current={path === child.href ? 'page' : undefined}
+                              >
+                                {child.label}
+                              </a>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </li>
+                ))
+              }
+            </ul>
+
+            <div class="masthead__panel-foot">
+              <a class="masthead__social" href="https://discord.gg/bhBhYUZ82D">
+                Discord
+              </a>
+              <a class="masthead__social" href="https://www.youtube.com/@tv-ultimate">
+                YouTube
+              </a>
+              <a class="masthead__social" href="mailto:help@tvultimate.org">Email</a>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  {/* Sub-navigation: the pages inside the current section, on their own row. */}
+  {
+    activeSection.children && (
+      <div class="masthead__subbar">
+        <div class="masthead__subbar-inner">
+          <a class="masthead__sub-parent" href={activeSection.href}>
+            <Icon name="arrow" class="masthead__sub-back" />
+            {activeSection.label}
+          </a>
+          <ul class="masthead__sub-list">
+            {activeSection.children.map((child) => (
+              <li>
+                <a
+                  class="masthead__sub-link"
+                  href={child.href}
+                  aria-current={path === child.href ? 'page' : undefined}
+                >
+                  {child.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+</header>
+
+<style>
+  .masthead {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--surface-page) 88%, transparent);
+    backdrop-filter: blur(0.75rem) saturate(1.4);
+    border-block-end: var(--border-width) solid var(--line-subtle);
+  }
+
+  /* -------------------------------------------------------------
+   * Top bar
+   * ----------------------------------------------------------- */
+
+  .masthead__bar {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--layout-nav-height);
+    padding-inline: var(--layout-gutter);
+  }
+
+  .masthead__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    inline-size: 100%;
+    max-inline-size: var(--layout-max);
+    margin-inline: auto;
+    /* The brand may shrink and truncate; the menu must never be pushed off. */
+    min-inline-size: 0;
+  }
+
+  /* -------------------------------------------------------------
+   * Brand
+   * ----------------------------------------------------------- */
+
+  .masthead__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    /* Allowed to shrink so the menu button always stays on screen. */
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+
+  .masthead__logo {
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .masthead__brand-text {
+    display: grid;
+    gap: 0.0625rem;
+    line-height: 1.1;
+  }
+
+  .masthead__brand-name {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    /* Truncates rather than forcing the layout wider than the viewport. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .masthead__brand-sub {
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* -------------------------------------------------------------
+   * Sub-navigation (pages inside the current section)
+   * ----------------------------------------------------------- */
+
+  /* -------------------------------------------------------------
+   * Main rail (wide screens) and sub-navigation
+   * ----------------------------------------------------------- */
+
+  .masthead__rail {
+    display: none;
+    flex: 1;
+    min-inline-size: 0;
+    justify-content: center;
+  }
+
+  .masthead__rail-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .masthead__rail-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .masthead__rail-list li {
+    margin: 0;
+  }
+
+  .masthead__rail-link {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    border-radius: var(--radius-pill);
+    transition:
+      background-color var(--motion-fast) var(--ease-out-soft),
+      color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .masthead__rail-link:hover {
+    color: var(--text-primary);
+    background: var(--surface-sunken);
+  }
+
+  .masthead__rail-link[aria-current='page'] {
+    color: var(--color-pine-50);
+    background: var(--surface-accent);
+  }
+
+  .masthead__subbar {
+    border-block-start: var(--border-width) solid var(--line-subtle);
+    background: var(--surface-sunken);
+  }
+
+  .masthead__subbar-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    inline-size: 100%;
+    max-inline-size: var(--layout-max);
+    margin-inline: auto;
+    padding-inline: var(--layout-gutter);
+    padding-block: var(--space-2);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .masthead__subbar-inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .masthead__sub-parent {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: none;
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--text-tertiary);
+  }
+
+  .masthead__sub-parent:hover {
+    color: var(--text-accent);
+  }
+
+  :global(.masthead__sub-back) {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+    rotate: 180deg;
+    flex: none;
+  }
+
+  .masthead__sub-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .masthead__sub-list li {
+    margin: 0;
+  }
+
+  .masthead__sub-link {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    border-radius: var(--radius-pill);
+    transition:
+      background-color var(--motion-fast) var(--ease-out-soft),
+      color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .masthead__sub-link:hover {
+    color: var(--text-primary);
+    background: var(--surface-sunken);
+  }
+
+  .masthead__sub-link[aria-current='page'] {
+    color: var(--color-pine-50);
+    background: var(--surface-accent);
+  }
+
+  /* -------------------------------------------------------------
+   * Actions
+   * ----------------------------------------------------------- */
+
+  .masthead__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-inline-start: auto;
+    flex: none;
+  }
+
+  .masthead__donate {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--color-pine-50);
+    background: var(--surface-accent);
+    border-radius: var(--radius-pill);
+    transition: background-color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .masthead__donate:hover {
+    background: var(--surface-accent-hover);
+  }
+
+  /* -------------------------------------------------------------
+   * Mobile menu
+   * ----------------------------------------------------------- */
+
+  .masthead__menu {
+    position: relative;
+  }
+
+  .masthead__menu-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 650;
+    color: var(--text-primary);
+    list-style: none;
+    cursor: pointer;
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-default);
+    border-radius: var(--radius-pill);
+  }
+
+  .masthead__menu-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .masthead__menu-summary:hover {
+    border-color: var(--line-strong);
+  }
+
+  .masthead__menu-icon {
+    position: relative;
+    inline-size: 0.875rem;
+    block-size: 0.625rem;
+    flex: none;
+  }
+
+  .masthead__menu-icon span {
+    position: absolute;
+    inset-inline: 0;
+    block-size: 0.125rem;
+    background: currentColor;
+    border-radius: var(--radius-pill);
+    transition: transform var(--motion-base) var(--ease-out-soft);
+  }
+
+  .masthead__menu-icon span:first-child {
+    inset-block-start: 0.125rem;
+  }
+
+  .masthead__menu-icon span:last-child {
+    inset-block-start: 0.4375rem;
+  }
+
+  .masthead__menu[open] .masthead__menu-icon span:first-child {
+    transform: translateY(0.1875rem) rotate(45deg);
+  }
+
+  .masthead__menu[open] .masthead__menu-icon span:last-child {
+    transform: translateY(-0.1875rem) rotate(-45deg);
+  }
+
+  .masthead__panel {
+    position: absolute;
+    inset-block-start: calc(100% + var(--space-2));
+    inset-inline-end: 0;
+    z-index: 60;
+    /* `100%` of the masthead row rather than `100vw`, so the panel can never
+       be wider than the padded content area. */
+    inline-size: min(22rem, 100%);
+    max-block-size: min(34rem, calc(100svh - var(--layout-nav-height) - 2rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-3);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .masthead__list {
+    display: grid;
+    gap: 0.0625rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .masthead__item {
+    margin: 0;
+  }
+
+  .masthead__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: background-color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .masthead__link:hover {
+    background: var(--surface-sunken);
+  }
+
+  .masthead__link[aria-current='page'] {
+    background: var(--surface-accent-soft);
+  }
+
+  .masthead__link-text {
+    display: grid;
+    gap: 0.125rem;
+    min-inline-size: 0;
+  }
+
+  .masthead__link-label {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    color: var(--text-primary);
+  }
+
+  .masthead__link[aria-current='page'] .masthead__link-label {
+    color: var(--text-accent);
+  }
+
+  .masthead__link-summary {
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+    color: var(--text-tertiary);
+  }
+
+  :global(.masthead__link-arrow) {
+    inline-size: 1rem;
+    block-size: 1rem;
+    color: var(--text-tertiary);
+    flex: none;
+  }
+
+  .masthead__sublist {
+    display: grid;
+    gap: 0.0625rem;
+    padding: 0;
+    padding-inline-start: var(--space-4);
+    margin: 0;
+    list-style: none;
+  }
+
+  .masthead__sublist li {
+    margin: 0;
+  }
+
+  .masthead__subitem {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--text-secondary);
+    border-inline-start: var(--border-width) solid var(--line-default);
+    transition: color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .masthead__subitem:hover {
+    color: var(--text-accent);
+  }
+
+  .masthead__subitem[aria-current='page'] {
+    font-weight: 650;
+    color: var(--text-accent);
+    border-inline-start-color: var(--surface-accent);
+  }
+
+  .masthead__panel-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block-start: var(--space-3);
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line-subtle);
+  }
+
+  .masthead__social {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 650;
+    text-decoration: none;
+    color: var(--text-secondary);
+    background: var(--surface-sunken);
+    border-radius: var(--radius-pill);
+  }
+
+  .masthead__social:hover {
+    color: var(--text-accent);
+  }
+
+  /* -------------------------------------------------------------
+   * Wide: show the horizontal menus, drop the disclosure
+   * ----------------------------------------------------------- */
+
+  @media (min-width: 64rem) {
+    .masthead__rail {
+      display: flex;
+    }
+
+    .masthead__menu {
+      display: none;
+    }
+  }
+</style>

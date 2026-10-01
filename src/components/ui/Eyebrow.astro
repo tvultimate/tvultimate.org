@@ -1,0 +1,30 @@
+---
+/**
+ * Small shared text treatments that would otherwise drift between sections.
+ * These are the only definitions of eyebrow / label / meta text on the site.
+ */
+
+interface Props {
+  as?: 'span' | 'p' | 'div';
+  class?: string;
+}
+
+const { as: Tag = 'span', class: className } = Astro.props;
+---
+
+<Tag class:list={['eyebrow', className]}>
+  <slot />
+</Tag>
+
+<style>
+  .eyebrow {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    line-height: var(--leading-snug);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+</style>

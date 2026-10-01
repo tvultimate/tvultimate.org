@@ -1,0 +1,240 @@
+---
+/**
+ * Battle of Idaho Sponsorship — how to underwrite the tournament.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import Card from '../../components/ui/Card.astro';
+import Grid from '../../components/ui/Grid.astro';
+import Button from '../../components/ui/Button.astro';
+import FeatureTile from '../../components/ui/FeatureTile.astro';
+import { tournament } from '../../data/tournament';
+import { contact, funds, links } from '../../data/org';
+
+/** What sponsorship pays for, framed as benefits to the sponsor. */
+const benefits = [
+  {
+    title: 'Keep entry fees low',
+    body: 'Sponsorship is what lets us charge $225–$250 per team instead of pricing out small clubs and first-time tournament organizers.',
+  },
+  {
+    title: 'Fund the field of play',
+    body: 'Field rental, cones, scoreboards, a staffed medical tent, and trained recovery staff are all direct tournament costs.',
+  },
+  {
+    title: 'Open every division',
+    body: 'Three divisions across youth, open, and mixed adult — the widest field we have run, made possible by sponsor support.',
+  },
+  {
+    title: 'Put money back into Idaho clubs',
+    body: 'The tournament is a fundraising event. Proceeds are reinvested in the Idaho ultimate frisbee community.',
+  },
+];
+---
+
+<BaseLayout
+  title="Battle of Idaho Sponsorship — Treasure Valley Ultimate"
+  description={`Sponsor ${tournament.name} ${tournament.year} and help keep entry fees low for every team in the region.`}
+>
+  <PageHero
+    eyebrow="Sponsorship"
+    title={`Sponsor ${tournament.name} ${tournament.year}`}
+    lede="Idaho's largest ultimate frisbee tournament, made possible by the businesses that support it."
+  />
+
+  <Section tone="page">
+    <Container>
+      <div class="pitch">
+        <div class="pitch__body">
+          <p class="pitch__text">
+            {tournament.edition} {tournament.name} is a bring-your-own-team,
+            fundraising tournament where all proceeds are directly invested back into
+            the Idaho ultimate frisbee community. Sponsorship keeps entry fees
+            affordable, funds the amenities players expect, and puts surplus straight
+            back into local clubs and youth programs.
+          </p>
+
+          <div class="pitch__actions">
+            <Button href={funds.sponsorship.href} size="lg" external>
+              Become a sponsor
+            </Button>
+            <Button href={`mailto:${contact.general.email}`} variant="secondary" size="lg">
+              Ask about packages
+            </Button>
+          </div>
+
+          <p class="pitch__note">
+            Questions about sponsorship packages? Email{' '}
+            <a href={`mailto:${contact.general.email}`}>{contact.general.email}</a>.
+            Tournament questions go to{' '}
+            <a href={`mailto:${contact.battle.email}`}>{contact.battle.email}</a>.
+          </p>
+        </div>
+
+        <aside class="pitch__aside">
+          <Card class="pitch__card">
+            <p class="pitch__card-eyebrow">Sponsorship fund</p>
+            <p class="pitch__card-title">{funds.sponsorship.name}</p>
+            <p class="pitch__card-blurb">{funds.sponsorship.blurb}</p>
+            <Button href={funds.sponsorship.href} variant="secondary" external>
+              Give to sponsorship
+            </Button>
+          </Card>
+        </aside>
+      </div>
+    </Container>
+  </Section>
+
+  <Section tone="raised">
+    <Container>
+      <SectionHeader
+        eyebrow="What your support does"
+        title="Where the money goes"
+        layout="split"
+      />
+
+      <Grid min="17rem">
+        {
+          benefits.map((benefit) => (
+            <Card accentEdge>
+              <FeatureTile title={benefit.title} icon="sparkle">
+                <p>{benefit.body}</p>
+              </FeatureTile>
+            </Card>
+          ))
+        }
+      </Grid>
+    </Container>
+  </Section>
+
+  <Section tone="accent">
+    <Container>
+      <div class="next">
+        <div>
+          <h2 class="next__title">Also on the table</h2>
+          <p class="next__text">
+            Sponsorship is one way to support the work. You can also donate to the
+            general fund, the youth fund, or the Sawtooth team directly.
+          </p>
+        </div>
+        <div class="next__actions">
+          <Button href="/donations-and-dues/" variant="secondary">
+            See all donation funds
+          </Button>
+          <Button href={links.battleRegister} variant="ghost" external>
+            Register a team
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .pitch {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .pitch__body {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .pitch__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .pitch__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .pitch__note {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-tertiary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .pitch__note a {
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  .pitch__aside {
+    display: grid;
+  }
+
+  .pitch__card {
+    gap: var(--space-3);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pitch__card-eyebrow {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .pitch__card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    color: var(--text-primary);
+  }
+
+  .pitch__card-blurb {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .next {
+    display: grid;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .next__title {
+    font-size: var(--text-xl);
+    margin-block-end: var(--space-2);
+  }
+
+  .next__text {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .next__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 48rem) {
+    .pitch {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+
+    .next {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-6);
+    }
+  }
+</style>

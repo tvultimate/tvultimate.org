@@ -1,0 +1,310 @@
+---
+/**
+ * Site footer: organisation identity, a full index of every page, the
+ * non-profit statement, and the Boise skyline mark.
+ */
+
+import Container from './ui/Container.astro';
+import Icon from './ui/Icon.astro';
+import { org, contact, links, images } from '../data/org';
+import { navSections } from '../data/navigation';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer on-inverse">
+  <Container>
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img
+          class="footer__logo"
+          src={images.logoSmall}
+          alt=""
+          width="96"
+          height="96"
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="footer__brand-text">
+          <p class="footer__name">{org.name}</p>
+          <p class="footer__status">
+            {org.legalName} · {org.status}
+          </p>
+        </div>
+      </div>
+
+      <p class="footer__tagline">{org.description}</p>
+    </div>
+
+    <div class="footer__columns">
+      {
+        navSections.map((section) => (
+          <nav class="footer__col" aria-label={section.label}>
+            <a class="footer__col-heading" href={section.href}>{section.label}</a>
+            <ul class="footer__col-list">
+              {section.children
+                ?.filter((child) => child.href !== section.href)
+                .map((child) => (
+                  <li>
+                    <a href={child.href}>{child.label}</a>
+                  </li>
+                ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="footer__contact">
+      <div>
+        <p class="footer__col-heading">Contact</p>
+        <ul class="footer__contact-list">
+          <li>
+            <a href={`mailto:${contact.general.email}`}>
+              {contact.general.email}
+            </a>
+          </li>
+          <li>
+            <a href={links.discord} rel="noopener noreferrer" target="_blank">
+              Discord
+            </a>
+          </li>
+          <li>
+            <a href={links.youtube} rel="noopener noreferrer" target="_blank">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <img
+        class="footer__skyline"
+        src={images.skyline}
+        alt="Boise skyline"
+        width="2034"
+        height="536"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+
+    <div class="footer__legal">
+      <p>
+        &copy; {year} {org.legalName}. {org.status}. {org.domain} is the official domain of{' '}
+        {org.legalName}.
+      </p>
+      <p class="footer__org-mark">
+        <Icon name="disc" />
+      </p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-7) var(--space-6);
+    background: var(--surface-inverse);
+    color: var(--color-pine-200);
+  }
+
+  .footer__top {
+    display: grid;
+    gap: var(--space-4);
+    padding-block-end: var(--space-5);
+    border-block-end: var(--border-width) solid var(--line-inverse);
+  }
+
+  .footer__brand {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .footer__logo {
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .footer__brand-text {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .footer__name {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-pine-50);
+  }
+
+  .footer__status {
+    font-size: var(--text-xs);
+    color: var(--color-pine-300);
+  }
+
+  .footer__tagline {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-200);
+    max-inline-size: var(--layout-measure);
+  }
+
+  /* -------------------------------------------------------------
+   * Index columns
+   * ----------------------------------------------------------- */
+
+  .footer__columns {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+  }
+
+  .footer__col {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+
+  .footer__col-heading {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-pine-400);
+    text-decoration: none;
+  }
+
+  a.footer__col-heading:hover {
+    color: var(--color-sunset-300);
+  }
+
+  .footer__col-list {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .footer__col-list li {
+    margin: 0;
+  }
+
+  .footer__col-list a {
+    font-size: var(--text-sm);
+    color: var(--color-pine-100);
+    text-decoration: none;
+  }
+
+  .footer__col-list a:hover {
+    color: var(--color-sunset-300);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  /* -------------------------------------------------------------
+   * Contact row
+   * ----------------------------------------------------------- */
+
+  .footer__contact {
+    display: grid;
+    gap: var(--space-5);
+    align-items: end;
+    padding-block: var(--space-5);
+    border-block-start: var(--border-width) solid var(--line-inverse);
+  }
+
+  .footer__contact-list {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: var(--space-2) 0 0;
+    list-style: none;
+  }
+
+  .footer__contact-list li {
+    margin: 0;
+  }
+
+  .footer__contact-list a {
+    font-size: var(--text-sm);
+    color: var(--color-pine-100);
+    text-decoration: none;
+  }
+
+  .footer__contact-list a:hover {
+    color: var(--color-sunset-300);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  /*
+    The skyline artwork is a solid black silhouette, so it is inverted to sit
+    quietly on the dark ground rather than disappear into it.
+  */
+  .footer__skyline {
+    inline-size: 100%;
+    max-inline-size: 32rem;
+    block-size: auto;
+    filter: invert(1) opacity(0.16);
+  }
+
+  /* -------------------------------------------------------------
+   * Legal
+   * ----------------------------------------------------------- */
+
+  .footer__legal {
+    display: grid;
+    gap: var(--space-1);
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-width) solid var(--line-inverse);
+    font-size: var(--text-xs);
+    color: var(--color-pine-400);
+  }
+
+  .footer__org-mark {
+    font-size: var(--text-lg);
+    color: var(--color-pine-600);
+  }
+
+  @media (min-width: 40rem) {
+    .footer__columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer__legal {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .footer__org-mark {
+      grid-column: 2;
+      justify-self: end;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .footer__top {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      align-items: center;
+      gap: var(--space-7);
+    }
+
+    .footer__columns {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+
+    .footer__contact {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--space-7);
+    }
+
+    .footer__skyline {
+      justify-self: end;
+    }
+  }
+</style>

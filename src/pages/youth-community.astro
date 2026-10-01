@@ -1,0 +1,220 @@
+---
+/**
+ * Youth & Community — clinics and the youth donation fund.
+ *
+ * Copy follows the original site.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
+import FeatureTile from '../components/ui/FeatureTile.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Icon from '../components/ui/Icon.astro';
+import { youth, clinics, youthFund } from '../data/programs';
+import { contact, funds, images } from '../data/org';
+
+/** What restricted youth donations pay for. */
+const uses = [
+  'Travel for tournaments',
+  'League and tournament fees',
+  'Gear',
+];
+---
+
+<BaseLayout
+  title="Youth & Community — Treasure Valley Ultimate"
+  description={youth.tagline}
+>
+  <PageHero eyebrow="Youth & Community" title={youth.headline} lede={youth.tagline} />
+
+  <Section tone="page">
+    <Container>
+      <div class="programs">
+        <Card>
+          <FeatureTile
+            title={clinics.title}
+            icon="users"
+            href={`mailto:${contact.youth.email}`}
+            cta={`Email ${contact.youth.email}`}
+          >
+            <p>{clinics.body}</p>
+          </FeatureTile>
+        </Card>
+
+        <Card>
+          <FeatureTile
+            title={youthFund.title}
+            icon="heart"
+            href={funds.youth.href}
+            cta="Donate to the youth fund"
+          >
+            <p>{youthFund.body}</p>
+          </FeatureTile>
+        </Card>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- What youth donations cover -->
+  <Section tone="raised">
+    <Container>
+      <div class="cover">
+        <div class="cover__body">
+          <SectionHeader eyebrow="Youth Donation Fund" title="Where the money goes" />
+          <ul class="uses">
+            {
+              uses.map((use) => (
+                <li class="uses__item">
+                  <span class="uses__icon">
+                    <Icon name="check" />
+                  </span>
+                  {use}
+                </li>
+              ))
+            }
+          </ul>
+          <p class="cover__text">
+            All funds are used to support U20 youth players in their ultimate frisbee
+            careers. If you are interested in a clinic, working with our partner clubs,
+            or bringing a youth program into the valley, email{' '}
+            <a href={`mailto:${contact.youth.email}`}>{contact.youth.email}</a>.
+          </p>
+          <Button href={funds.youth.href} size="lg" external>
+            Support a young athlete
+          </Button>
+        </div>
+
+        <figure class="cover__media">
+          <img
+            src={images.droneCircle}
+            alt="An overhead aerial view of players standing in a circle on a field."
+            width="1157"
+            height="1157"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </Container>
+  </Section>
+
+  <Section tone="accent">
+    <Container>
+      <div class="cta">
+        <Eyebrow>Get involved</Eyebrow>
+        <h2 class="cta__title">Run a clinic with us</h2>
+        <p class="cta__text">
+          Treasure Valley Ultimate coordinates with partner club teams to provide
+          coaching at clinics that youth can attend. If you are interested in working
+          with us to get a clinic off the ground, we would love to hear from you.
+        </p>
+        <Button href={`mailto:${contact.youth.email}`} size="lg">
+          Email {contact.youth.email}
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .programs {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .cover {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .cover__body {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .uses {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .uses__item {
+    display: flex;
+    gap: var(--space-3);
+    align-items: start;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .uses__icon {
+    flex: none;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    margin-block-start: 0.1em;
+    color: var(--text-accent);
+  }
+
+  .cover__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .cover__text a {
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  .cover__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: var(--border-width) solid var(--line-subtle);
+  }
+
+  .cover__media img {
+    inline-size: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .cta {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+    max-inline-size: var(--layout-measure);
+  }
+
+  .cta__title {
+    font-size: var(--text-2xl);
+  }
+
+  .cta__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .programs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cover {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+  }
+</style>

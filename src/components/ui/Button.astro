@@ -1,0 +1,158 @@
+---
+/**
+ * The single definition of a button on the site. Renders as an `<a>` when
+ * `href` is present and a `<button>` otherwise, so callers never hand-roll
+ * interactive controls with divergent styling.
+ */
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'inverse';
+  size?: 'md' | 'lg';
+  /** Renders a trailing arrow and marks the link as external. */
+  external?: boolean;
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  type = 'button',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const isExternal = external || (href?.startsWith('http') ?? false);
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className];
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={classes}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+      target={isExternal ? '_blank' : undefined}
+      {...rest}
+    >
+      <span class="btn__label"><slot /></span>
+      {isExternal && (
+        <svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+          <path
+            d="M6 3h7v7M13 3 4 12"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      )}
+    </a>
+  ) : (
+    <button type={type} class:list={classes} {...rest}>
+      <span class="btn__label"><slot /></span>
+    </button>
+  )
+}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding-inline: var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: var(--tracking-normal);
+    text-align: center;
+    text-decoration: none;
+    /*
+      Labels wrap rather than forcing the button wider than its column. A long
+      label in a narrow grid cell would otherwise push the page sideways.
+    */
+    text-wrap: balance;
+    cursor: pointer;
+    border: var(--border-width-thick) solid transparent;
+    border-radius: var(--radius-pill);
+    transition:
+      background-color var(--motion-fast) var(--ease-out-soft),
+      border-color var(--motion-fast) var(--ease-out-soft),
+      color var(--motion-fast) var(--ease-out-soft),
+      transform var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .btn--md {
+    padding-block: 0.8125rem;
+  }
+
+  .btn--lg {
+    padding-block: 1.0625rem;
+    font-size: var(--text-base);
+  }
+
+  .btn--primary {
+    background: var(--surface-accent);
+    color: var(--color-pine-50);
+    border-color: var(--surface-accent);
+  }
+
+  .btn--primary:hover {
+    background: var(--surface-accent-hover);
+    border-color: var(--surface-accent-hover);
+    transform: translateY(-0.0625rem);
+  }
+
+  .btn--secondary {
+    background: transparent;
+    color: var(--text-accent);
+    border-color: var(--line-strong);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--text-accent);
+    background: var(--surface-accent-soft);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--text-link);
+    border-color: transparent;
+    padding-inline: var(--space-3);
+  }
+
+  .btn--ghost:hover {
+    background: var(--surface-sunken);
+  }
+
+  .btn--inverse {
+    background: var(--surface-bright);
+    color: var(--color-pine-900);
+    border-color: var(--surface-bright);
+  }
+
+  .btn--inverse:hover {
+    background: var(--color-pine-50);
+    transform: translateY(-0.0625rem);
+  }
+
+  .btn__icon {
+    inline-size: 1em;
+    block-size: 1em;
+    flex: none;
+    transition: transform var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .btn:hover .btn__icon {
+    transform: translate(0.125rem, -0.125rem);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+</style>

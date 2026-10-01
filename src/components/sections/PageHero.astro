@@ -1,0 +1,156 @@
+---
+/**
+ * Page hero. The compact banner on most pages, and the full-bleed treatment on
+ * the home page.
+ */
+
+import Container from '../ui/Container.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+
+interface Props {
+  eyebrow?: string;
+  /**
+   * The page's `h1`. Required unless the caller renders its own heading in the
+   * slot — there must be exactly one `h1` per page either way.
+   */
+  title?: string;
+  lede?: string;
+  /** Full-bleed dark treatment, used on the home page. */
+  variant?: 'compact' | 'feature';
+  class?: string;
+}
+
+const { eyebrow, title, lede, variant = 'compact', class: className } = Astro.props;
+---
+
+<section class:list={['pagehero', `pagehero--${variant}`, className]}>
+  <Container class="pagehero__inner">
+    {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+    {title && <h1 class="pagehero__title">{title}</h1>}
+    {lede && <p class="lede pagehero__lede">{lede}</p>}
+    <slot />
+  </Container>
+
+  {
+    variant === 'feature' && (
+      <div class="pagehero__field" aria-hidden="true">
+        <span class="pagehero__ridge pagehero__ridge--back" />
+        <span class="pagehero__ridge pagehero__ridge--front" />
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .pagehero {
+    position: relative;
+    overflow: clip;
+  }
+
+  /* -------------------------------------------------------------
+   * Compact: standard page opening
+   * ----------------------------------------------------------- */
+
+  .pagehero--compact {
+    padding-block: var(--space-section-tight);
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+  }
+
+  .pagehero--compact .pagehero__title {
+    font-size: var(--text-3xl);
+    color: var(--color-pine-50);
+  }
+
+  .pagehero--compact .pagehero__lede {
+    margin-block-start: var(--space-3);
+    color: var(--color-pine-200);
+  }
+
+  /* -------------------------------------------------------------
+   * Feature: home page, full height
+   * ----------------------------------------------------------- */
+
+  .pagehero--feature {
+    display: flex;
+    align-items: center;
+    min-block-size: calc(100svh - var(--layout-nav-height));
+    padding-block: var(--space-section);
+    background: var(--surface-inverse);
+    color: var(--color-pine-50);
+    isolation: isolate;
+  }
+
+  .pagehero--feature .pagehero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .pagehero--feature .pagehero__title {
+    font-size: var(--text-4xl);
+    color: var(--color-pine-50);
+  }
+
+  .pagehero--feature .pagehero__lede {
+    max-inline-size: 40ch;
+    color: var(--color-pine-100);
+  }
+
+  /* -------------------------------------------------------------
+   * Ridge silhouettes, home page only
+   * ----------------------------------------------------------- */
+
+  .pagehero__field {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .pagehero__ridge {
+    position: absolute;
+    inset-inline: -10%;
+    block-size: 55%;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-pine-800) 70%, transparent),
+      color-mix(in oklab, var(--color-pine-950) 92%, transparent)
+    );
+    clip-path: polygon(
+      0% 100%,
+      0% 62%,
+      8% 48%,
+      15% 58%,
+      24% 34%,
+      33% 52%,
+      42% 30%,
+      52% 46%,
+      61% 28%,
+      70% 50%,
+      79% 36%,
+      88% 54%,
+      95% 44%,
+      100% 58%,
+      100% 100%
+    );
+  }
+
+  .pagehero__ridge--back {
+    inset-block-end: 18%;
+    opacity: 0.55;
+    block-size: 40%;
+    transform: scaleY(-1);
+  }
+
+  .pagehero__ridge--front {
+    inset-block-end: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .pagehero--compact .pagehero__title {
+      font-size: var(--text-4xl);
+    }
+  }
+</style>

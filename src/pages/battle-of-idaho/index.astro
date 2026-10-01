@@ -1,0 +1,477 @@
+---
+/**
+ * 2026 Battle of Idaho — the flagship tournament.
+ *
+ * Copy follows the original site. The divisions selector is a React island
+ * because it keeps one division's detail in the DOM at a time.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Icon from '../../components/ui/Icon.astro';
+import TournamentFacts from '../../components/sections/tournament/TournamentFacts.astro';
+import PricingTiers from '../../components/sections/tournament/PricingTiers.astro';
+import DivisionTabs from '../../components/react/DivisionTabs';
+import {
+  tournament,
+  divisions,
+  stats,
+  pricing,
+  freeAgentPolicy,
+  format,
+  amenities,
+  housing,
+  fundraising,
+  directors,
+} from '../../data/tournament';
+import { contact, links } from '../../data/org';
+---
+
+<BaseLayout
+  title={`${tournament.name} ${tournament.year} — Treasure Valley Ultimate`}
+  description={`${tournament.tagline}. ${tournament.dates} at ${tournament.location}, ${tournament.address}.`}
+>
+  <PageHero
+    eyebrow={`${tournament.edition} · ${tournament.year}`}
+    title={tournament.name}
+    lede={tournament.tagline}
+  >
+    <div class="boi__hero-actions">
+      <Button href={links.battleRegister} variant="inverse" size="lg" external>
+        Sign Up Today
+      </Button>
+      <Button
+        href="/battle-of-idaho/battle-of-idaho-sponsorship/"
+        variant="ghost"
+        size="lg"
+      >
+        Sponsor the event
+      </Button>
+    </div>
+  </PageHero>
+
+  <!-- Intro + key facts -->
+  <Section tone="page">
+    <Container>
+      <p class="boi__intro">{tournament.intro}</p>
+
+      <TournamentFacts
+        facts={[
+          {
+            icon: 'calendar',
+            label: 'When',
+            value: tournament.dates,
+            note: 'Youth · Open · Mixed Adult',
+          },
+          {
+            icon: 'pin',
+            label: 'Where',
+            value: tournament.location,
+            note: tournament.address,
+            href: links.maps,
+          },
+          {
+            icon: 'users',
+            label: 'Capacity',
+            value: '16 teams',
+            note: 'per division, waitlist after',
+          },
+          {
+            icon: 'sparkle',
+            label: 'Sponsored by',
+            value: tournament.sponsors.join(' & '),
+            note: 'Thank you to our sponsors',
+          },
+        ]}
+      />
+
+      <ul class="boi__stats">
+        {
+          stats.map((stat) => (
+            <li class="boi__stat">
+              <span class="boi__stat-value">{stat.value}</span>
+              <span class="boi__stat-unit">{stat.unit}</span>
+              <span class="boi__stat-label">{stat.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </Section>
+
+  <!-- Cost & registration -->
+  <Section tone="raised">
+    <Container>
+      <SectionHeader eyebrow="Cost & registration" title="Bring your own team, fund the future" />
+      <p class="boi__lede">{fundraising}</p>
+      <PricingTiers tiers={[...pricing]} />
+      <p class="boi__footnote">{freeAgentPolicy}</p>
+    </Container>
+  </Section>
+
+  <!-- Divisions -->
+  <Section tone="page">
+    <Container>
+      <SectionHeader eyebrow="Divisions" title="Choose your division" />
+      <p class="boi__lede">
+        Open to all skill levels. We limit each division to 16 teams and maintain a
+        waitlist once a division reaches capacity.
+      </p>
+      <div class="boi__divisions">
+        <DivisionTabs client:visible divisions={divisions} />
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Format & amenities -->
+  <Section tone="sunken">
+    <Container>
+      <div class="split">
+        <div>
+          <SectionHeader eyebrow="Format" title={format.headline} />
+          <p class="boi__lede">{format.description}</p>
+          <ul class="boi__list">
+            {
+              format.rules.map((rule) => (
+                <li class="boi__item">
+                  <span class="boi__item-icon">
+                    <Icon name="check" />
+                  </span>
+                  {rule}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div>
+          <SectionHeader eyebrow="Amenities" title="We take care of the details" />
+          <ul class="boi__list">
+            {
+              amenities.map((amenity) => (
+                <li class="boi__item">
+                  <span class="boi__item-icon">
+                    <Icon name="check" />
+                  </span>
+                  {amenity}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Housing -->
+  <Section tone="page">
+    <Container>
+      <SectionHeader eyebrow="Housing" title="Where to stay" layout="split" />
+      <p class="boi__lede">{housing}</p>
+    </Container>
+  </Section>
+
+  <!-- Contact & directors -->
+  <Section tone="inverse" class="on-inverse">
+    <Container>
+      <div class="boi__contact">
+        <div>
+          <Eyebrow>Contact Information</Eyebrow>
+          <h2 class="boi__contact-title">Questions before you sign up?</h2>
+          <p class="boi__contact-text">
+            For any questions please reach out to us at{' '}
+            <a class="boi__link" href={`mailto:${contact.battle.email}`}>
+              {contact.battle.email}
+            </a>
+            .
+          </p>
+        </div>
+
+        <div class="boi__directors">
+          <p class="boi__directors-heading">Tournament Directors</p>
+          <ul class="boi__directors-list">
+            {
+              directors.map((director) => (
+                <li class="boi__director">
+                  <span class="boi__director-name">{director.name}</span>
+                  <span class="boi__director-role">
+                    {director.role} · {director.detail}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="boi__final">
+        <p class="boi__final-title">Ready to battle?</p>
+        <p class="boi__final-lede">
+          Sign up today and help us grow the sport we love.
+        </p>
+        <div class="boi__final-actions">
+          <Button href={links.battleRegister} variant="inverse" size="lg" external>
+            Sign Up Today
+          </Button>
+          <Button href={`mailto:${contact.battle.email}`} variant="ghost" size="lg">
+            Ask a question
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .boi__hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+
+  .boi__intro {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+    margin-block-end: var(--space-6);
+  }
+
+  .boi__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    list-style: none;
+  }
+
+  .boi__stat {
+    display: grid;
+    gap: 0.125rem;
+    align-content: start;
+    margin: 0;
+    padding: var(--space-4);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .boi__stat-value {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .boi__stat-unit {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .boi__stat-label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+
+  .boi__lede {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .boi__footnote {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+    margin-block-start: var(--space-5);
+    padding-inline-start: var(--space-4);
+    border-inline-start: var(--border-width-thick) solid var(--color-sunset-500);
+  }
+
+  /*
+ * Spacer so the tab island sits far enough down the page that `client:visible`
+ * only hydrates it once a reader actually reaches the divisions.
+ */
+  .boi__divisions {
+    margin-block-start: var(--space-5);
+  }
+
+  .split {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .split :global(.header) {
+    margin-block-end: var(--space-4);
+  }
+
+  .boi__list {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    list-style: none;
+  }
+
+  .boi__item {
+    display: flex;
+    gap: var(--space-3);
+    align-items: start;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .boi__item-icon {
+    flex: none;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    margin-block-start: 0.1em;
+    color: var(--text-accent);
+  }
+
+  /* -------------------------------------------------------------
+   * Contact
+   * ----------------------------------------------------------- */
+
+  .boi__contact {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-end: var(--space-section);
+  }
+
+  .boi__contact-title {
+    font-size: var(--text-2xl);
+    margin-block: var(--space-3) var(--space-3);
+  }
+
+  .boi__contact-text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-100);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .boi__link {
+    font-weight: 650;
+    color: var(--color-disc-300);
+  }
+
+  .boi__directors {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+
+  .boi__directors-heading {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-sunset-300);
+  }
+
+  .boi__directors-list {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .boi__director {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0;
+  }
+
+  .boi__director-name {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-pine-50);
+  }
+
+  .boi__director-role {
+    font-size: var(--text-xs);
+    color: var(--color-pine-300);
+  }
+
+  /* -------------------------------------------------------------
+   * Final CTA
+   * ----------------------------------------------------------- */
+
+  .boi__final {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+    text-align: center;
+    padding: var(--space-6) var(--space-5);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-sunset-600) 28%, transparent),
+      color-mix(in oklab, var(--color-pine-700) 40%, transparent)
+    );
+    border: var(--border-width) solid var(--line-inverse);
+    border-radius: var(--radius-xl);
+  }
+
+  .boi__final-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-pine-50);
+  }
+
+  .boi__final-lede {
+    font-size: var(--text-md);
+    color: var(--color-pine-100);
+    max-inline-size: 34ch;
+  }
+
+  .boi__final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-block-start: var(--space-2);
+  }
+
+  @media (min-width: 48rem) {
+    .boi__stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-8);
+    }
+
+    .boi__contact {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+
+    .boi__directors-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

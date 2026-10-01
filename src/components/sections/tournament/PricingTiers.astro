@@ -1,0 +1,83 @@
+---
+/**
+ * Entry-fee tiers. Renders as a compact table on wide screens and stacked
+ * rows on mobile, so it stays readable without horizontal scrolling.
+ */
+
+interface Tier {
+  label: string;
+  amount: string;
+  note: string;
+}
+
+interface Props {
+  tiers: Tier[];
+}
+
+const { tiers } = Astro.props;
+---
+
+<ul class="tiers">
+  {
+    tiers.map((tier) => (
+      <li class="tiers__item">
+        <span class="tiers__label">{tier.label}</span>
+        <span class="tiers__amount">{tier.amount}</span>
+        <span class="tiers__note">{tier.note}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .tiers {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .tiers__item {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: var(--space-4);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .tiers__label {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .tiers__amount {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tiers__note {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .tiers {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tiers__item {
+      padding: var(--space-5);
+    }
+  }
+</style>

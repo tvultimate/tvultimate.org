@@ -1,0 +1,161 @@
+/*
+ * Division tabs. Styles for the React island live here because Astro's
+ * scoped styles do not reach into framework components.
+ */
+
+.tabs {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.tabs__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--space-2);
+  padding: var(--space-1);
+  background: color-mix(in oklab, var(--color-pine-900) 60%, transparent);
+  border: var(--border-width) solid var(--line-inverse);
+  border-radius: var(--radius-lg);
+}
+
+.tabs__tab {
+  display: grid;
+  gap: 0.125rem;
+  padding: var(--space-3);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  background: transparent;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--motion-fast) var(--ease-out-soft),
+    border-color var(--motion-fast) var(--ease-out-soft);
+}
+
+.tabs__tab:hover {
+  background: color-mix(in oklab, var(--color-pine-700) 45%, transparent);
+}
+
+.tabs__tab.is-active {
+  background: var(--color-pine-50);
+  border-color: var(--color-pine-50);
+}
+
+.tabs__tab-name {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-pine-100);
+  transition: color var(--motion-fast) var(--ease-out-soft);
+}
+
+.tabs__tab.is-active .tabs__tab-name {
+  color: var(--color-pine-900);
+}
+
+.tabs__tab-dates {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-snug);
+  color: var(--color-pine-300);
+  transition: color var(--motion-fast) var(--ease-out-soft);
+}
+
+.tabs__tab.is-active .tabs__tab-dates {
+  color: var(--color-stone-600);
+}
+
+.tabs__panel {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: color-mix(in oklab, var(--color-pine-900) 45%, transparent);
+  border: var(--border-width) solid var(--line-inverse);
+  border-radius: var(--radius-lg);
+}
+
+.tabs__panel:focus-visible {
+  outline-color: var(--focus-ring-color-inverse);
+}
+
+.tabs__details {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.tabs__row {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.tabs__row dt {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-sunset-300);
+}
+
+.tabs__row dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-pine-100);
+  max-inline-size: var(--layout-measure);
+  text-wrap: pretty;
+}
+
+.tabs__schedule-heading {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-sunset-300);
+  margin-block-end: var(--space-3);
+}
+
+.tabs__schedule-list {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tabs__schedule-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  padding-block-end: var(--space-2);
+  border-block-end: var(--border-width) solid var(--line-inverse);
+}
+
+.tabs__schedule-list li:last-child {
+  border-block-end: 0;
+  padding-block-end: 0;
+}
+
+.tabs__day {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-pine-50);
+  min-inline-size: 5rem;
+}
+
+.tabs__time {
+  font-size: var(--text-sm);
+  color: var(--color-pine-200);
+}
+
+@media (min-width: 48rem) {
+  .tabs__panel {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+}

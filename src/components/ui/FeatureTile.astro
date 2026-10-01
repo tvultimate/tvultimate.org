@@ -1,0 +1,124 @@
+---
+/**
+ * Icon + title + body. The repeating unit behind the program, service, and
+ * fund grids — identical markup, different content.
+ */
+
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  /** Optional icon name from `ui/Icon.astro`. */
+  icon?:
+    | 'disc'
+    | 'users'
+    | 'heart'
+    | 'video'
+    | 'trophy'
+    | 'calendar'
+    | 'shield'
+    | 'sparkle';
+  /** Trailing call to action rendered as a text link. */
+  href?: string;
+  cta?: string;
+  level?: 3 | 4;
+  class?: string;
+}
+
+const {
+  title,
+  icon,
+  href,
+  cta = 'Learn more',
+  level = 3,
+  class: className,
+} = Astro.props;
+---
+
+<article class:list={['tile', className]}>
+  {icon && (
+    <span class="tile__icon">
+      <Icon name={icon} />
+    </span>
+  )}
+  {level === 3 ? <h3 class="tile__title">{title}</h3> : <h4 class="tile__title">{title}</h4>}
+  <div class="tile__body">
+    <slot />
+  </div>
+  {
+    href && (
+      <a class="tile__cta" href={href}>
+        {cta}
+        <Icon name="arrow" class="tile__cta-icon" />
+      </a>
+    )
+  }
+</article>
+
+<style>
+  .tile {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+
+  .tile__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    font-size: var(--text-md);
+    color: var(--text-accent);
+    background: var(--surface-accent-soft);
+    border: var(--border-width) solid var(--line-accent);
+    border-radius: var(--radius-md);
+  }
+
+  .tile__title {
+    text-wrap: balance;
+  }
+
+  .tile__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .tile__body :global(p) {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .tile__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    align-self: start;
+    margin-block-start: var(--space-1);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    color: var(--text-accent);
+    text-decoration: none;
+  }
+
+  /* `:global` because the icon is rendered by ui/Icon.astro, whose markup does
+     not carry this component's scope attribute. */
+  :global(.tile__cta-icon) {
+    transition: transform var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .tile__cta:hover :global(.tile__cta-icon) {
+    transform: translateX(0.1875rem);
+  }
+
+  .tile__cta:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  :global(.on-inverse) .tile__icon {
+    color: var(--color-sunset-300);
+    background: color-mix(in oklab, var(--color-pine-700) 60%, transparent);
+    border-color: var(--line-inverse);
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+/**
+ * Donations Information — the charity statement and the full fund index.
+ *
+ * Copy follows the original site.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import Card from '../../components/ui/Card.astro';
+import Grid from '../../components/ui/Grid.astro';
+import Button from '../../components/ui/Button.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { donations } from '../../data/navigation';
+import { funds, fundOrder, contact } from '../../data/org';
+
+const fundIcons = {
+  general: 'disc',
+  youth: 'heart',
+  sawtooth: 'trophy',
+  sponsorship: 'sparkle',
+  dues: 'shield',
+} as const;
+
+const orderedFunds = fundOrder.map((key) => funds[key]);
+---
+
+<BaseLayout
+  title="Donations Information — Treasure Valley Ultimate"
+  description={donations.intro}
+>
+  <PageHero
+    eyebrow="Donations and Dues"
+    title={donations.headline}
+    lede={donations.intro}
+  />
+
+  <Section tone="page">
+    <Container>
+      <p class="tax">{donations.taxNote}</p>
+    </Container>
+  </Section>
+
+  <Section tone="raised">
+    <Container>
+      <SectionHeader
+        eyebrow="Choose a fund"
+        title="Where your gift goes"
+        layout="split"
+      />
+
+      <Grid min="18rem">
+        {
+          orderedFunds.map((fund) => (
+            <Card class="fund">
+              <span class="fund__icon">
+                <Icon name={fundIcons[fund.slug as keyof typeof fundIcons]} />
+              </span>
+              <h3 class="fund__name">{fund.name}</h3>
+              <p class="fund__blurb">{fund.blurb}</p>
+              <div class="fund__actions">
+                <Button href={fund.href} size="md" external>
+                  Donate
+                </Button>
+                <Button href={fund.page} variant="ghost" size="md">
+                  Details
+                </Button>
+              </div>
+            </Card>
+          ))
+        }
+      </Grid>
+    </Container>
+  </Section>
+
+  <Section tone="accent">
+    <Container>
+      <div class="help">
+        <div>
+          <h2 class="help__title">Not sure which fund fits?</h2>
+          <p class="help__text">
+            Email us and we will point you in the right direction. General donations
+            are the most flexible way to support the work we do across club teams,
+            youth, and events.
+          </p>
+        </div>
+        <Button href={`mailto:${contact.general.email}`} size="lg">
+          Email {contact.general.email}
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .tax {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+    padding-inline-start: var(--space-4);
+    border-inline-start: var(--border-width-thick) solid var(--color-sunset-500);
+  }
+
+  .fund {
+    gap: var(--space-3);
+  }
+
+  .fund__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    font-size: var(--text-md);
+    color: var(--text-warm);
+    background: var(--surface-warm);
+    border: var(--border-width) solid color-mix(in oklab, var(--color-sunset-300) 60%, transparent);
+    border-radius: var(--radius-md);
+  }
+
+  .fund__name {
+    font-size: var(--text-md);
+  }
+
+  .fund__blurb {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .fund__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block-start: var(--space-1);
+  }
+
+  .help {
+    display: grid;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .help__title {
+    font-size: var(--text-xl);
+    margin-block-end: var(--space-2);
+  }
+
+  .help__text {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  @media (min-width: 48rem) {
+    .help {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-6);
+    }
+  }
+</style>

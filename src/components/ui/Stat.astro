@@ -1,0 +1,61 @@
+---
+/**
+ * A labelled statistic. Renders large numbers with an optional unit and a
+ * caption beneath, used for tournament and season figures.
+ */
+
+interface Props {
+  value: string;
+  label: string;
+  unit?: string;
+  /** `compact` reduces the number size for dense contexts. */
+  compact?: boolean;
+}
+
+const { value, label, unit, compact = false } = Astro.props;
+---
+
+<div class:list={['stat', compact && 'stat--compact']}>
+  <p class="stat__value">
+    {value}
+    {unit && <span class="stat__unit">{unit}</span>}
+  </p>
+  <p class="stat__label">{label}</p>
+</div>
+
+<style>
+  .stat {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+  }
+
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat--compact .stat__value {
+    font-size: var(--text-lg);
+  }
+
+  .stat__unit {
+    font-size: 0.5em;
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-tertiary);
+    margin-inline-start: 0.15em;
+  }
+
+  .stat__label {
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    text-wrap: pretty;
+  }
+</style>

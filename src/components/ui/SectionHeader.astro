@@ -1,0 +1,94 @@
+---
+/**
+ * Section header: eyebrow + title + optional lede. The canonical way a
+ * section introduces itself, so vertical rhythm between blocks is uniform.
+ */
+
+import Eyebrow from './Eyebrow.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  /** Heading level. Style stays fixed; only document order changes. */
+  level?: 2 | 3 | 4;
+  /** `split` puts the title and lede side by side on wide screens. */
+  layout?: 'stack' | 'split';
+  /** Horizontally centre the header and constrain its measure. */
+  centered?: boolean;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  lede,
+  level = 2,
+  layout = 'stack',
+  centered = false,
+  class: className,
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    'header',
+    `header--${layout}`,
+    centered && 'header--centered',
+    className,
+  ]}
+>
+  <div class="header__main">
+    {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+    {
+      level === 2 ? (
+        <h2 class="header__title">{title}</h2>
+      ) : level === 3 ? (
+        <h3 class="header__title">{title}</h3>
+      ) : (
+        <h4 class="header__title">{title}</h4>
+      )
+    }
+  </div>
+  {lede && <p class="lede header__lede">{lede}</p>}
+</header>
+
+<style>
+  .header {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-end: var(--space-6);
+  }
+
+  .header--centered {
+    justify-items: center;
+    text-align: center;
+    max-inline-size: var(--layout-measure);
+    margin-inline: auto;
+  }
+
+  .header__main {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .header__title {
+    text-wrap: balance;
+  }
+
+  .header__lede {
+    margin-block-start: var(--space-1);
+  }
+
+  @media (min-width: 48rem) {
+    .header--split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      align-items: end;
+      gap: var(--space-7);
+    }
+
+    .header--split .header__lede {
+      margin-block-start: 0;
+    }
+  }
+</style>

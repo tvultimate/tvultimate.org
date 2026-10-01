@@ -1,0 +1,86 @@
+---
+/**
+ * 404 page. Keeps a visitor moving rather than leaving them at a dead end.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import Grid from '../components/ui/Grid.astro';
+import Card from '../components/ui/Card.astro';
+import FeatureTile from '../components/ui/FeatureTile.astro';
+
+const suggestions = [
+  { label: 'Home', href: '/', summary: 'Start from the beginning.' },
+  { label: 'Battle of Idaho', href: '/battle-of-idaho/', summary: 'Tournament dates, divisions, and registration.' },
+  { label: 'Partner Clubs', href: '/partner-clubs/', summary: 'Club teams and how to affiliate.' },
+  { label: 'Donations and Dues', href: '/donations-and-dues/', summary: 'Support the work.' },
+] as const;
+---
+
+<BaseLayout
+  title="Page not found — Treasure Valley Ultimate"
+  description="That page could not be found."
+>
+  <Section tone="inverse" class="on-inverse">
+    <Container>
+      <p class="err__code">404</p>
+      <h1 class="err__title">We couldn’t find that page</h1>
+      <p class="err__text">
+        The link may be out of date. Here are the main sections of the site.
+      </p>
+
+      <div class="err__actions">
+        <Button href="/" variant="inverse" size="lg">Go to the home page</Button>
+        <Button href="/donations-and-dues/" variant="ghost" size="lg">Support our mission</Button>
+      </div>
+
+      <Grid min="15rem" class="err__grid">
+        {
+          suggestions.map((item) => (
+            <Card>
+              <FeatureTile title={item.label} href={item.href}>
+                <p>{item.summary}</p>
+              </FeatureTile>
+            </Card>
+          ))
+        }
+      </Grid>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .err__code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-sunset-300);
+  }
+
+  .err__title {
+    font-size: var(--text-3xl);
+    margin-block: var(--space-3);
+    color: var(--color-pine-50);
+  }
+
+  .err__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-200);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .err__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block: var(--space-5);
+  }
+
+  .err__grid {
+    margin-block-start: var(--space-6);
+  }
+</style>

@@ -1,0 +1,446 @@
+---
+/**
+ * Home page content below the hero.
+ *
+ * Copy is kept close to the original site; the four programmes are listed as
+ * they appeared there, and each links to the page that covers it in detail.
+ */
+
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import Grid from '../ui/Grid.astro';
+import Button from '../ui/Button.astro';
+import FeatureTile from '../ui/FeatureTile.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Icon from '../ui/Icon.astro';
+import { programs } from '../../data/programs';
+import { org, images, links } from '../../data/org';
+import { tournament } from '../../data/tournament';
+
+/** Icons, kept next to the copy each one illustrates. */
+const icons = {
+  sponsorship: 'trophy',
+  youth: 'heart',
+  events: 'calendar',
+  clubs: 'users',
+} as const;
+
+const destinations = {
+  sponsorship: '/battle-of-idaho/',
+  youth: '/youth-community/',
+  events: '/battle-of-idaho/',
+  clubs: '/partner-clubs/',
+} as const;
+
+const ctas = {
+  sponsorship: 'Learn more',
+  youth: 'Learn more',
+  events: 'Tournament details',
+  clubs: 'Meet Sawtooth',
+} as const;
+---
+
+<Section id="mission" tone="page">
+  <Container>
+    <SectionHeader
+      eyebrow="What we do"
+      title="Growing the sport in the Treasure Valley"
+      lede={`${org.legalName} is a ${org.status} supporting competitive club teams, youth development, and community athletic competition across Idaho.`}
+      layout="split"
+    />
+
+    <Grid min="17rem">
+      {
+        programs.map((program) => (
+          <Card>
+            <FeatureTile
+              title={program.title}
+              icon={icons[program.id as keyof typeof icons]}
+              href={destinations[program.id as keyof typeof destinations]}
+              cta={ctas[program.id as keyof typeof ctas]}
+            >
+              <p>{program.body}</p>
+            </FeatureTile>
+          </Card>
+        ))
+      }
+    </Grid>
+  </Container>
+</Section>
+
+<!-- Tournament feature -->
+<Section id="battle-of-idaho" tone="inverse" class="on-inverse">
+  <Container>
+    <div class="feature">
+      <div class="feature__body">
+        <Eyebrow>{tournament.edition}</Eyebrow>
+        <h2 class="feature__title">{tournament.name} {tournament.year}</h2>
+        <p class="feature__lede">{tournament.tagline}</p>
+        <p class="feature__text">{tournament.intro}</p>
+        <div class="feature__actions">
+          <Button href="/battle-of-idaho/" variant="inverse" size="lg">
+            Tournament details
+          </Button>
+          <Button href={links.battleRegister} variant="ghost" size="lg" external>
+            Sign Up Today
+          </Button>
+        </div>
+      </div>
+
+      <figure class="feature__media">
+        <img
+          src={images.action}
+          alt="A player diving to catch a disc during a tournament game."
+          width="1200"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+  </Container>
+</Section>
+
+<!-- Partner club feature -->
+<Section id="clubs" tone="page">
+  <Container>
+    <div class="spotlight">
+      <figure class="spotlight__media">
+        <img
+          src={images.teamPhoto}
+          alt="The Sawtooth Ultimate roster posing on the field."
+          width="1200"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <div class="spotlight__body">
+        <Eyebrow>Partner club</Eyebrow>
+        <h2 class="spotlight__title">Partner Club Spotlight</h2>
+        <img
+          class="spotlight__logo"
+          src={images.sawtoothLogoSmall}
+          alt="Sawtooth Ultimate"
+          width="400"
+          height="258"
+          loading="lazy"
+          decoding="async"
+        />
+        <p class="spotlight__text">
+          We proudly support local competitive teams representing Idaho across the
+          country. Sawtooth Ultimate is Idaho’s premier competitive Open club team,
+          competing in the Big Sky Section and the Norwest Region.
+        </p>
+        <div class="spotlight__actions">
+          <Button href="/partner-clubs/sawtooth-ultimate/">Learn About Sawtooth</Button>
+          <Button href="/partner-clubs/" variant="secondary">
+            Become a partner
+          </Button>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<!-- Supporting programmes -->
+<Section id="youth-media" tone="raised">
+  <Container>
+    <SectionHeader
+      eyebrow="Community"
+      title="Youth and community programs"
+      layout="split"
+    />
+
+    <Grid min="17rem">
+      <Card accentEdge>
+        <FeatureTile title="Clinics" icon="users" href="/youth-community/">
+          <p>
+            Treasure Valley Ultimate coordinates with partner club teams to provide
+            coaching at clinics for youth to be able to attend.
+          </p>
+        </FeatureTile>
+      </Card>
+
+      <Card accentEdge>
+        <FeatureTile title="Youth Donation Fund" icon="heart" href="/donations-and-dues/youth-donations/">
+          <p>
+            All funds are used to support U20 youth players in their ultimate frisbee
+            careers — travel for tournaments, league and tournament fees, and gear.
+          </p>
+        </FeatureTile>
+      </Card>
+
+      <Card accentEdge>
+        <FeatureTile title="Aerial Game Film" icon="video" href="/resources-and-media/">
+          <p>
+            Complimentary aerial drone videography and photography for local high
+            school teams, youth programs, community leagues, and partner clubs.
+          </p>
+        </FeatureTile>
+      </Card>
+    </Grid>
+  </Container>
+</Section>
+
+<!-- Contact -->
+<Section id="contact" tone="sunken">
+  <Container>
+    <div class="contact">
+      <div class="contact__body">
+        <Eyebrow>Contact</Eyebrow>
+        <h2 class="contact__title">Get in touch</h2>
+        <p class="contact__text">
+          Treasure Valley Ultimate Inc. is a 501(c)(3) non-profit dedicated to growing
+          Ultimate Frisbee across Idaho. {org.domain} is the official domain of{' '}
+          {org.legalName}.
+        </p>
+        <ul class="contact__links">
+          <li class="contact__link">
+            <span class="contact__link-icon">
+              <Icon name="mail" />
+            </span>
+            <span>
+              <span class="contact__link-label">Email</span>
+              <a href="mailto:help@tvultimate.org">help@tvultimate.org</a>
+            </span>
+          </li>
+          <li class="contact__link">
+            <span class="contact__link-icon">
+              <Icon name="users" />
+            </span>
+            <span>
+              <span class="contact__link-label">Discord</span>
+              <a href={links.discord} rel="noopener noreferrer" target="_blank">
+                discord.gg/bhBhYUZ82D
+              </a>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact__actions">
+        <Button href="/donations-and-dues/" size="lg">Support our Mission</Button>
+        <Button href="/battle-of-idaho/" variant="secondary" size="lg">
+          Battle of Idaho
+        </Button>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  /* -------------------------------------------------------------
+   * Tournament feature
+   * ----------------------------------------------------------- */
+
+  .feature {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .feature__body {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+
+  .feature__title {
+    font-size: var(--text-2xl);
+    color: var(--color-pine-50);
+  }
+
+  .feature__lede {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-sunset-300);
+  }
+
+  .feature__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-200);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .feature__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-2);
+  }
+
+  .feature__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: var(--border-width) solid var(--line-inverse);
+  }
+
+  .feature__media img {
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /* -------------------------------------------------------------
+   * Partner club spotlight
+   * ----------------------------------------------------------- */
+
+  .spotlight {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .spotlight__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: var(--border-width) solid var(--line-subtle);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .spotlight__media img {
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .spotlight__body {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+
+  /*
+  The Sawtooth mark is white artwork. This is a light section, so it needs a
+  dark plate to stay legible rather than disappearing into the background.
+*/
+  .spotlight__logo {
+    inline-size: 11rem;
+    block-size: auto;
+    padding: var(--space-4) var(--space-5);
+    background: var(--surface-inverse);
+    border-radius: var(--radius-md);
+  }
+
+  .spotlight__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .spotlight__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-2);
+  }
+
+  /* -------------------------------------------------------------
+   * Contact
+   * ----------------------------------------------------------- */
+
+  .contact {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+  }
+
+  .contact__body {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+
+  .contact__title {
+    font-size: var(--text-2xl);
+  }
+
+  .contact__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .contact__links {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: var(--space-2) 0 0;
+    list-style: none;
+  }
+
+  .contact__link {
+    display: flex;
+    gap: var(--space-3);
+    align-items: start;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .contact__link-icon {
+    display: grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    flex: none;
+    font-size: var(--text-xs);
+    color: var(--text-accent);
+    background: var(--surface-accent-soft);
+    border-radius: var(--radius-sm);
+  }
+
+  .contact__link-label {
+    display: block;
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .contact__link a {
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  /* -------------------------------------------------------------
+   * Wide
+   * ----------------------------------------------------------- */
+
+  @media (min-width: 48rem) {
+    .feature,
+    .spotlight {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-7);
+    }
+
+    .contact {
+      grid-template-columns: minmax(0, 1.5fr) auto;
+      gap: var(--space-7);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .feature,
+    .spotlight {
+      gap: var(--space-8);
+    }
+  }
+</style>

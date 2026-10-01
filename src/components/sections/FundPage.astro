@@ -1,0 +1,198 @@
+---
+/**
+ * A donation fund page: what the fund pays for, and the external form.
+ *
+ * Every fund page renders from the same two components and the same `funds`
+ * entry, so adding a fund means adding one object in `data/org.ts`.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import { fundDetails, type FundSlug } from '../../data/funds';
+
+interface Props {
+  slug: FundSlug;
+}
+
+const { slug } = Astro.props;
+const fund = fundDetails[slug];
+---
+
+<BaseLayout title={`${fund.name} — Treasure Valley Ultimate`} description={fund.blurb}>
+  <PageHero eyebrow="Donations and Dues" title={fund.name} lede={fund.blurb}>
+    <div class="fundpage__actions">
+      <Button href={fund.href} variant="inverse" size="lg" external>
+        Give to this fund
+      </Button>
+      <Button href="/donations-and-dues/" variant="ghost" size="lg">
+        All funds
+      </Button>
+    </div>
+  </PageHero>
+
+  <Section tone="page">
+    <Container>
+      <div class="fundpage">
+        <div class="fundpage__prose">
+          <h2 class="fundpage__title">{fund.heading}</h2>
+          <p class="fundpage__text">{fund.body}</p>
+
+          {
+            fund.uses && (
+              <div class="fundpage__uses">
+                <Eyebrow>What it pays for</Eyebrow>
+                <ul class="uses">
+                  {fund.uses.map((use) => (
+                    <li class="uses__item">{use}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </div>
+
+        <aside class="fundpage__aside">
+          <Card class="fundpage__card">
+            <p class="fundpage__card-eyebrow">Tax-deductible</p>
+            <p class="fundpage__card-title">{fund.name}</p>
+            <p class="fundpage__card-blurb">
+              All donations to this fund are tax-deductible to the fullest extent
+              permitted by law.
+            </p>
+            <Button href={fund.href} size="lg" external>
+              Donate now
+            </Button>
+          </Card>
+
+          <Card class="fundpage__card fundpage__card--quiet">
+            <p class="fundpage__card-eyebrow">Questions</p>
+            <p class="fundpage__card-blurb">
+              Not sure this is the right fund? Email{' '}
+              <a href="mailto:help@tvultimate.org">help@tvultimate.org</a> and we will
+              help you decide.
+            </p>
+          </Card>
+        </aside>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .fundpage__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+
+  .fundpage {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .fundpage__prose {
+    display: grid;
+    gap: var(--space-4);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .fundpage__title {
+    font-size: var(--text-xl);
+  }
+
+  .fundpage__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .fundpage__uses {
+    display: grid;
+    gap: var(--space-3);
+    margin-block-start: var(--space-2);
+  }
+
+  .uses {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .uses__item {
+    position: relative;
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .uses__item::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0.6em;
+    inset-inline-start: 0;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    background: var(--color-pine-400);
+    border-radius: 50%;
+  }
+
+  .fundpage__aside {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .fundpage__card {
+    gap: var(--space-3);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .fundpage__card--quiet {
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .fundpage__card-eyebrow {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .fundpage__card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    color: var(--text-primary);
+  }
+
+  .fundpage__card-blurb {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .fundpage__card-blurb a {
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  @media (min-width: 48rem) {
+    .fundpage {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+  }
+</style>

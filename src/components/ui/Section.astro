@@ -1,0 +1,66 @@
+---
+/**
+ * A full-width page section: the anchor target, the vertical rhythm, and
+ * the tonal background. Handles `scroll-margin` so jump links land clear
+ * of the sticky header.
+ */
+
+interface Props {
+  /** Optional anchor id, for in-page links. */
+  id?: string;
+  /** Background tone for the section. */
+  tone?: 'page' | 'raised' | 'sunken' | 'inverse' | 'accent';
+  /** Reduce vertical padding for tightly-packed sections. */
+  tight?: boolean;
+  /** Semantic element. Defaults to `section`. */
+  as?: 'section' | 'div' | 'header' | 'footer' | 'article';
+  class?: string;
+}
+
+const {
+  id,
+  tone = 'page',
+  tight = false,
+  as: Tag = 'section',
+  class: className,
+} = Astro.props;
+---
+
+<Tag
+  id={id}
+  class:list={['section', `section--${tone}`, tight && 'section--tight', className]}
+>
+  <slot />
+</Tag>
+
+<style>
+  .section {
+    position: relative;
+    padding-block: var(--space-section-tight);
+    scroll-margin-block-start: var(--layout-anchor-offset);
+  }
+
+  .section--tight {
+    padding-block: var(--space-section);
+  }
+
+  .section--page {
+    background: var(--surface-page);
+  }
+
+  .section--raised {
+    background: var(--surface-raised);
+  }
+
+  .section--sunken {
+    background: var(--surface-sunken);
+  }
+
+  .section--inverse {
+    background: var(--surface-inverse);
+  }
+
+  .section--accent {
+    background: var(--surface-accent-soft);
+  }
+</style>
