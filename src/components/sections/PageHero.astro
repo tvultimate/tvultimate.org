@@ -23,7 +23,13 @@ interface Props {
 const { eyebrow, title, lede, variant = 'compact', class: className } = Astro.props;
 ---
 
-<section class:list={['pagehero', `pagehero--${variant}`, className]}>
+<!--
+  `on-inverse` restates the semantic token layer for the whole subtree, so
+  components inside the hero need no dark-mode variants of their own.
+-->
+<section
+  class:list={['pagehero', 'on-inverse', `pagehero--${variant}`, className]}
+>
   <Container class="pagehero__inner">
     {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
     {title && <h1 class="pagehero__title">{title}</h1>}

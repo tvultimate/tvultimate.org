@@ -47,7 +47,10 @@
   font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: var(--tracking-snug);
-  color: var(--color-pine-100);
+  /* Full contrast, not a dimmed tint: an earlier lighter treatment made the
+     unselected divisions hard to read, and they are exactly what a visitor is
+     scanning for before choosing one. */
+  color: var(--color-pine-50);
   transition: color var(--motion-fast) var(--ease-out-soft);
 }
 
@@ -58,7 +61,7 @@
 .tabs__tab-dates {
   font-size: var(--text-2xs);
   line-height: var(--leading-snug);
-  color: var(--color-pine-300);
+  color: var(--color-pine-200);
   transition: color var(--motion-fast) var(--ease-out-soft);
 }
 

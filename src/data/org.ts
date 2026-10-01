@@ -19,21 +19,37 @@ export const org = {
   domain: 'tvultimate.org',
 } as const;
 
-/** Brand assets, migrated from the previous site. */
+/**
+ * Brand assets, recovered from the previous site.
+ *
+ * Provenance for every file — which page it came from and where it is
+ * contextually accurate — is recorded in `public/img/manifest.json`. Check
+ * `contexts` before placing an image: an image is only correct on the pages
+ * listed there. In particular `action` and `roster` are Sawtooth club photos
+ * and must not be used as Battle of Idaho tournament imagery.
+ */
 export const images = {
-  logo: '/img/tvu-logo.png',
-  logoSmall: '/img/tvu-logo-sm.png',
-  /**
-   * The Sawtooth mark is white artwork, converted to transparency so it can sit
-   * on any background without a black box around it. Use only on dark grounds.
-   */
-  sawtoothLogo: '/img/sawtooth-logo-mark.png',
-  sawtoothLogoSmall: '/img/sawtooth-logo-sm.png',
-  skyline: '/img/boise-skyline-black.png',
-  teamPhoto: '/img/team-photo.jpg',
-  teamHuddle: '/img/team-huddle.jpg',
+  /** Organisation mark. Safe anywhere. */
+  logo: '/img/logo-tvu.png',
+  logoSmall: '/img/logo-tvu-200.png',
+
+  /** Sawtooth mark, luminance converted to alpha. Dark grounds only. */
+  sawtoothLogo: '/img/logo-sawtooth-mark.png',
+  sawtoothLogoSmall: '/img/logo-sawtooth-400.png',
+  /** Sawtooth mark on its original black field. For light grounds. */
+  sawtoothLogoOpaque: '/img/logo-sawtooth.png',
+
+  /** Boise skyline silhouette, inverted in CSS for the dark footer. */
+  skyline: '/img/boise-skyline.png',
+
+  /** Sawtooth roster posing on the field. Club-team context only. */
+  roster: '/img/team-roster.jpg',
+  /** Club team huddle with the Boise foothills behind. Club-team context. */
+  huddle: '/img/team-huddle.jpg',
+  /** A Sawtooth player diving for a disc. Club-team context, NOT tournament. */
   action: '/img/action-lay.jpg',
-  droneCircle: '/img/drone-circle.jpg',
+  /** Overhead aerial of a circle of players. Fits youth and media services. */
+  aerialCircle: '/img/aerial-circle.jpg',
 } as const;
 
 export const contact = {

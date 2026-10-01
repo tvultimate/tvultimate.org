@@ -12,7 +12,19 @@ export const tournament = {
   dates: 'November 13–15, 2026',
   location: 'Heroes Park',
   address: '3064 W Malta Dr, Meridian, ID 83646',
-  sponsors: ['ERTH. Beverage Co', 'Stevenson Real Estate'],
+  /**
+   * Sponsors.
+   *
+   * Neither sponsor's logo appeared anywhere on the previous site, so `logo`
+   * is unset and the facts widget renders these as a text wordmark instead.
+   * Drop a file into `public/img/` (named `erth-beverage-co.*` and
+   * `stevenson-real-estate.*`) and set `logo` to switch to the real marks —
+   * see `public/img/manifest.json` under `missingLogos`.
+   */
+  sponsors: [
+    { name: 'ERTH. Beverage Co', logo: undefined },
+    { name: 'Stevenson Real Estate', logo: undefined },
+  ] as { name: string; logo: string | undefined }[],
   intro:
     'An ultimate frisbee tournament dedicated to growing the sport in our state. This event is perfect for all levels of teams looking for a fun and competitive weekend on the field.',
 } as const;
@@ -107,3 +119,11 @@ export const directors = [
   { name: 'David Nichols', role: 'Youth', detail: 'MMP' },
   { name: 'Jason Burner', role: 'General', detail: 'MMP' },
 ] as const;
+
+/**
+ * Sponsor wall. Rendered as real logos where a file exists, and as wordmarks
+ * where one does not — see `public/img/manifest.json` for what is missing.
+ */
+export const sponsorLogos = tournament.sponsors.filter(
+  (sponsor): sponsor is { name: string; logo: string } => Boolean(sponsor.logo),
+);

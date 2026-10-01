@@ -156,6 +156,29 @@
   --surface-highlight: color-mix(in oklab, var(--color-sunset-400) 18%, transparent);
   --surface-scrim: rgb(8 21 15 / 0.55);
 
+  /* -------------------------------------------------------------
+   * 5b. Semantics — action buttons
+   *
+   * The three visual weights, defined here rather than in the Button
+   * component so that restating them per ground (see `.on-inverse`) re-themes
+   * every button at once. Components must not hard-code button colours.
+   * ------------------------------------------------------------- */
+
+  --btn-solid-bg: var(--color-pine-700);
+  --btn-solid-bg-hover: var(--color-pine-600);
+  --btn-solid-ink: var(--color-pine-50);
+
+  --btn-outline-ink: var(--color-pine-800);
+  --btn-outline-ink-hover: var(--color-pine-900);
+  --btn-outline-line: var(--color-stone-400);
+  --btn-outline-line-hover: var(--color-pine-700);
+  --btn-outline-bg-hover: var(--surface-accent-soft);
+
+  --btn-quiet-ink: var(--color-pine-700);
+  --btn-quiet-ink-hover: var(--color-pine-900);
+  --btn-quiet-line: color-mix(in oklab, var(--color-pine-700) 40%, transparent);
+  --btn-quiet-bg-hover: var(--surface-sunken);
+
   /* ---------------------------------------------------------------
    * 6. Semantics — text
    * ------------------------------------------------------------- */
@@ -228,4 +251,23 @@
   --line-strong: var(--color-pine-400);
 
   --focus-ring-color: var(--focus-ring-color-inverse);
+
+  /*
+    Button weights on dark ground. Without these, an `outline` button keeps
+    its light-ground ink and disappears against the dark surface.
+  */
+  --btn-solid-bg: var(--color-pine-50);
+  --btn-solid-bg-hover: var(--color-disc-300);
+  --btn-solid-ink: var(--color-pine-900);
+
+  --btn-outline-ink: var(--color-pine-50);
+  --btn-outline-ink-hover: var(--color-disc-300);
+  --btn-outline-line: color-mix(in oklab, var(--color-pine-200) 45%, transparent);
+  --btn-outline-line-hover: var(--color-pine-50);
+  --btn-outline-bg-hover: color-mix(in oklab, var(--color-pine-50) 12%, transparent);
+
+  --btn-quiet-ink: var(--color-pine-100);
+  --btn-quiet-ink-hover: var(--color-disc-300);
+  --btn-quiet-line: color-mix(in oklab, var(--color-pine-200) 40%, transparent);
+  --btn-quiet-bg-hover: color-mix(in oklab, var(--color-pine-50) 12%, transparent);
 }

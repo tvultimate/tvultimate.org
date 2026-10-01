@@ -1,10 +1,18 @@
 ---
 /**
- * Key facts strip for a tournament: date, venue, sponsors, registration.
- * Generic enough for any event we promote.
+ * Key facts strip for a tournament: date, venue, capacity, sponsors.
+ *
+ * Generic enough for any event we promote. Each fact is a label, a value, and
+ * an optional note; `logos` replaces the sponsor text with real marks when they
+ * are available.
  */
 
 import Icon from '../../ui/Icon.astro';
+
+interface Sponsor {
+  name: string;
+  logo?: string;
+}
 
 interface Fact {
   icon: 'calendar' | 'pin' | 'users' | 'sparkle';
@@ -12,6 +20,8 @@ interface Fact {
   value: string;
   note?: string;
   href?: string;
+  /** Renders a row of sponsor logos instead of a text value. */
+  logos?: Sponsor[];
 }
 
 interface Props {
@@ -32,7 +42,27 @@ const { facts } = Astro.props;
           {fact.label}
         </dt>
         <dd class="facts__value">
-          {fact.href ? (
+          {fact.logos ? (
+            <ul class="sponsors">
+              {fact.logos.map((sponsor) => (
+                <li class="sponsors__item">
+                  {sponsor.logo ? (
+                    <img
+                      class="sponsors__logo"
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    /* No logo on file: render the name as a wordmark rather
+                       than describing the logo in text. */
+                    <span class="sponsors__wordmark">{sponsor.name}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : fact.href ? (
             <a href={fact.href} rel="noopener noreferrer" target="_blank">
               {fact.value}
             </a>
@@ -105,5 +135,45 @@ const { facts } = Astro.props;
     line-height: var(--leading-snug);
     color: var(--color-pine-200);
     text-wrap: pretty;
+  }
+
+  /* -------------------------------------------------------------
+   * Sponsors
+   * ----------------------------------------------------------- */
+
+  .sponsors {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .sponsors__item {
+    margin: 0;
+  }
+
+  .sponsors__logo {
+    block-size: 2rem;
+    inline-size: auto;
+    max-inline-size: 9rem;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  /*
+    Stand-in for a missing logo. Set in the display face at a larger size so
+    it occupies the same visual weight a real mark would, rather than reading
+    as small body text.
+  */
+  .sponsors__wordmark {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    line-height: 1.2;
+    color: var(--color-pine-50);
   }
 </style>

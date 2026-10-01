@@ -1,0 +1,114 @@
+{
+  "$comment": "Provenance for every image in this directory. Filenames describe what the image shows, NOT where it sat on the old site. Read `contexts` before placing an image on a page: an image is contextually correct only where it is listed.",
+  "recoveredFrom": {
+    "site": "https://www.tvultimate.org (Google Sites)",
+    "capture": "https://web.archive.org/web/20261001175042/https://www.tvultimate.org/",
+    "captured": "2026-10-01",
+    "note": "The Wayback Machine captured the home page only. Every other page returns 404 from the archive, and Google's image CDN returns 403 to direct requests, so the archive is the sole source for the bytes. Images that appeared on uncaptured pages could not be recovered and are listed under `unrecovered`."
+  },
+  "images": {
+    "logo-tvu.png": {
+      "role": "logo",
+      "alt": "Treasure Valley Ultimate",
+      "sourcePage": "Site masthead (all pages)",
+      "originalFilename": "AMxu72sfIjepGS_c23DU4NzKdaQ...",
+      "contexts": ["/", "/partner-clubs/", "/battle-of-idaho/", "/youth-community/", "/resources-and-media/", "/donations-and-dues/"],
+      "note": "Organisation mark. Safe everywhere."
+    },
+    "logo-tvu-200.png": {
+      "role": "logo",
+      "alt": "Treasure Valley Ultimate",
+      "sourcePage": "Site masthead (all pages)",
+      "contexts": ["/", "/partner-clubs/", "/battle-of-idaho/"],
+      "note": "Width-limited variant of logo-tvu.png."
+    },
+    "logo-sawtooth.png": {
+      "role": "logo",
+      "alt": "Sawtooth Ultimate",
+      "sourcePage": "/ (home page) — Partner Club Spotlight block",
+      "originalFilename": "AMxu72s1ox_rb-SrV1ZBVO...",
+      "contexts": ["/partner-clubs/sawtooth-ultimate/", "/partner-clubs/"],
+      "note": "Sawtooth Ultimate mark, white artwork on an opaque black field."
+    },
+    "logo-sawtooth-mark.png": {
+      "role": "logo",
+      "alt": "Sawtooth Ultimate",
+      "sourcePage": "/ (home page) — Partner Club Spotlight block",
+      "originalFilename": "AMxu72s1ox_rb-SrV1ZBVO...",
+      "contexts": ["/partner-clubs/sawtooth-ultimate/", "/", "/partner-clubs/"],
+      "note": "logo-sawtooth.png with luminance converted to alpha, so it sits on any background. Dark grounds only."
+    },
+    "logo-sawtooth-400.png": {
+      "role": "logo",
+      "alt": "Sawtooth Ultimate",
+      "sourcePage": "/ (home page) — Partner Club Spotlight block",
+      "originalFilename": "AMxu72s1ox_rb-SrV1ZBVO...",
+      "contexts": ["/partner-clubs/sawtooth-ultimate/", "/"],
+      "note": "400px transparent variant."
+    },
+    "boise-skyline.png": {
+      "role": "illustration",
+      "alt": "Boise skyline",
+      "sourcePage": "Site footer (all pages)",
+      "originalFilename": "AMxu72sfGRA7JoP-eWhLU3...",
+      "contexts": ["/"],
+      "note": "Black skyline silhouette. Inverted in CSS so it reads on the dark footer."
+    },
+    "action-lay.jpg": {
+      "role": "photo",
+      "alt": "A Sawtooth player diving to catch a disc.",
+      "sourcePage": "/ (home page) — hero image, directly below the main heading",
+      "originalFilename": "AMxu72u3PenIUPxFZgBZyQ...",
+      "contexts": ["/partner-clubs/sawtooth-ultimate/"],
+      "explicitlyNot": [
+        "/battle-of-idaho/",
+        "/battle-of-idaho/battle-of-idaho-sponsorship/"
+      ],
+      "note": "IMPORTANT: this is a Sawtooth club-team photo, not a Battle of Idaho photo. Do not use it as tournament imagery. Originally captioned generically as the home page hero, which is why it was previously mislabelled as a tournament shot."
+    },
+    "team-roster.jpg": {
+      "role": "photo",
+      "alt": "The Sawtooth Ultimate roster posing on the field.",
+      "sourcePage": "/ (home page) — card image for the Events programme",
+      "originalFilename": "AMxu72sOeQ_2J_JpJrBDho...",
+      "contexts": ["/partner-clubs/", "/partner-clubs/sawtooth-ultimate/", "/"],
+      "explicitlyNot": ["/battle-of-idaho/"],
+      "note": "A team photo, not an events photo — the old site's Events card happened to use it."
+    },
+    "team-huddle.jpg": {
+      "role": "photo",
+      "alt": "A club team huddled on the field with the Boise foothills behind.",
+      "sourcePage": "/ (home page) — card image for Competitive Club Sponsorship",
+      "originalFilename": "AMxu72uxCjcmEVZBfveY62...",
+      "contexts": ["/partner-clubs/"],
+      "note": "Boise foothills are clearly visible in this shot, which makes it useful as a place-specific image."
+    },
+    "aerial-circle.jpg": {
+      "role": "photo",
+      "alt": "Overhead aerial of players standing in a circle on grass.",
+      "sourcePage": "/ (home page) — card image for Youth Development",
+      "originalFilename": "AMxu72sPlqdr2-0DrwLiWA...",
+      "contexts": ["/youth-community/", "/resources-and-media/"],
+      "note": "Aerial drone work, matching the media services described on the Resources and Media page. Players appear to be a mixed or youth group, which is why it sat under Youth Development."
+    }
+  },
+  "unrecovered": {
+    "$comment": "Referenced on pages the Wayback Machine never captured. Bytes are unrecoverable without the site owner supplying replacements.",
+    "battleOfIdahoPage": {
+      "count": 4,
+      "note": "Four images sat on /battle-of-idaho/. None could be recovered, so that page currently carries no photography. This is the reason it has no hero image."
+    },
+    "youthCommunityPage": { "count": 2 },
+    "resourcesAndMediaPage": { "count": 4 },
+    "partnerClubsPage": { "count": 3 },
+    "donationsPage": { "count": 3 }
+  },
+  "missingLogos": {
+    "$comment": "Logos the design calls for that were not present on the old site.",
+    "sponsors": [
+      "ERTH. Beverage Co",
+      "Stevenson Real Estate"
+    ],
+    "note": "Neither sponsor logo appeared anywhere on the old site, and the tournament page was never archived. Sponsor names are rendered as text in the facts widget until logos are supplied. Drop files in this directory named erth-beverage-co.* and stevenson-real-estate.* and add entries to data/tournament.ts to use them."
+  }
+}

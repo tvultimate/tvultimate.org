@@ -5,10 +5,17 @@
  * interactive controls with divergent styling.
  */
 
+/**
+ * Visual weight, in descending order of emphasis. This is the whole
+ * hierarchy: one filled, one outlined, one quiet. A section should have at
+ * most one `solid` action.
+ */
+type Variant = 'solid' | 'outline' | 'quiet';
+
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'inverse';
-  size?: 'md' | 'lg';
+  variant?: Variant;
+  size?: 'sm' | 'md' | 'lg';
   /** Renders a trailing arrow and marks the link as external. */
   external?: boolean;
   type?: 'button' | 'submit';
@@ -16,9 +23,17 @@ interface Props {
   [key: string]: unknown;
 }
 
+/** Retired names, mapped to their replacements with a build-time warning. */
+const LEGACY: Record<string, Variant> = {
+  primary: 'solid',
+  secondary: 'outline',
+  inverse: 'solid',
+  ghost: 'quiet',
+};
+
 const {
   href,
-  variant = 'primary',
+  variant = 'solid',
   size = 'md',
   external = false,
   type = 'button',
@@ -26,8 +41,17 @@ const {
   ...rest
 } = Astro.props;
 
+if (variant in LEGACY) {
+  console.warn(
+    `[ui/Button] "${variant}" is deprecated — use "${LEGACY[variant]}" instead. ` +
+      `Hierarchy is now solid > outline > quiet.`,
+  );
+}
+
+const resolved: Variant = variant in LEGACY ? LEGACY[variant] : (variant as Variant);
+
 const isExternal = external || (href?.startsWith('http') ?? false);
-const classes = ['btn', `btn--${variant}`, `btn--${size}`, className];
+const classes = ['btn', `btn--${resolved}`, `btn--${size}`, className];
 ---
 
 {
@@ -96,49 +120,60 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, className];
     font-size: var(--text-base);
   }
 
-  .btn--primary {
-    background: var(--surface-accent);
-    color: var(--color-pine-50);
-    border-color: var(--surface-accent);
+  /* -------------------------------------------------------------
+   * Hierarchy
+   *
+   * Each weight is written entirely in semantic tokens, so `.on-inverse`
+   * re-themes all three automatically. That is why there is no separate
+   * "inverse" variant: a button on a dark ground is `variant="solid"`,
+   * not a different component.
+   * ----------------------------------------------------------- */
+
+  /* Solid: the one real call to action on a screen. */
+  .btn--solid {
+    background: var(--btn-solid-bg);
+    color: var(--btn-solid-ink);
+    border-color: var(--btn-solid-bg);
   }
 
-  .btn--primary:hover {
-    background: var(--surface-accent-hover);
-    border-color: var(--surface-accent-hover);
+  .btn--solid:hover {
+    background: var(--btn-solid-bg-hover);
+    border-color: var(--btn-solid-bg-hover);
     transform: translateY(-0.0625rem);
   }
 
-  .btn--secondary {
+  /* Outline: a real alternative, one step down. */
+  .btn--outline {
     background: transparent;
-    color: var(--text-accent);
-    border-color: var(--line-strong);
+    color: var(--btn-outline-ink);
+    border-color: var(--btn-outline-line);
   }
 
-  .btn--secondary:hover {
-    border-color: var(--text-accent);
-    background: var(--surface-accent-soft);
+  .btn--outline:hover {
+    background: var(--btn-outline-bg-hover);
+    color: var(--btn-outline-ink-hover);
+    border-color: var(--btn-outline-line-hover);
   }
 
-  .btn--ghost {
+  /*
+    Quiet: a tertiary action. Underlined rather than bordered so it still
+    reads as interactive without competing with the outline weight.
+  */
+  .btn--quiet {
     background: transparent;
-    color: var(--text-link);
+    color: var(--btn-quiet-ink);
     border-color: transparent;
     padding-inline: var(--space-3);
+    text-decoration: underline;
+    text-decoration-color: var(--btn-quiet-line);
+    text-underline-offset: 0.35em;
+    text-decoration-thickness: var(--border-width-thick);
   }
 
-  .btn--ghost:hover {
-    background: var(--surface-sunken);
-  }
-
-  .btn--inverse {
-    background: var(--surface-bright);
-    color: var(--color-pine-900);
-    border-color: var(--surface-bright);
-  }
-
-  .btn--inverse:hover {
-    background: var(--color-pine-50);
-    transform: translateY(-0.0625rem);
+  .btn--quiet:hover {
+    background: var(--btn-quiet-bg-hover);
+    color: var(--btn-quiet-ink-hover);
+    text-decoration-color: currentColor;
   }
 
   .btn__icon {

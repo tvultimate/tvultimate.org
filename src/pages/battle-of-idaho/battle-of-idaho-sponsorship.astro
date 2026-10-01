@@ -62,7 +62,7 @@ const benefits = [
             <Button href={funds.sponsorship.href} size="lg" external>
               Become a sponsor
             </Button>
-            <Button href={`mailto:${contact.general.email}`} variant="secondary" size="lg">
+            <Button href={`mailto:${contact.general.email}`} variant="outline" size="lg">
               Ask about packages
             </Button>
           </div>
@@ -80,7 +80,7 @@ const benefits = [
             <p class="pitch__card-eyebrow">Sponsorship fund</p>
             <p class="pitch__card-title">{funds.sponsorship.name}</p>
             <p class="pitch__card-blurb">{funds.sponsorship.blurb}</p>
-            <Button href={funds.sponsorship.href} variant="secondary" external>
+            <Button href={funds.sponsorship.href} variant="outline" external>
               Give to sponsorship
             </Button>
           </Card>
@@ -122,10 +122,10 @@ const benefits = [
           </p>
         </div>
         <div class="next__actions">
-          <Button href="/donations-and-dues/" variant="secondary">
+          <Button href="/donations-and-dues/" variant="outline">
             See all donation funds
           </Button>
-          <Button href={links.battleRegister} variant="ghost" external>
+          <Button href={links.battleRegister} variant="quiet" external>
             Register a team
           </Button>
         </div>

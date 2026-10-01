@@ -42,12 +42,12 @@ import { contact, links } from '../../data/org';
     lede={tournament.tagline}
   >
     <div class="boi__hero-actions">
-      <Button href={links.battleRegister} variant="inverse" size="lg" external>
+      <Button href={links.battleRegister} variant="solid" size="lg" external>
         Sign Up Today
       </Button>
       <Button
         href="/battle-of-idaho/battle-of-idaho-sponsorship/"
-        variant="ghost"
+        variant="quiet"
         size="lg"
       >
         Sponsor the event
@@ -84,7 +84,8 @@ import { contact, links } from '../../data/org';
           {
             icon: 'sparkle',
             label: 'Sponsored by',
-            value: tournament.sponsors.join(' & '),
+            value: tournament.sponsors.map((s) => s.name).join(' & '),
+            logos: tournament.sponsors,
             note: 'Thank you to our sponsors',
           },
         ]}
@@ -215,10 +216,10 @@ import { contact, links } from '../../data/org';
           Sign up today and help us grow the sport we love.
         </p>
         <div class="boi__final-actions">
-          <Button href={links.battleRegister} variant="inverse" size="lg" external>
+          <Button href={links.battleRegister} variant="solid" size="lg" external>
             Sign Up Today
           </Button>
-          <Button href={`mailto:${contact.battle.email}`} variant="ghost" size="lg">
+          <Button href={`mailto:${contact.battle.email}`} variant="quiet" size="lg">
             Ask a question
           </Button>
         </div>

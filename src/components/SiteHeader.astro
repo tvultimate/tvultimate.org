@@ -17,15 +17,19 @@ const path = Astro.url.pathname.endsWith('/')
   : `${Astro.url.pathname}/`;
 
 /**
- * The active section, plus its children if any. A section is active when the
- * current path matches it or sits underneath it.
+ * The active section and its children, if any.
+ *
+ * Deliberately `undefined` on the home page rather than defaulting to the
+ * first entry: being on the home page means no section is selected, and
+ * defaulting would falsely highlight "Partner Clubs".
  */
-const activeSection =
-  navSections.find(
-    (section) =>
-      path === section.href ||
-      (section.href !== '/' && path.startsWith(section.href)),
-  ) ?? navSections[0];
+const activeSection = navSections.find(
+  (section) =>
+    section.href !== '/' && path.startsWith(section.href),
+);
+
+const activeHref = activeSection?.href;
+const activeChildren = activeSection?.children ?? [];
 ---
 
 <header class="masthead">
@@ -40,10 +44,11 @@ const activeSection =
           height="96"
           decoding="async"
         />
-        <span class="masthead__brand-text">
-          <span class="masthead__brand-name">{org.name}</span>
-          <span class="masthead__brand-sub">{org.status}</span>
-        </span>
+        {/*
+          Wordmark only. The 501(c)(3) status has its own line in the footer,
+          where it reads as a statement rather than a subtitle.
+        */}
+        <span class="masthead__brand-text">{org.name}</span>
       </a>
 
       <nav class="masthead__rail" aria-label="Main navigation">
@@ -54,9 +59,7 @@ const activeSection =
                 <a
                   class="masthead__rail-link"
                   href={section.href}
-                  aria-current={
-                    activeSection.href === section.href ? 'page' : undefined
-                  }
+                  aria-current={activeHref === section.href ? 'page' : undefined}
                 >
                   {section.label}
                 </a>
@@ -138,15 +141,15 @@ const activeSection =
 
   {/* Sub-navigation: the pages inside the current section, on their own row. */}
   {
-    activeSection.children && (
+    activeChildren.length > 0 && (
       <div class="masthead__subbar">
         <div class="masthead__subbar-inner">
-          <a class="masthead__sub-parent" href={activeSection.href}>
+          <a class="masthead__sub-parent" href={activeHref}>
             <Icon name="arrow" class="masthead__sub-back" />
-            {activeSection.label}
+            {activeSection?.label}
           </a>
           <ul class="masthead__sub-list">
-            {activeSection.children.map((child) => (
+            {activeChildren.map((child) => (
               <li>
                 <a
                   class="masthead__sub-link"
@@ -217,29 +220,18 @@ const activeSection =
     border-radius: var(--radius-sm);
   }
 
+  /*
+    The wordmark is the only text in the brand lockup, so it takes the space
+    the 501(c)(3) subtitle used to occupy. Fluid so it stays legible from a
+    narrow phone up to a wide desktop without a breakpoint.
+  */
   .masthead__brand-text {
-    display: grid;
-    gap: 0.0625rem;
-    line-height: 1.1;
-  }
-
-  .masthead__brand-name {
     font-family: var(--font-display);
-    font-size: var(--text-sm);
+    font-size: clamp(0.9375rem, 0.78rem + 0.7vw, 1.1875rem);
     font-weight: 700;
     letter-spacing: var(--tracking-snug);
+    line-height: 1.1;
     /* Truncates rather than forcing the layout wider than the viewport. */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .masthead__brand-sub {
-    font-size: var(--text-2xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--text-tertiary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

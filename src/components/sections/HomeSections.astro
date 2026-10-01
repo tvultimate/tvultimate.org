@@ -80,21 +80,27 @@ const ctas = {
         <p class="feature__lede">{tournament.tagline}</p>
         <p class="feature__text">{tournament.intro}</p>
         <div class="feature__actions">
-          <Button href="/battle-of-idaho/" variant="inverse" size="lg">
+          <Button href="/battle-of-idaho/" variant="solid" size="lg">
             Tournament details
           </Button>
-          <Button href={links.battleRegister} variant="ghost" size="lg" external>
+          <Button href={links.battleRegister} variant="quiet" size="lg" external>
             Sign Up Today
           </Button>
         </div>
       </div>
 
+      {/*
+        This is a Sawtooth club-team photo, not a Battle of Idaho photo. The
+        old site captioned it as a generic hero, which is how it ended up
+        mislabelled as tournament imagery. Keeping it on the club-team
+        sections where it is actually accurate. See public/img/manifest.json.
+      */}
       <figure class="feature__media">
         <img
           src={images.action}
-          alt="A player diving to catch a disc during a tournament game."
-          width="1200"
-          height="1200"
+          alt="A Sawtooth player diving to catch a disc."
+          width="2048"
+          height="1143"
           loading="lazy"
           decoding="async"
         />
@@ -109,10 +115,10 @@ const ctas = {
     <div class="spotlight">
       <figure class="spotlight__media">
         <img
-          src={images.teamPhoto}
+          src={images.roster}
           alt="The Sawtooth Ultimate roster posing on the field."
-          width="1200"
-          height="1200"
+          width="1280"
+          height="1280"
           loading="lazy"
           decoding="async"
         />
@@ -137,7 +143,7 @@ const ctas = {
         </p>
         <div class="spotlight__actions">
           <Button href="/partner-clubs/sawtooth-ultimate/">Learn About Sawtooth</Button>
-          <Button href="/partner-clubs/" variant="secondary">
+          <Button href="/partner-clubs/" variant="outline">
             Become a partner
           </Button>
         </div>
@@ -224,7 +230,7 @@ const ctas = {
 
       <div class="contact__actions">
         <Button href="/donations-and-dues/" size="lg">Support our Mission</Button>
-        <Button href="/battle-of-idaho/" variant="secondary" size="lg">
+        <Button href="/battle-of-idaho/" variant="outline" size="lg">
           Battle of Idaho
         </Button>
       </div>
