@@ -11,6 +11,8 @@ Ultimate Frisbee across Idaho's Treasure Valley.
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
 | `npm run build`           | Build the production site to `./dist/`            |
 | `npm run preview`         | Preview the production build locally             |
+| `npm test`                | Audit the build — run this before every commit   |
+| `npm run test:dev`        | Audit a running dev server instead               |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 
 The dev server also runs in background mode: `astro dev --background`, then
@@ -18,6 +20,12 @@ The dev server also runs in background mode: `astro dev --background`, then
 
 Live reload is on via Vite HMR. Editing `src/data/*.ts` triggers a full reload;
 editing a component or stylesheet hot-updates in place.
+
+`npm test` builds, serves the build, and drives headless Chrome over every route at
+six viewport widths. It checks text contrast by sampling the pixels actually painted
+behind each run of text, plus container overflow, document structure, image loading,
+tap targets, and console errors. See `scripts/test.mjs` for the details and
+`AGENTS.md` for the rules it enforces.
 
 ## Pages
 

@@ -108,6 +108,22 @@
       "height": 1126,
       "bytes": 174193
     },
+    "cityscape-band.png": {
+      "file": "cityscape-band.png",
+      "role": "illustration",
+      "alt": "Boise cityscape line art",
+      "describes": "The skyline portion of the boise-landscape-mark artwork, cropped to a wide band with the white background knocked out to alpha. Screened at low opacity across the foot of the footer.",
+      "derivedFrom": "boise-landscape-mark.png",
+      "derivation": "Cropped to the skyline and mountain band, then the near-white background was made transparent so only the black strokes remain. A vector trace was attempted first and abandoned as unusable; this is a raster knockout, so the strokes are the original recovered pixels.",
+      "sourcePage": "/partner-clubs/",
+      "sourceId": "AMxu72vTSooXmloD_THV",
+      "contexts": [
+        "Site chrome (all pages)"
+      ],
+      "width": 2200,
+      "height": 794,
+      "bytes": 148779
+    },
     "action-lay.jpg": {
       "file": "action-lay.jpg",
       "role": "photo",

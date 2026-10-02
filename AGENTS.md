@@ -8,6 +8,43 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Tests
+
+`npm test` is a gate, not a suggestion. **Run it before every commit** — a commit that
+fails it is not ready.
+
+```
+npm run build && npm test     # builds, serves the build, audits it
+npm run test:dev              # audit an already-running dev server instead
+```
+
+It drives headless Chrome over every route at six viewport widths and checks four
+things:
+
+1. **Contrast** — for each run of text it reads the pixels actually painted behind the
+   glyphs (it hides the text first, then samples the screenshot) and compares them to
+   the text's computed colour against WCAG AA. This is why it catches problems a
+   static review misses: text over photography, on gradients, inside translucent or
+   `oklab()` fills, and text that inherits a colour meant for a different ground.
+2. **Overflow** — elements escaping their parent, exempting anything inside a
+   deliberate clip or scroll container.
+3. **Structure** — one `h1` per page, no skipped heading levels, no duplicate ids,
+   images sized and `alt`-tagged and actually loading, labelled controls, 24px
+   tap targets on small screens.
+4. **Console** — page and console errors, plus an assertion that a missing URL 404s.
+
+Two failure modes worth knowing, because both have already caused false confidence:
+
+- **A check that never runs is not a pass.** An early version reported `PASS` while
+  running zero contrast checks, because a helper detached its probe element on the
+  first call and returned `null` for every subsequent element. If you change
+  `scripts/test.mjs`, confirm the check count is plausible (~4,800 for the current
+  site) and deliberately break something to prove the check still fails.
+- **A dark background does not re-theme its contents.** Painting `background:
+  var(--surface-inverse)` leaves body copy, links, eyebrows and button inks on their
+  light-ground values. `Section tone="inverse"` and `PageHero` add `on-inverse` for
+  exactly this reason. Never hand-roll a dark panel without it.
+
 ## Code Standards
 
 ### Mobile first
