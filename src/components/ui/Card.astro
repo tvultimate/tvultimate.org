@@ -9,8 +9,6 @@ interface Props {
   flush?: boolean;
   /** `interactive` adds hover affordance for cards that are themselves links. */
   interactive?: boolean;
-  /** Adds an accent bar on the leading edge, for "key point" cards. */
-  accentEdge?: boolean;
   as?: 'div' | 'article' | 'li' | 'section';
   class?: string;
 }
@@ -18,7 +16,6 @@ interface Props {
 const {
   flush = false,
   interactive = false,
-  accentEdge = false,
   as: Tag = 'div',
   class: className,
 } = Astro.props;
@@ -29,7 +26,6 @@ const {
     'card',
     flush && 'card--flush',
     interactive && 'card--interactive',
-    accentEdge && 'card--accent-edge',
     className,
   ]}
 >
@@ -63,21 +59,6 @@ const {
     box-shadow: var(--shadow-md);
     border-color: var(--line-accent);
     transform: translateY(-0.1875rem);
-  }
-
-  .card--accent-edge {
-    padding-inline-start: calc(var(--space-5) + var(--space-2));
-  }
-
-  .card--accent-edge::before {
-    content: '';
-    position: absolute;
-    inset-block: var(--space-4);
-    inset-inline-start: 0;
-    inline-size: 0.1875rem;
-    background: var(--color-sunset-400);
-    border-start-start-radius: var(--radius-pill);
-    border-end-start-radius: var(--radius-pill);
   }
 
   /* On inverse grounds the raised surface inverts too. */
