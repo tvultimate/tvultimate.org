@@ -40,6 +40,7 @@ const { eyebrow, title, lede, variant = 'compact', class: className } = Astro.pr
   {
     variant === 'feature' && (
       <div class="pagehero__field" aria-hidden="true">
+        <span class="pagehero__sun" />
         <span class="pagehero__ridge pagehero__ridge--back" />
         <span class="pagehero__ridge pagehero__ridge--front" />
       </div>
@@ -115,6 +116,39 @@ const { eyebrow, title, lede, variant = 'compact', class: className } = Astro.pr
     z-index: -1;
   }
 
+  /*
+    Hidden on narrow screens. Below 48rem the hero copy spans the full width, so
+    any disc large enough to read as a sun lands behind the title or the lede
+    and drags white text down to roughly 1.4:1. The right half of the hero only
+    becomes free space once the copy is a left-hand column.
+
+    Positioned so the ridgeline clips only its lower edge. Both ridge layers
+    come after this in the DOM, so the skyline occludes the base and the sun
+    reads as setting. `inset-block-end` tracks the front ridge: that ridge's box
+    starts 45% down with peaks about 28% into its own height, putting the
+    skyline near 39% from the hero floor, so 36% leaves a shallow overlap. The
+    bright core is kept clear of the ridge on purpose, because the ridge fill is
+    a dark translucent gradient and burying the core under it turns the disc
+    muddy brown. `inset-inline-end` anchors the sun to the viewport rather than
+    the copy column, so the title can reflow without colliding with it.
+  */
+  .pagehero__sun {
+    position: absolute;
+    inset-block-end: 66%;
+    inset-inline-end: 10%;
+    display: none;
+    inline-size: clamp(6rem, 17vw, 14rem);
+    aspect-ratio: 1;
+    border-radius: var(--radius-pill);
+    background: radial-gradient(
+      circle at 50% 50%,
+      var(--color-sunset-100) 0%,
+      var(--color-sunset-200) 40%,
+      var(--color-sunset-300) 66%,
+      var(--color-sunset-400) 84%
+    );
+  }
+
   .pagehero__ridge {
     position: absolute;
     inset-inline: -10%;
@@ -143,11 +177,32 @@ const { eyebrow, title, lede, variant = 'compact', class: className } = Astro.pr
     );
   }
 
+  /*
+    The distant range gets its own silhouette rather than a vertically flipped
+    copy of the front one. Flipping turns the polygon's full-width base into a
+    hard horizontal edge along the top, which is invisible against the dark
+    field but draws a visible seam across anything bright behind it.
+  */
   .pagehero__ridge--back {
-    inset-block-end: 18%;
-    opacity: 0.55;
-    block-size: 40%;
-    transform: scaleY(-1);
+    inset-block-end: 21%;
+    opacity: 0.5;
+    block-size: 46%;
+    clip-path: polygon(
+      0% 100%,
+      0% 74%,
+      9% 58%,
+      17% 70%,
+      27% 50%,
+      36% 66%,
+      45% 46%,
+      55% 64%,
+      64% 48%,
+      73% 68%,
+      82% 54%,
+      91% 70%,
+      100% 58%,
+      100% 100%
+    );
   }
 
   .pagehero__ridge--front {
@@ -155,6 +210,10 @@ const { eyebrow, title, lede, variant = 'compact', class: className } = Astro.pr
   }
 
   @media (min-width: 48rem) {
+    .pagehero__sun {
+      display: block;
+    }
+
     .pagehero--compact .pagehero__title {
       font-size: var(--text-4xl);
     }
