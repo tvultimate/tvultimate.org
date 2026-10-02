@@ -2,8 +2,10 @@
 /**
  * Home page content below the hero.
  *
- * Copy is kept close to the original site; the four programmes are listed as
+ * Copy is kept close to the original site; the three programmes are listed as
  * they appeared there, and each links to the page that covers it in detail.
+ * Partner clubs get a full section further down rather than a card here, since
+ * a one-line card said the same thing in a tenth of the space.
  */
 
 import Section from '../ui/Section.astro';
@@ -24,21 +26,18 @@ const icons = {
   sponsorship: 'trophy',
   youth: 'heart',
   events: 'calendar',
-  clubs: 'users',
 } as const;
 
 const destinations = {
   sponsorship: '/battle-of-idaho/',
   youth: '/youth-community/',
   events: '/battle-of-idaho/',
-  clubs: '/partner-clubs/',
 } as const;
 
 const ctas = {
   sponsorship: 'Learn more',
   youth: 'Learn more',
   events: 'Tournament details',
-  clubs: 'Meet Sawtooth',
 } as const;
 ---
 

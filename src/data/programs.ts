@@ -24,11 +24,6 @@ export const programs = [
     title: 'Events',
     body: 'Organizing regional tournaments like the annual Battle of Idaho that bring athletes and community together.',
   },
-  {
-    id: 'clubs',
-    title: 'Partner Club Spotlight',
-    body: 'We proudly support local competitive teams representing Idaho across the country.',
-  },
 ] as const;
 
 export const clinics = {

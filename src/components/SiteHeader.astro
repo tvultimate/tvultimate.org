@@ -437,9 +437,11 @@ const activeChildren = activeSection?.children ?? [];
   }
 
   /*
-    Icon only. The word "Menu" beside the bars told a sighted user nothing the
-    icon did not, while costing roughly 45px of the 320px bar that the brand
-    and wordmark needed. The accessible name is carried by the sr-only span.
+    Icon only, and no pill. The word "Menu" beside the bars told a sighted user
+    nothing the icon did not, and the surrounding chip added a second rounded
+    shape next to the Donate button without adding affordance. The padding is
+    kept so the target still clears 24px, and the accessible name is carried by
+    the sr-only span.
 
     Lifted back onto the bar's centre line so the toggle still reads as part of
     the navigation rather than as a stray control above it.
@@ -456,9 +458,12 @@ const activeChildren = activeSection?.children ?? [];
     color: var(--text-primary);
     list-style: none;
     cursor: pointer;
-    background: var(--surface-raised);
-    border: var(--border-width) solid var(--line-default);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-sm);
+    transition: color var(--motion-base) var(--ease-out-soft);
+  }
+
+  .masthead__menu-summary:hover {
+    color: var(--text-accent);
   }
 
   .masthead__panel {
@@ -470,10 +475,6 @@ const activeChildren = activeSection?.children ?? [];
 
   .masthead__menu-summary::-webkit-details-marker {
     display: none;
-  }
-
-  .masthead__menu-summary:hover {
-    border-color: var(--line-strong);
   }
 
   .masthead__menu-icon {
