@@ -89,32 +89,21 @@ const ctas = {
       </div>
 
       {/*
-        No photography here on purpose. Every sports image recovered from the
-        old site is a Sawtooth club-team shot; the four that actually appeared
-        on the tournament page were lost with the archive. Presenting a club
-        photo as tournament imagery is exactly the mislabelling this project
-        is trying to avoid, so the tournament panel stays typographic and the
-        sponsor wall carries the visual weight. See public/img/manifest.json.
+        A team from the tournament, captioned as such. The old site carried this
+        photograph with no caption at all, which is how it came to be filed as
+        Sawtooth club-team photography in the first place. Naming it here is the
+        whole point of the caption. See public/img/manifest.json.
       */}
-      <figure class="feature__media feature__media--marks">
+      <figure class="feature__media">
         <img
-          class="feature__mark"
-          src={images.sawtoothDisc}
-          alt="Sawtooth Ultimate mark"
-          width="1268"
-          height="1267"
+          src={images.boiTeam}
+          alt="A Battle of Idaho team posing on the field."
+          width="1280"
+          height="1280"
           loading="lazy"
           decoding="async"
         />
-        <img
-          class="feature__mark"
-          src={images.logoRoundel}
-          alt="Treasure Valley Ultimate mark"
-          width="494"
-          height="500"
-          loading="lazy"
-          decoding="async"
-        />
+        <figcaption class="feature__caption">Battle of Idaho Team</figcaption>
       </figure>
     </div>
   </Container>
@@ -286,37 +275,26 @@ const ctas = {
   }
 
   .feature__media {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
     margin: 0;
-    overflow: hidden;
-    border-radius: var(--radius-xl);
-    border: var(--border-width) solid var(--line-inverse);
   }
 
   .feature__media img {
     inline-size: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    border-radius: var(--radius-xl);
+    border: var(--border-width) solid var(--line-inverse);
   }
 
-  /* Two marks side by side instead of a photograph. */
-  .feature__media--marks {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: center;
-    gap: var(--space-5);
-    padding: var(--space-6);
-    background: var(--color-pine-900);
-    aspect-ratio: auto;
-  }
-
-  .feature__media--marks img {
-    aspect-ratio: auto;
-    block-size: auto;
-    max-block-size: 12rem;
-    inline-size: auto;
-    max-inline-size: 100%;
-    margin-inline: auto;
-    object-fit: contain;
+  .feature__caption {
+    font-size: var(--text-xs);
+    font-weight: 650;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
   }
 
   /* -------------------------------------------------------------

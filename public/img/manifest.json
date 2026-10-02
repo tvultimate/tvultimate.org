@@ -146,19 +146,18 @@
     "team-roster.jpg": {
       "file": "team-roster.jpg",
       "role": "photo",
-      "alt": "The Sawtooth roster posing on the field.",
-      "describes": "The full Sawtooth roster in blue and white, posing on grass.",
+      "alt": "A Battle of Idaho team posing on the field.",
+      "describes": "A full team in blue and white posing on grass. Recovered from the partner-club pages of the old site, where it carried no caption; it was filed as Sawtooth club-team photography on that basis. Corrected: it is a Battle of Idaho team.",
       "sourcePage": "/partner-clubs/, /partner-clubs/sawtooth-ultimate/",
       "sourceId": "AMxu72te3fEa2eFUnOFM",
       "contexts": [
-        "/partner-clubs/",
-        "/partner-clubs/sawtooth-ultimate/",
-        "/battle-of-idaho/"
+        "/"
       ],
       "width": 1280,
       "height": 1280,
       "bytes": 299969,
-      "placedOnBoi": "The Battle of Idaho page carries this as a portrait of the partner club the tournament supports, with a caption that says so explicitly. It is not presented as the tournament, the field, or a past edition. The original explicitlyNot entry is withdrawn deliberately, not by oversight."
+      "label": "Battle of Idaho Team",
+      "provenanceCorrection": "The earlier Sawtooth attribution was inferred from which page the bytes were recovered from, not from anything the old site said. Confirmed with the organisation as a Battle of Idaho team. It appears only on the home page's tournament panel, where the caption names it."
     },
     "team-huddle.jpg": {
       "file": "team-huddle.jpg",

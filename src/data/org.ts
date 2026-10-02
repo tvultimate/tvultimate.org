@@ -25,18 +25,16 @@ export const org = {
  * Provenance for every file — which page it came from, what it depicts, and
  * where it is contextually accurate — is recorded in `public/img/manifest.json`.
  *
- * Check `contexts` before placing an image. In particular `action` and
- * `roster` are Sawtooth club-team photos, not Battle of Idaho imagery. `roster`
- * does appear on the tournament page, but as a captioned portrait of the
- * partner club the tournament supports; the old site captioned these images
- * generically, which is how that mislabelling happened in the first place.
+ * Check `contexts` before placing an image, and do not rely on the filename:
+ * `action` and `rosterBoise` are Sawtooth club-team photos, while `boiTeam` is
+ * a Battle of Idaho team. They were all recovered from pages that captioned
+ * them generically or not at all, so the old attribution was guesswork. The
+ * home page's tournament panel captions `boiTeam` by name for that reason.
  */
 export const images = {
   /** Organisation mark. Safe anywhere. */
   logo: '/img/logo-tvu.png',
   logoSmall: '/img/logo-tvu-200.png',
-  /** Circular rainbow badge, alternative treatment. */
-  logoRoundel: '/img/logo-tvu-roundel.png',
 
   /** Sawtooth mark, luminance converted to alpha. Dark grounds only. */
   sawtoothLogo: '/img/logo-sawtooth-mark.png',
@@ -59,8 +57,8 @@ export const images = {
   sponsorStevenson: '/img/logo-stevenson-real-estate.png',
   sponsorGoldsteins: '/img/logo-goldsteins-bagels.png',
 
-  /** Sawtooth roster on grass. Club-team context; see the note above. */
-  roster: '/img/team-roster.jpg',
+    /** A Battle of Idaho team on grass. Tournament context, not Sawtooth. */
+  boiTeam: '/img/team-roster.jpg',
   /** Sawtooth roster with the Boise foothills behind. Club-team context. */
   rosterBoise: '/img/team-roster-boise.jpg',
   /** Players in numbered jerseys in a huddle. Club-team context. */
