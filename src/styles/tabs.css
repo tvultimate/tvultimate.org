@@ -13,7 +13,7 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
   gap: var(--space-2);
   padding: var(--space-1);
-  background: color-mix(in oklab, var(--color-pine-900) 60%, transparent);
+  background: var(--color-pine-900);
   border: var(--border-width) solid var(--line-inverse);
   border-radius: var(--radius-lg);
 }
@@ -73,7 +73,7 @@
   display: grid;
   gap: var(--space-5);
   padding: var(--space-5);
-  background: color-mix(in oklab, var(--color-pine-900) 45%, transparent);
+  background: var(--color-pine-900);
   border: var(--border-width) solid var(--line-inverse);
   border-radius: var(--radius-lg);
 }

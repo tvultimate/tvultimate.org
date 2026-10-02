@@ -185,7 +185,7 @@ import { contact, links } from '../../data/org';
   </Section>
 
   <!-- Contact & directors -->
-  <Section tone="inverse" class="on-inverse">
+  <Section tone="inverse">
     <Container>
       <div class="boi__contact">
         <div>
@@ -376,7 +376,10 @@ import { contact, links } from '../../data/org';
     max-inline-size: var(--layout-measure);
   }
 
+  /* 24px minimum tap target (WCAG 2.5.8). */
   .boi__link {
+    display: inline-block;
+    padding-block: var(--space-2);
     font-weight: 650;
     color: var(--color-disc-300);
   }

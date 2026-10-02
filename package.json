@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "node scripts/test.mjs",
+    "test:dev": "node scripts/test.mjs --base http://localhost:4321"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",
@@ -24,6 +26,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "playwright-core": "^1.63.0",
+    "pngjs": "^7.0.0",
     "typescript": "^6.0.3"
   }
 }

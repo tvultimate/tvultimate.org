@@ -23,7 +23,7 @@ const suggestions = [
   title="Page not found — Treasure Valley Ultimate"
   description="That page could not be found."
 >
-  <Section tone="inverse" class="on-inverse">
+  <Section tone="inverse">
     <Container>
       <p class="err__code">404</p>
       <h1 class="err__title">We couldn’t find that page</h1>
@@ -40,7 +40,7 @@ const suggestions = [
         {
           suggestions.map((item) => (
             <Card>
-              <FeatureTile title={item.label} href={item.href}>
+              <FeatureTile level={2} title={item.label} href={item.href}>
                 <p>{item.summary}</p>
               </FeatureTile>
             </Card>

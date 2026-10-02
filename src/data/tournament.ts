@@ -32,10 +32,22 @@ export const stats = [
   { value: '$225', unit: 'early', label: 'Per-team entry' },
 ] as const;
 
+/**
+ * Entry fees.
+ *
+ * The two team fees are quoted verbatim from the old site. The free-agent fee
+ * is not stated there — the old page only says free agents are placed on a
+ * dedicated team — so this figure comes from the tournament directors and is
+ * flagged as current-only in the sources doc.
+ */
 export const pricing = [
   { label: 'End of September', amount: '$225', note: 'per team' },
   { label: 'General Registration', amount: '$250', note: 'per team' },
-  { label: 'Free Agents', amount: '$0', note: 'placed on a dedicated team' },
+  {
+    label: 'Free Agents',
+    amount: '$30',
+    note: 'placed on a dedicated free agent team',
+  },
 ] as const;
 
 export const freeAgentPolicy =

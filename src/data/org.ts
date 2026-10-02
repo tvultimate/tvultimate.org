@@ -47,6 +47,11 @@ export const images = {
 
   /** Boise skyline silhouette, inverted in CSS for the dark footer. */
   skyline: '/img/boise-skyline.png',
+  /**
+   * Boise cityscape line art, background knocked out to alpha, for the
+   * full-width band screened across the foot of the footer.
+   */
+  cityscape: '/img/cityscape-band.png',
 
   /** Battle of Idaho sponsors. */
   sponsorErth: '/img/logo-erth-beverage-co.png',

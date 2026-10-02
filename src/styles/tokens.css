@@ -189,7 +189,11 @@
   --text-inverse: var(--color-pine-50);
   --text-inverse-secondary: var(--color-pine-200);
   --text-accent: var(--color-pine-600);
-  --text-warm: var(--color-sunset-600);
+  /*
+    Warm accent for eyebrows and numerals. Small text, so it has to clear 4.5:1
+    against the lightest surface it can land on (stone-100).
+  */
+  --text-warm: var(--color-sunset-700);
   --text-link: var(--color-pine-700);
 
   /* ---------------------------------------------------------------
@@ -245,6 +249,10 @@
   --text-secondary: var(--color-pine-200);
   --text-tertiary: var(--color-pine-300);
   --text-link: var(--color-pine-200);
+  /* Accent and warm tones invert with the ground; the light-ground steps
+     (pine-600, sunset-700) fall below 3:1 on a dark surface. */
+  --text-accent: var(--color-pine-200);
+  --text-warm: var(--color-sunset-300);
 
   --line-subtle: var(--line-inverse);
   --line-default: color-mix(in oklab, var(--color-pine-300) 40%, transparent);

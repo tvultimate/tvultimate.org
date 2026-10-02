@@ -124,7 +124,10 @@ const { facts } = Astro.props;
     color: var(--text-primary);
   }
 
+  /* 24px minimum tap target (WCAG 2.5.8). */
   .facts__value a {
+    display: inline-block;
+    padding-block: var(--space-2);
     color: var(--text-link);
     text-underline-offset: 0.2em;
   }

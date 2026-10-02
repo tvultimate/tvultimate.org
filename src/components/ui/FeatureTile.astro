@@ -21,7 +21,8 @@ interface Props {
   /** Trailing call to action rendered as a text link. */
   href?: string;
   cta?: string;
-  level?: 3 | 4;
+  /** Heading level. Must fit the page's document outline. */
+  level?: 2 | 3 | 4;
   class?: string;
 }
 
@@ -41,7 +42,15 @@ const {
       <Icon name={icon} />
     </span>
   )}
-  {level === 3 ? <h3 class="tile__title">{title}</h3> : <h4 class="tile__title">{title}</h4>}
+  {
+    level === 2 ? (
+      <h2 class="tile__title">{title}</h2>
+    ) : level === 3 ? (
+      <h3 class="tile__title">{title}</h3>
+    ) : (
+      <h4 class="tile__title">{title}</h4>
+    )
+  }
   <div class="tile__body">
     <slot />
   </div>
@@ -94,6 +103,8 @@ const {
     align-items: center;
     gap: var(--space-2);
     align-self: start;
+    /* 24px minimum tap target (WCAG 2.5.8). */
+    padding-block: var(--space-2);
     margin-block-start: var(--space-1);
     font-size: var(--text-sm);
     font-weight: 650;

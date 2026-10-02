@@ -24,11 +24,25 @@ const {
   as: Tag = 'section',
   class: className,
 } = Astro.props;
+
+/*
+ * A dark background is not enough on its own: the semantic token layer has to
+ * flip with it, or body copy, links and button inks keep their light-ground
+ * values and fall below 4.5:1 against the dark fill. Coupling the two here
+ * means `tone="inverse"` can never be half-applied.
+ */
+const isInverse = tone === 'inverse';
 ---
 
 <Tag
   id={id}
-  class:list={['section', `section--${tone}`, tight && 'section--tight', className]}
+  class:list={[
+    'section',
+    `section--${tone}`,
+    tight && 'section--tight',
+    isInverse && 'on-inverse',
+    className,
+  ]}
 >
   <slot />
 </Tag>
