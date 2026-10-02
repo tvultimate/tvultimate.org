@@ -152,14 +152,13 @@
       "sourceId": "AMxu72te3fEa2eFUnOFM",
       "contexts": [
         "/partner-clubs/",
-        "/partner-clubs/sawtooth-ultimate/"
-      ],
-      "explicitlyNot": [
+        "/partner-clubs/sawtooth-ultimate/",
         "/battle-of-idaho/"
       ],
       "width": 1280,
       "height": 1280,
-      "bytes": 299969
+      "bytes": 299969,
+      "placedOnBoi": "The Battle of Idaho page carries this as a portrait of the partner club the tournament supports, with a caption that says so explicitly. It is not presented as the tournament, the field, or a past edition. The original explicitlyNot entry is withdrawn deliberately, not by oversight."
     },
     "team-huddle.jpg": {
       "file": "team-huddle.jpg",
@@ -312,7 +311,8 @@
       "sourceId": "AMxu72ujvRmDX-ZDSDjA",
       "contexts": [
         "/partner-clubs/sawtooth-ultimate/",
-        "/partner-clubs/"
+        "/partner-clubs/",
+        "/"
       ],
       "width": 400,
       "height": 259,

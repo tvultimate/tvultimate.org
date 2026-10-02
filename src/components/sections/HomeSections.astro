@@ -126,19 +126,6 @@ const ctas = {
     <div class="spotlight">
       <figure class="spotlight__media">
         <img
-          src={images.roster}
-          alt="The Sawtooth Ultimate roster posing on the field."
-          width="1280"
-          height="1280"
-          loading="lazy"
-          decoding="async"
-        />
-      </figure>
-
-      <div class="spotlight__body">
-        <Eyebrow>Partner club</Eyebrow>
-        <h2 class="spotlight__title">Partner Club Spotlight</h2>
-        <img
           class="spotlight__logo"
           src={images.sawtoothLogoSmall}
           alt="Sawtooth Ultimate"
@@ -147,6 +134,11 @@ const ctas = {
           loading="lazy"
           decoding="async"
         />
+      </figure>
+
+      <div class="spotlight__body">
+        <Eyebrow>Partner club</Eyebrow>
+        <h2 class="spotlight__title">Partner Club Spotlight</h2>
         <p class="spotlight__text">
           We proudly support local competitive teams representing Idaho across the
           country. Sawtooth Ultimate is Idaho’s premier competitive Open club team,
@@ -337,36 +329,36 @@ const ctas = {
     align-items: center;
   }
 
+  /*
+    The Sawtooth mark, not a team photo. The mark is white artwork, so it needs
+    a dark plate to stay legible on this light section rather than disappearing
+    into the background.
+
+    The plate belongs on the image, not on a wrapper. The recovered PNG is not
+    truly transparent: its empty pixels are white at alpha 6, a faint veil that
+    lifts the mark's background a few percent. Sitting on a plate of its own
+    colour that veil is invisible; on a wrapper of a slightly different shade it
+    reads as a rectangle drawn around the logo.
+  */
   .spotlight__media {
+    display: grid;
+    place-items: center;
     margin: 0;
-    overflow: hidden;
-    border-radius: var(--radius-xl);
-    border: var(--border-width) solid var(--line-subtle);
-    box-shadow: var(--shadow-sm);
   }
 
-  .spotlight__media img {
-    inline-size: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+  .spotlight__logo {
+    inline-size: min(100%, 15rem);
+    block-size: auto;
+    padding: var(--space-6) var(--space-7);
+    background: var(--surface-inverse);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
   }
 
   .spotlight__body {
     display: grid;
     gap: var(--space-3);
     justify-items: start;
-  }
-
-  /*
-  The Sawtooth mark is white artwork. This is a light section, so it needs a
-  dark plate to stay legible rather than disappearing into the background.
-*/
-  .spotlight__logo {
-    inline-size: 11rem;
-    block-size: auto;
-    padding: var(--space-4) var(--space-5);
-    background: var(--surface-inverse);
-    border-radius: var(--radius-md);
   }
 
   .spotlight__text {

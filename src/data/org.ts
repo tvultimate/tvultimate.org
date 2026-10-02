@@ -26,9 +26,10 @@ export const org = {
  * where it is contextually accurate — is recorded in `public/img/manifest.json`.
  *
  * Check `contexts` before placing an image. In particular `action` and
- * `roster` are Sawtooth club-team photos and must NOT be used as Battle of
- * Idaho tournament imagery: the old site captioned them generically, which is
- * how that mislabelling happened in the first place.
+ * `roster` are Sawtooth club-team photos, not Battle of Idaho imagery. `roster`
+ * does appear on the tournament page, but as a captioned portrait of the
+ * partner club the tournament supports; the old site captioned these images
+ * generically, which is how that mislabelling happened in the first place.
  */
 export const images = {
   /** Organisation mark. Safe anywhere. */
@@ -58,7 +59,7 @@ export const images = {
   sponsorStevenson: '/img/logo-stevenson-real-estate.png',
   sponsorGoldsteins: '/img/logo-goldsteins-bagels.png',
 
-  /** Sawtooth roster on grass. Club-team context only. */
+  /** Sawtooth roster on grass. Club-team context; see the note above. */
   roster: '/img/team-roster.jpg',
   /** Sawtooth roster with the Boise foothills behind. Club-team context. */
   rosterBoise: '/img/team-roster-boise.jpg',
