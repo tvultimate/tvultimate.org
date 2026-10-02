@@ -28,17 +28,32 @@ things:
    `oklab()` fills, and text that inherits a colour meant for a different ground.
 2. **Overflow** — elements escaping their parent, exempting anything inside a
    deliberate clip or scroll container.
-3. **Structure** — one `h1` per page, no skipped heading levels, no duplicate ids,
+3. **Truncation** — any box that clips its own text, which silently drops words.
+   `text-overflow: ellipsis` is not an exemption; it is the reason the bug
+   survives review. A box that clips a *decorative* child is excluded, proven by
+   stripping the text and re-measuring. Opt out with `data-allow-truncation`.
+   Copy must wrap or shrink, never disappear. Do not elide the organisation's
+   name to fit.
+4. **Squished layout** (mobile only) — a block holding real copy that is far
+   narrower than the viewport, meaning a track collapsed rather than the design
+   intending a narrow column. A flex item's base size includes all of its
+   in-flow children, so a wide panel inside a flex row will squeeze its
+   siblings; move it out of the row rather than capping its width.
+5. **Nav popover** (mobile only) — a primary navigation disclosure whose panel
+   is positioned and narrower than the viewport. It should be a full-bleed
+   block in normal flow that pushes the page down. Note this only behaves if
+   the masthead is not sticky at that width.
+6. **Structure** — one `h1` per page, no skipped heading levels, no duplicate ids,
    images sized and `alt`-tagged and actually loading, labelled controls, 24px
    tap targets on small screens.
-4. **Console** — page and console errors, plus an assertion that a missing URL 404s.
+7. **Console** — page and console errors, plus an assertion that a missing URL 404s.
 
 Two failure modes worth knowing, because both have already caused false confidence:
 
 - **A check that never runs is not a pass.** An early version reported `PASS` while
   running zero contrast checks, because a helper detached its probe element on the
   first call and returned `null` for every subsequent element. If you change
-  `scripts/test.mjs`, confirm the check count is plausible (~4,800 for the current
+  `scripts/test.mjs`, confirm the check count is plausible (~4,900 for the current
   site) and deliberately break something to prove the check still fails.
 - **A dark background does not re-theme its contents.** Painting `background:
   var(--surface-inverse)` leaves body copy, links, eyebrows and button inks on their

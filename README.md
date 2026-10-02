@@ -23,8 +23,9 @@ editing a component or stylesheet hot-updates in place.
 
 `npm test` builds, serves the build, and drives headless Chrome over every route at
 six viewport widths. It checks text contrast by sampling the pixels actually painted
-behind each run of text, plus container overflow, document structure, image loading,
-tap targets, and console errors. See `scripts/test.mjs` for the details and
+behind each run of text, then container overflow, text truncation, squished mobile
+columns, primary-nav popovers, document structure, image loading, tap targets, and
+console errors. See `scripts/test.mjs` for the details and
 `AGENTS.md` for the rules it enforces.
 
 ## Pages

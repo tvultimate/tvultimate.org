@@ -72,72 +72,72 @@ const activeChildren = activeSection?.children ?? [];
       <div class="masthead__actions">
         <a class="masthead__donate" href="/donations-and-dues/">Donate</a>
 
-        {/* Native disclosure: the mobile menu needs no JavaScript at all. */}
-        <details class="masthead__menu">
-          <summary class="masthead__menu-summary">
-            <span class="masthead__menu-label">Menu</span>
-            <span class="masthead__menu-icon" aria-hidden="true">
-              <span />
-              <span />
-            </span>
-            <span class="sr-only">Toggle main menu</span>
-          </summary>
-
-          <div class="masthead__panel">
-            <ul class="masthead__list">
-              {
-                navSections.map((section) => (
-                  <li class="masthead__item">
-                    <a
-                      class="masthead__link"
-                      href={section.href}
-                      aria-current={path === section.href ? 'page' : undefined}
-                    >
-                      <span class="masthead__link-text">
-                        <span class="masthead__link-label">{section.label}</span>
-                        {section.summary && (
-                          <span class="masthead__link-summary">{section.summary}</span>
-                        )}
-                      </span>
-                      <Icon name="arrow" class="masthead__link-arrow" />
-                    </a>
-
-                    {section.children && (
-                      <ul class="masthead__sublist">
-                        {section.children
-                          .filter((child) => child.href !== section.href)
-                          .map((child) => (
-                            <li>
-                              <a
-                                class="masthead__subitem"
-                                href={child.href}
-                                aria-current={path === child.href ? 'page' : undefined}
-                              >
-                                {child.label}
-                              </a>
-                            </li>
-                          ))}
-                      </ul>
-                    )}
-                  </li>
-                ))
-              }
-            </ul>
-
-            <div class="masthead__panel-foot">
-              <a class="masthead__social" href="https://discord.gg/bhBhYUZ82D">
-                Discord
-              </a>
-              <a class="masthead__social" href="https://www.youtube.com/@tv-ultimate">
-                YouTube
-              </a>
-              <a class="masthead__social" href="mailto:help@tvultimate.org">Email</a>
-            </div>
-          </div>
-        </details>
       </div>
     </div>
   </div>
+
+    {/* Native disclosure: the mobile menu needs no JavaScript at all. */}
+  <details class="masthead__menu">
+    <summary class="masthead__menu-summary">
+      <span class="masthead__menu-icon" aria-hidden="true">
+        <span />
+        <span />
+      </span>
+      <span class="sr-only">Main menu</span>
+    </summary>
+
+    <div class="masthead__panel">
+      <ul class="masthead__list">
+        {
+          navSections.map((section) => (
+            <li class="masthead__item">
+              <a
+                class="masthead__link"
+                href={section.href}
+                aria-current={path === section.href ? 'page' : undefined}
+              >
+                <span class="masthead__link-text">
+                  <span class="masthead__link-label">{section.label}</span>
+                  {section.summary && (
+                    <span class="masthead__link-summary">{section.summary}</span>
+                  )}
+                </span>
+                <Icon name="arrow" class="masthead__link-arrow" />
+              </a>
+
+              {section.children && (
+                <ul class="masthead__sublist">
+                  {section.children
+                    .filter((child) => child.href !== section.href)
+                    .map((child) => (
+                      <li>
+                        <a
+                          class="masthead__subitem"
+                          href={child.href}
+                          aria-current={path === child.href ? 'page' : undefined}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="masthead__panel-foot">
+        <a class="masthead__social" href="https://discord.gg/bhBhYUZ82D">
+          Discord
+        </a>
+        <a class="masthead__social" href="https://www.youtube.com/@tv-ultimate">
+          YouTube
+        </a>
+        <a class="masthead__social" href="mailto:help@tvultimate.org">Email</a>
+      </div>
+    </div>
+  </details>
 
   {/* Sub-navigation: the pages inside the current section, on their own row. */}
   {
@@ -168,9 +168,13 @@ const activeChildren = activeSection?.children ?? [];
 </header>
 
 <style>
+  /*
+    Not sticky below 64rem: the mobile disclosure expands in normal flow, and
+    a sticky header would grow straight over the content instead of pushing it
+    down. `z-index` is kept so the blurred bar still overlaps nothing it should.
+  */
   .masthead {
-    position: sticky;
-    inset-block-start: 0;
+    position: relative;
     z-index: 50;
     background: color-mix(in oklab, var(--surface-page) 88%, transparent);
     backdrop-filter: blur(0.75rem) saturate(1.4);
@@ -195,8 +199,11 @@ const activeChildren = activeSection?.children ?? [];
     inline-size: 100%;
     max-inline-size: var(--layout-max);
     margin-inline: auto;
-    /* The brand may shrink and truncate; the menu must never be pushed off. */
+    /* The brand may shrink and wrap; the menu must never be pushed off. */
     min-inline-size: 0;
+    /* Reserves the strip the absolutely positioned menu toggle occupies, so
+       the Donate button cannot end up underneath it. */
+    padding-inline-end: 2.5rem;
   }
 
   /* -------------------------------------------------------------
@@ -222,19 +229,19 @@ const activeChildren = activeSection?.children ?? [];
 
   /*
     The wordmark is the only text in the brand lockup, so it takes the space
-    the 501(c)(3) subtitle used to occupy. Fluid so it stays legible from a
-    narrow phone up to a wide desktop without a breakpoint.
+    the 501(c)(3) subtitle used to occupy. It wraps rather than truncating:
+    "Treasure Valley Ultimate" does not fit beside the mark on a 320px screen,
+    and silently shortening the organisation's name to "Treasure Valley…" is
+    worse than a second line. The audit fails any box that clips its own text.
   */
   .masthead__brand-text {
     font-family: var(--font-display);
-    font-size: clamp(0.9375rem, 0.78rem + 0.7vw, 1.1875rem);
+    font-size: clamp(0.875rem, 0.72rem + 0.7vw, 1.1875rem);
     font-weight: 700;
     letter-spacing: var(--tracking-snug);
-    line-height: 1.1;
-    /* Truncates rather than forcing the layout wider than the viewport. */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.15;
+    text-wrap: balance;
+    min-inline-size: 0;
   }
 
   /* -------------------------------------------------------------
@@ -413,23 +420,52 @@ const activeChildren = activeSection?.children ?? [];
    * Mobile menu
    * ----------------------------------------------------------- */
 
+  /*
+    A full-width block in normal flow, so opening the menu makes the header
+    taller and pushes the page down instead of floating a narrow popover over
+    it. This only works because the masthead is not sticky at this width (see
+    the end of this block); a sticky header would grow straight over the
+    content.
+
+    It sits outside the bar's flex row on purpose. Inside it, the panel's
+    intrinsic width joined the row's sizing and squeezed the brand to zero
+    width at 320px, because a flex item's base size includes all of its
+    in-flow children.
+  */
   .masthead__menu {
-    position: relative;
+    inline-size: 100%;
   }
 
+  /*
+    Icon only. The word "Menu" beside the bars told a sighted user nothing the
+    icon did not, while costing roughly 45px of the 320px bar that the brand
+    and wordmark needed. The accessible name is carried by the sr-only span.
+
+    Lifted back onto the bar's centre line so the toggle still reads as part of
+    the navigation rather than as a stray control above it.
+  */
   .masthead__menu-summary {
+    position: absolute;
+    inset-block-start: calc(var(--layout-nav-height) / 2);
+    inset-inline-end: var(--layout-gutter);
+    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--text-xs);
-    font-weight: 650;
+    justify-content: center;
+    padding: var(--space-2);
     color: var(--text-primary);
     list-style: none;
     cursor: pointer;
     background: var(--surface-raised);
     border: var(--border-width) solid var(--line-default);
     border-radius: var(--radius-pill);
+  }
+
+  .masthead__panel {
+    inline-size: 100%;
+    padding: var(--space-3) var(--layout-gutter) var(--space-4);
+    background: var(--surface-page);
+    border-block-start: var(--border-width) solid var(--line-subtle);
   }
 
   .masthead__menu-summary::-webkit-details-marker {
@@ -470,24 +506,6 @@ const activeChildren = activeSection?.children ?? [];
 
   .masthead__menu[open] .masthead__menu-icon span:last-child {
     transform: translateY(-0.1875rem) rotate(-45deg);
-  }
-
-  .masthead__panel {
-    position: absolute;
-    inset-block-start: calc(100% + var(--space-2));
-    inset-inline-end: 0;
-    z-index: 60;
-    /* `100%` of the masthead row rather than `100vw`, so the panel can never
-       be wider than the padded content area. */
-    inline-size: min(22rem, 100%);
-    max-block-size: min(34rem, calc(100svh - var(--layout-nav-height) - 2rem));
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: var(--space-3);
-    background: var(--surface-raised);
-    border: var(--border-width) solid var(--line-default);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
   }
 
   .masthead__list {
@@ -612,7 +630,21 @@ const activeChildren = activeSection?.children ?? [];
    * Wide: show the horizontal menus, drop the disclosure
    * ----------------------------------------------------------- */
 
+  /*
+    The expanded menu pushes the page down, which only behaves if the masthead
+    scrolls away with the content. Sticky is restored at 64rem, where the
+    disclosure is gone and there is nothing to expand.
+  */
   @media (min-width: 64rem) {
+    .masthead {
+      position: sticky;
+    }
+
+    /* The toggle is gone at this width, so give its room back to the rail. */
+    .masthead__inner {
+      padding-inline-end: 0;
+    }
+
     .masthead__rail {
       display: flex;
     }
