@@ -31,42 +31,19 @@ const offeringIcons = ['video', 'sparkle', 'shield'] as const;
   <Section tone="page">
     <Container>
       <div class="intro">
-        <div class="intro__prose">
-          <p>{media.intro}</p>
-          <p>{media.body}</p>
-        </div>
-
-        <figure class="intro__media">
-          <img
-            src={images.aerialTournament}
-            alt="Aerial view of a large group arranged in an arc on a field."
-            width="640"
-            height="162"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
+        <p>{media.intro}</p>
+        <p>{media.body}</p>
       </div>
 
       {/*
-        Two more examples of the drone work described above, both recovered
-        from the archived Resources and Media page.
+        One example of the drone work described above, recovered from the
+        archived Resources and Media page.
       */}
       <ul class="showcase">
         <li class="showcase__item">
           <img
-            src={images.aerialCircle}
-            alt="Overhead aerial of a circle of players on the grass."
-            width="1157"
-            height="1157"
-            loading="lazy"
-            decoding="async"
-          />
-        </li>
-        <li class="showcase__item">
-          <img
-            src={images.aerialYouth}
-            alt="Aerial view of young players forming letters on a turf field."
+            src={images.aerialBus}
+            alt="Aerial view of a group spelling out letters on a turf field."
             width="1280"
             height="720"
             loading="lazy"
@@ -125,9 +102,6 @@ const offeringIcons = ['video', 'sparkle', 'shield'] as const;
               decoding="async"
             />
           </div>
-          <figcaption class="film__caption">
-            A highlight reel from our aerial game film archive.
-          </figcaption>
         </figure>
       </div>
     </Container>
@@ -168,40 +142,22 @@ const offeringIcons = ['video', 'sparkle', 'shield'] as const;
 <style>
   .intro {
     display: grid;
-    gap: var(--space-6);
-    align-items: center;
-  }
-
-  .intro__prose {
-    display: grid;
     gap: var(--space-4);
     max-inline-size: var(--layout-measure);
   }
 
-  .intro__prose p {
+  .intro p {
     font-size: var(--text-md);
     line-height: var(--leading-relaxed);
     color: var(--text-secondary);
   }
 
-  .intro__media {
-    margin: 0;
-    overflow: hidden;
-    border-radius: var(--radius-xl);
-    border: var(--border-width) solid var(--line-subtle);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .intro__media img {
-    inline-size: 100%;
-    block-size: auto;
-  }
-
-  /* Further examples of the aerial work. */
+  /* The one example of the aerial work we have. */
   .showcase {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
     gap: var(--space-4);
+    max-inline-size: var(--layout-media-max);
     padding: 0;
     margin: var(--space-7) 0 0;
     list-style: none;
@@ -218,7 +174,7 @@ const offeringIcons = ['video', 'sparkle', 'shield'] as const;
   .showcase__item img {
     inline-size: 100%;
     block-size: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
   }
 
@@ -267,12 +223,6 @@ const offeringIcons = ['video', 'sparkle', 'shield'] as const;
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-  }
-
-  .film__caption {
-    margin-block-start: var(--space-2);
-    font-size: var(--text-xs);
-    color: var(--color-pine-300);
   }
 
   /* -------------------------------------------------------------
@@ -342,11 +292,6 @@ const offeringIcons = ['video', 'sparkle', 'shield'] as const;
   }
 
   @media (min-width: 48rem) {
-    .intro {
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: var(--space-7);
-    }
-
     .film {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
       gap: var(--space-7);

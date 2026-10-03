@@ -86,13 +86,11 @@
       "describes": "Circular Sawtooth mountain-and-disc line mark.",
       "sourcePage": "/partner-clubs/, /partner-clubs/sawtooth-ultimate/",
       "sourceId": "AMxu72tl9TyRlPuIRPQy",
-      "contexts": [
-        "/partner-clubs/",
-        "/partner-clubs/sawtooth-ultimate/"
-      ],
+      "contexts": [],
       "width": 1268,
       "height": 1267,
-      "bytes": 150591
+      "bytes": 150591,
+      "unused": "The circular mark was dropped from the partner-clubs page at the organisation's request; the Sawtooth wordmark is carried by the other marks instead. The file is kept in case the disc mark is wanted back."
     },
     "boise-landscape-mark.png": {
       "file": "boise-landscape-mark.png",
@@ -157,7 +155,7 @@
       "height": 1280,
       "bytes": 299969,
       "label": "Battle of Idaho Team",
-      "provenanceCorrection": "The earlier Sawtooth attribution was inferred from which page the bytes were recovered from, not from anything the old site said. Confirmed with the organisation as a Battle of Idaho team. It appears only on the home page's tournament panel, where the caption names it."
+      "provenanceCorrection": "The earlier Sawtooth attribution was inferred from which page the bytes were recovered from, not from anything the old site said. Confirmed with the organisation as a Battle of Idaho team. It appears on the home page's tournament panel, which is where it belongs."
     },
     "team-huddle.jpg": {
       "file": "team-huddle.jpg",
@@ -195,27 +193,26 @@
       "describes": "Overhead drone shot of a circle of players on grass. Directly illustrates the aerial media services.",
       "sourcePage": "/resources-and-media/, /youth-community/",
       "sourceId": "AMxu72tctBTLvVmpRGTf",
-      "contexts": [
-        "/resources-and-media/",
-        "/youth-community/"
-      ],
+      "contexts": [],
       "width": 1157,
       "height": 1157,
-      "bytes": 298120
+      "bytes": 298120,
+      "unused": "Removed from the Resources and Media page at the organisation's request; the file is kept in case the aerial work is wanted elsewhere."
     },
-    "aerial-youth.jpg": {
-      "file": "aerial-youth.jpg",
+    "aerial-bus.jpg": {
+      "file": "aerial-bus.jpg",
       "role": "photo",
-      "alt": "Overhead aerial of youth players forming letters on a field.",
-      "describes": "Aerial shot of a large group spelling out letters on a turf field. Youth-programme imagery.",
+      "alt": "Aerial view of a group spelling out letters on a turf field.",
+      "describes": "Aerial shot of a large group spelling out letters on a turf field. Adult players; confirmed with the organisation as a general aerial shot, not a youth programme.",
       "sourcePage": "/youth-community/",
       "sourceId": "AMxu72v_oZ_4daFpkOb0",
       "contexts": [
-        "/youth-community/"
+        "/resources-and-media/"
       ],
       "width": 1280,
       "height": 720,
-      "bytes": 246488
+      "bytes": 246488,
+      "provenanceCorrection": "Recovered from the youth page and first filed as aerial-youth.jpg, so both the filename and the alt text claimed a youth programme it has nothing to do with. Renamed to aerial-bus.jpg and removed from the youth page. It is aerial media-services imagery like its neighbours."
     },
     "youth-team-huddle.jpg": {
       "file": "youth-team-huddle.jpg",
@@ -267,12 +264,11 @@
       "describes": "Wide aerial of a crowd in team colours arranged in an arc.",
       "sourcePage": "/resources-and-media/",
       "sourceId": "AMxu72sYrBdRZFDn09xm",
-      "contexts": [
-        "/resources-and-media/"
-      ],
+      "contexts": [],
       "width": 640,
       "height": 162,
-      "bytes": 28927
+      "bytes": 28927,
+      "unused": "Removed from the Resources and Media page at the organisation's request; the file is kept in case the aerial work is wanted elsewhere."
     },
     "logo-tvu-roundel.png": {
       "file": "logo-tvu-roundel.png",

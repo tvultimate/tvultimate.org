@@ -29,7 +29,7 @@ export const org = {
  * `action` and `rosterBoise` are Sawtooth club-team photos, while `boiTeam` is
  * a Battle of Idaho team. They were all recovered from pages that captioned
  * them generically or not at all, so the old attribution was guesswork. The
- * home page's tournament panel captions `boiTeam` by name for that reason.
+ * corrections are recorded in `public/img/manifest.json`.
  */
 export const images = {
   /** Organisation mark. Safe anywhere. */
@@ -39,8 +39,6 @@ export const images = {
   /** Sawtooth mark, luminance converted to alpha. Dark grounds only. */
   sawtoothLogo: '/img/logo-sawtooth-mark.png',
   sawtoothLogoSmall: '/img/logo-sawtooth-400.png',
-  /** Circular Sawtooth mountain-and-disc line mark. Black strokes. */
-  sawtoothDisc: '/img/sawtooth-disc-mark.png',
   /** Boise cityscape beneath a hand and mountain, in line art. */
   boiseLandscape: '/img/boise-landscape-mark.png',
 
@@ -70,8 +68,12 @@ export const images = {
 
   /** Overhead aerial of a circle of players. Media-services context. */
   aerialCircle: '/img/aerial-circle.jpg',
-  /** Aerial of a group spelling letters on turf. Youth-programme context. */
-  aerialYouth: '/img/aerial-youth.jpg',
+  /**
+   * Aerial of a group spelling letters on turf. Adult players, not a youth
+   * programme — it was recovered under a youth filename and mislabelled as
+   * such. Media-services context only.
+   */
+  aerialBus: '/img/aerial-bus.jpg',
   /** Wide aerial of a crowd in team colours. Media-services context. */
   aerialTournament: '/img/aerial-tournament.jpg',
 

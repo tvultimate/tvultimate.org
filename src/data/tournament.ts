@@ -4,6 +4,8 @@
  * render from the same source without copy-paste drift.
  */
 
+import { images } from './org';
+
 export const tournament = {
   name: 'Battle of Idaho',
   edition: '4th Annual',
@@ -13,12 +15,30 @@ export const tournament = {
   location: 'Heroes Park',
   address: '3064 W Malta Dr, Meridian, ID 83646',
   /**
-   * Sponsors. Logos recovered from the archived tournament page — see
-   * `public/img/manifest.json` for provenance.
+   * Sponsors, thanked at the foot of the tournament page. Logos recovered from
+   * the archived tournament page — see `public/img/manifest.json` for
+   * provenance. Intrinsic dimensions are carried with each mark so the wall
+   * reserves the right space before the files land.
    */
   sponsors: [
-    { name: 'ERTH. Beverage Co', logo: '/img/logo-erth-beverage-co.png' },
-    { name: 'Stevenson Real Estate', logo: '/img/logo-stevenson-real-estate.png' },
+    {
+      name: "Goldstein's Bagels & Bialys",
+      logo: images.sponsorGoldsteins,
+      width: 1280,
+      height: 492,
+    },
+    {
+      name: 'Stevenson Real Estate',
+      logo: images.sponsorStevenson,
+      width: 424,
+      height: 100,
+    },
+    {
+      name: 'ERTH Beverage Co.',
+      logo: images.sponsorErth,
+      width: 232,
+      height: 134,
+    },
   ],
   intro:
     'An ultimate frisbee tournament dedicated to growing the sport in our state. This event is perfect for all levels of teams looking for a fun and competitive weekend on the field.',
@@ -59,53 +79,65 @@ export interface Division {
   dates: string;
   who: string;
   rules: string;
+  /** How this division is run, which differs from division to division. */
+  format: string;
   schedule: { day: string; detail: string }[];
 }
 
-/** Three divisions, each with its own eligibility rules and start times. */
+/**
+ * Three divisions, each with its own eligibility rules, format, and start
+ * times. Order is the order they are presented in, which is the order a
+ * captain reads them in: youth first, then the two adult divisions.
+ */
 export const divisions: Division[] = [
   {
     id: 'youth',
-    name: 'Youth Division',
+    name: 'Youth Open',
     dates: 'Friday, Nov 13 – Saturday, Nov 14',
     who: 'Open to players under 20 years of age. Open format, but mixed roster composition is preferred.',
     rules: 'Gender ratios are discussed and agreed upon by captains and coaches prior to games.',
+    format:
+      'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday.',
     schedule: [
       { day: 'Friday', detail: 'Swiss rounds begin at 3:00 PM' },
       { day: 'Saturday', detail: 'Bracket play begins at 10:00 AM' },
     ],
   },
   {
-    id: 'open',
-    name: 'Open Division',
-    dates: 'Saturday, Nov 14',
-    who: 'Open to players of any age and any gender composition.',
-    rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
-    schedule: [{ day: 'Saturday', detail: 'Play begins at 9:00 AM' }],
-  },
-  {
     id: 'mixed',
-    name: 'Mixed Adult Division',
+    name: 'Adult Mixed',
     dates: 'Saturday, Nov 14 – Sunday, Nov 15',
     who: 'Open to all skill levels at any age.',
     rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
+    format:
+      'Swiss rounds on Saturday seed the division, then play moves into a single-elimination bracket on Sunday.',
     schedule: [
       { day: 'Saturday', detail: 'Swiss rounds begin at 9:00 AM' },
       { day: 'Sunday', detail: 'Bracket play begins at 10:00 AM' },
     ],
   },
+  {
+    id: 'open',
+    name: 'Adult Open',
+    dates: 'Saturday, Nov 14',
+    who: 'Open to players of any age and any gender composition.',
+    rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
+    format:
+      'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead.',
+    schedule: [{ day: 'Saturday', detail: 'Play begins at 9:00 AM' }],
+  },
 ];
 
-export const format = {
-  headline: 'Swiss System seeded into single-elimination Bracket Play',
-  description:
-    'Every division plays a Swiss round to seed, then moves into a single-elimination bracket. Expect a minimum of six games across the weekend.',
-  rules: [
-    'Regular games: 75-minute rounds, games to 13 points, hard cap in effect.',
-    'Semi-finals and finals: 75-minute rounds, games to 13 points, hard cap in effect.',
-    'Between rounds: 15 minutes built in for rest and field transition.',
-  ],
-} as const;
+/**
+ * Game rules that hold in every division. Rendered inside the division widget,
+ * once per panel, because they apply whichever division a captain is reading
+ * about.
+ */
+export const gameRules = [
+  'Regular games: 75-minute rounds, games to 13 points, hard cap in effect.',
+  'Semi-finals and finals: 75-minute rounds, games to 13 points, hard cap in effect.',
+  'Between rounds: 15 minutes built in for rest and field transition.',
+] as const;
 
 export const amenities = [
   'Water provided on-site for all fields.',
@@ -126,6 +158,3 @@ export const directors = [
   { name: 'David Nichols', role: 'Youth', detail: 'MMP' },
   { name: 'Jason Burner', role: 'General', detail: 'MMP' },
 ] as const;
-
-/** Sponsor logos, for the sponsor wall on the tournament page. */
-export const sponsorLogos = tournament.sponsors;

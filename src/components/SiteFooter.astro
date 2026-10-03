@@ -1,6 +1,6 @@
 ---
 /**
- * Site footer: organisation identity, a full index of every page, the
+ * Site footer: a full index of every page, the contact points, the
  * non-profit statement, and the Boise skyline mark.
  */
 
@@ -14,28 +14,6 @@ const year = new Date().getFullYear();
 
 <footer class="footer on-inverse">
   <Container>
-    <div class="footer__top">
-      <div class="footer__brand">
-        <img
-          class="footer__logo"
-          src={images.logoSmall}
-          alt=""
-          width="96"
-          height="96"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="footer__brand-text">
-          <p class="footer__name">{org.name}</p>
-          <p class="footer__status">
-            {org.legalName} · {org.status}
-          </p>
-        </div>
-      </div>
-
-      <p class="footer__tagline">{org.description}</p>
-    </div>
-
     <div class="footer__columns">
       {
         navSections.map((section) => (
@@ -110,63 +88,23 @@ const year = new Date().getFullYear();
   .footer {
     position: relative;
     overflow: clip;
-    padding-block: var(--space-7) var(--space-6);
+    padding-block: var(--space-6);
     background: var(--surface-inverse);
     color: var(--color-pine-200);
-  }
-
-  .footer__top {
-    display: grid;
-    gap: var(--space-4);
-    padding-block-end: var(--space-5);
-    border-block-end: var(--border-width) solid var(--line-inverse);
-  }
-
-  .footer__brand {
-    display: flex;
-    gap: var(--space-3);
-    align-items: center;
-  }
-
-  .footer__logo {
-    inline-size: 2.75rem;
-    block-size: 2.75rem;
-    border-radius: var(--radius-sm);
-  }
-
-  .footer__brand-text {
-    display: grid;
-    gap: 0.125rem;
-  }
-
-  .footer__name {
-    font-family: var(--font-display);
-    font-size: var(--text-lg);
-    font-weight: 700;
-    letter-spacing: var(--tracking-snug);
-    color: var(--color-pine-50);
-  }
-
-  .footer__status {
-    font-size: var(--text-xs);
-    color: var(--color-pine-300);
-  }
-
-  .footer__tagline {
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
-    color: var(--color-pine-200);
-    max-inline-size: var(--layout-measure);
   }
 
   /* -------------------------------------------------------------
    * Index columns
    * ----------------------------------------------------------- */
 
+  /*
+    No block-start padding: the footer's own space above the first row already
+    separates it from the page. What is left is the gap before the contact row.
+  */
   .footer__columns {
     display: grid;
     gap: var(--space-5);
-    padding-block: var(--space-6);
+    padding-block-end: var(--space-6);
   }
 
   .footer__col {
@@ -335,12 +273,6 @@ const year = new Date().getFullYear();
   }
 
   @media (min-width: 48rem) {
-    .footer__top {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
-      align-items: center;
-      gap: var(--space-7);
-    }
-
     .footer__columns {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--space-6);

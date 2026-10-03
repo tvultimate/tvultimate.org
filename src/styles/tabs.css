@@ -110,7 +110,8 @@
   text-wrap: pretty;
 }
 
-.tabs__schedule-heading {
+/* The one label style for every sub-heading inside a panel. */
+.tabs__label {
   font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: var(--tracking-widest);
@@ -153,6 +154,35 @@
 .tabs__time {
   font-size: var(--text-sm);
   color: var(--color-pine-200);
+}
+
+/*
+  The rules that hold in every division. They sit under the division's own
+  detail rather than beside it, and run the full width of the panel on wide
+  screens, because they are a property of the tournament and not of whichever
+  division happens to be selected.
+*/
+.tabs__rules {
+  grid-column: 1 / -1;
+  padding-block-start: var(--space-5);
+  border-block-start: var(--border-width) solid var(--line-inverse);
+}
+
+.tabs__rules-list {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tabs__rules-list li {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-pine-100);
+  max-inline-size: var(--layout-measure);
+  text-wrap: pretty;
 }
 
 @media (min-width: 48rem) {

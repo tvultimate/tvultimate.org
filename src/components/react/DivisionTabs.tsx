@@ -1,5 +1,7 @@
 /**
- * Division schedule as an interactive tab set.
+ * Division detail as an interactive tab set: eligibility, gender-ratio rules,
+ * the format that division plays, its schedule, and the game rules that hold
+ * everywhere.
  *
  * A React island because only one division's details should be in the DOM
  * at a time on mobile, and the tab pattern is far cleaner with real state
@@ -11,9 +13,11 @@ import type { Division } from '../../data/tournament';
 
 interface Props {
   divisions: Division[];
+  /** Rules that apply in every division, not just the one being read. */
+  gameRules: readonly string[];
 }
 
-export default function DivisionTabs({ divisions }: Props) {
+export default function DivisionTabs({ divisions, gameRules }: Props) {
   const [active, setActive] = useState(0);
   const baseId = useId();
   const current = divisions[active];
@@ -69,16 +73,29 @@ export default function DivisionTabs({ divisions }: Props) {
             <dt>Division rules</dt>
             <dd>{current.rules}</dd>
           </div>
+          <div className="tabs__row">
+            <dt>Format</dt>
+            <dd>{current.format}</dd>
+          </div>
         </dl>
 
         <div className="tabs__schedule">
-          <p className="tabs__schedule-heading">Schedule</p>
+          <p className="tabs__label">Schedule</p>
           <ul className="tabs__schedule-list">
             {current.schedule.map((slot) => (
               <li key={slot.day}>
                 <span className="tabs__day">{slot.day}</span>
                 <span className="tabs__time">{slot.detail}</span>
               </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="tabs__rules">
+          <p className="tabs__label">Game rules</p>
+          <ul className="tabs__rules-list">
+            {gameRules.map((rule) => (
+              <li key={rule}>{rule}</li>
             ))}
           </ul>
         </div>

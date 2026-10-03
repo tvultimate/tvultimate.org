@@ -107,6 +107,7 @@ const uses = [
 
   <Section tone="accent">
     <Container>
+      <div class="clinic">
       <div class="cta">
         <Eyebrow>Get involved</Eyebrow>
         <h2 class="cta__title">Run a clinic with us</h2>
@@ -120,28 +121,17 @@ const uses = [
         </Button>
       </div>
 
-      <ul class="strip">
-        <li class="strip__item">
-          <img
-            src={images.youthHuddle}
-            alt="A youth team and their coaches in a huddle on the field."
-            width="1080"
-            height="1080"
-            loading="lazy"
-            decoding="async"
-          />
-        </li>
-        <li class="strip__item">
-          <img
-            src={images.aerialYouth}
-            alt="Aerial view of young players forming letters on a turf field."
-            width="1280"
-            height="720"
-            loading="lazy"
-            decoding="async"
-          />
-        </li>
-      </ul>
+      <figure class="clinic__media">
+        <img
+          src={images.youthHuddle}
+          alt="A youth team and their coaches in a huddle on the field."
+          width="1080"
+          height="1080"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
     </Container>
   </Section>
 </BaseLayout>
@@ -232,24 +222,21 @@ const uses = [
     color: var(--text-secondary);
   }
 
-  /* Supporting photography strip. */
-  .strip {
+  /* Clinic invitation, with the one supporting photograph alongside it. */
+  .clinic {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-    gap: var(--space-4);
-    padding: 0;
-    margin: var(--space-7) 0 0;
-    list-style: none;
+    gap: var(--space-6);
+    align-items: center;
   }
 
-  .strip__item {
+  .clinic__media {
     margin: 0;
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     border: var(--border-width) solid var(--line-subtle);
   }
 
-  .strip__item img {
+  .clinic__media img {
     inline-size: 100%;
     block-size: 100%;
     aspect-ratio: 4 / 3;
@@ -262,6 +249,11 @@ const uses = [
     }
 
     .cover {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+
+    .clinic {
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
       gap: var(--space-7);
     }

@@ -16,6 +16,7 @@ import Eyebrow from '../../components/ui/Eyebrow.astro';
 import Icon from '../../components/ui/Icon.astro';
 import TournamentFacts from '../../components/sections/tournament/TournamentFacts.astro';
 import PricingTiers from '../../components/sections/tournament/PricingTiers.astro';
+import SponsorWall from '../../components/sections/tournament/SponsorWall.astro';
 import DivisionTabs from '../../components/react/DivisionTabs';
 import {
   tournament,
@@ -23,7 +24,7 @@ import {
   stats,
   pricing,
   freeAgentPolicy,
-  format,
+  gameRules,
   amenities,
   housing,
   fundraising,
@@ -72,7 +73,7 @@ import { contact, links } from '../../data/org';
             icon: 'calendar',
             label: 'When',
             value: tournament.dates,
-            note: 'Youth · Open · Mixed Adult',
+            note: 'Youth Open · Adult Mixed · Adult Open',
           },
           {
             icon: 'pin',
@@ -86,13 +87,6 @@ import { contact, links } from '../../data/org';
             label: 'Capacity',
             value: '16 teams',
             note: 'per division, waitlist after',
-          },
-          {
-            icon: 'sparkle',
-            label: 'Sponsored by',
-            value: tournament.sponsors.map((s) => s.name).join(' & '),
-            logos: tournament.sponsors,
-            note: 'Thank you to our sponsors',
           },
         ]}
       />
@@ -130,34 +124,21 @@ import { contact, links } from '../../data/org';
         waitlist once a division reaches capacity.
       </p>
       <div class="boi__divisions">
-        <DivisionTabs client:visible divisions={divisions} />
+        <DivisionTabs client:visible divisions={divisions} gameRules={gameRules} />
       </div>
     </Container>
   </Section>
 
-  <!-- Format & amenities -->
+  <!-- Amenities & housing -->
   <Section tone="sunken">
     <Container>
+      <SectionHeader
+        eyebrow="Amenities & housing"
+        title="We take care of the details"
+      />
       <div class="split">
         <div>
-          <SectionHeader eyebrow="Format" title={format.headline} />
-          <p class="boi__lede">{format.description}</p>
-          <ul class="boi__list">
-            {
-              format.rules.map((rule) => (
-                <li class="boi__item">
-                  <span class="boi__item-icon">
-                    <Icon name="check" />
-                  </span>
-                  {rule}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
-        <div>
-          <SectionHeader eyebrow="Amenities" title="We take care of the details" />
+          <h3 class="boi__subhead">On site</h3>
           <ul class="boi__list">
             {
               amenities.map((amenity) => (
@@ -171,15 +152,12 @@ import { contact, links } from '../../data/org';
             }
           </ul>
         </div>
-      </div>
-    </Container>
-  </Section>
 
-  <!-- Housing -->
-  <Section tone="page">
-    <Container>
-      <SectionHeader eyebrow="Housing" title="Where to stay" layout="split" />
-      <p class="boi__lede">{housing}</p>
+        <div>
+          <h3 class="boi__subhead">Where to stay</h3>
+          <p class="boi__lede">{housing}</p>
+        </div>
+      </div>
     </Container>
   </Section>
 
@@ -230,6 +208,27 @@ import { contact, links } from '../../data/org';
           </Button>
         </div>
       </div>
+    </Container>
+  </Section>
+
+  <!-- Sponsors -->
+  <Section tone="page">
+    <Container>
+      <SectionHeader
+        eyebrow="Thank you"
+        title="Our sponsors"
+        lede={`${tournament.edition} ${tournament.name} runs on the support of these local businesses. Their sponsorship keeps entry fees low and every division open.`}
+      />
+      <SponsorWall sponsors={tournament.sponsors} />
+      <p class="boi__thanks-actions">
+        <Button
+          href="/battle-of-idaho/battle-of-idaho-sponsorship/"
+          variant="outline"
+          size="lg"
+        >
+          Become a sponsor
+        </Button>
+      </p>
     </Container>
   </Section>
 </BaseLayout>
@@ -323,8 +322,9 @@ import { contact, links } from '../../data/org';
     gap: var(--space-6);
   }
 
-  .split :global(.header) {
-    margin-block-end: var(--space-4);
+  /* Column headings inside a split section, under its own h2. */
+  .boi__subhead {
+    font-size: var(--text-lg);
   }
 
   .boi__list {
@@ -463,6 +463,14 @@ import { contact, links } from '../../data/org';
     gap: var(--space-3);
     justify-content: center;
     margin-block-start: var(--space-2);
+  }
+
+  /* -------------------------------------------------------------
+   * Sponsors
+   * ----------------------------------------------------------- */
+
+  .boi__thanks-actions {
+    margin-block-start: var(--space-6);
   }
 
   @media (min-width: 48rem) {

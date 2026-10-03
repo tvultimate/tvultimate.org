@@ -1,18 +1,12 @@
 ---
 /**
- * Key facts strip for a tournament: date, venue, capacity, sponsors.
+ * Key facts strip for a tournament: date, venue, capacity, field count.
  *
  * Generic enough for any event we promote. Each fact is a label, a value, and
- * an optional note; `logos` replaces the sponsor text with real marks when they
- * are available.
+ * an optional note, or a link in place of the value.
  */
 
 import Icon from '../../ui/Icon.astro';
-
-interface Sponsor {
-  readonly name: string;
-  readonly logo: string;
-}
 
 interface Fact {
   icon: 'calendar' | 'pin' | 'users' | 'sparkle';
@@ -20,8 +14,6 @@ interface Fact {
   value: string;
   note?: string;
   href?: string;
-  /** Renders a row of sponsor logos instead of a text value. */
-  logos?: readonly Sponsor[];
 }
 
 interface Props {
@@ -42,23 +34,7 @@ const { facts } = Astro.props;
           {fact.label}
         </dt>
         <dd class="facts__value">
-          {fact.logos ? (
-            <ul class="sponsors">
-              {fact.logos.map((sponsor) => (
-                <li class="sponsors__item">
-                  <img
-                    class="sponsors__logo"
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    width="200"
-                    height="120"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </li>
-              ))}
-            </ul>
-          ) : fact.href ? (
+          {fact.href ? (
             <a href={fact.href} rel="noopener noreferrer" target="_blank">
               {fact.value}
             </a>
@@ -140,42 +116,5 @@ const { facts } = Astro.props;
     line-height: var(--leading-snug);
     color: var(--text-secondary);
     text-wrap: pretty;
-  }
-
-  /* -------------------------------------------------------------
-   * Sponsors
-   * ----------------------------------------------------------- */
-
-  .sponsors {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2) var(--space-3);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  .sponsors__item {
-    margin: 0;
-    line-height: 0;
-  }
-
-  /*
-    Sponsor marks are shown as supplied: each is a different aspect ratio and
-    a different colour treatment, so normalising height keeps them on one
-    baseline rather than normalising width, which would let the widest mark
-    dominate. The white plate carries logos that are dark-on-transparent.
-  */
-  .sponsors__logo {
-    display: block;
-    block-size: 2.25rem;
-    inline-size: auto;
-    max-inline-size: 100%;
-    object-fit: contain;
-    object-position: left center;
-    padding: var(--space-1) var(--space-2);
-    background: var(--surface-bright);
-    border-radius: var(--radius-xs);
   }
 </style>

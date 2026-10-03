@@ -15,7 +15,6 @@ import Card from '../../components/ui/Card.astro';
 import FeatureTile from '../../components/ui/FeatureTile.astro';
 import Button from '../../components/ui/Button.astro';
 import Icon from '../../components/ui/Icon.astro';
-import Eyebrow from '../../components/ui/Eyebrow.astro';
 import { partnerClubs, sawtooth } from '../../data/clubs';
 import { contact, images } from '../../data/org';
 
@@ -43,6 +42,8 @@ const infrastructure = [
   <!-- Current partner club -->
   <Section tone="page">
     <Container>
+      <SectionHeader title="Current partner club" />
+
       <div class="partner">
         <figure class="partner__media">
           <img
@@ -56,17 +57,7 @@ const infrastructure = [
         </figure>
 
         <div class="partner__body">
-          <Eyebrow>Current partner club</Eyebrow>
-          <img
-            class="partner__logo"
-            src={images.sawtoothDisc}
-            alt="Sawtooth Ultimate"
-            width="1268"
-            height="1267"
-            loading="lazy"
-            decoding="async"
-          />
-          <h2 class="partner__title">{sawtooth.name}</h2>
+          <h3 class="partner__subtitle">{sawtooth.name}</h3>
           <p class="partner__text">
             Sawtooth is Idaho’s premier competitive Open club team. Named after the
             Sawtooth mountain range, we compete in the Big Sky Section and the Norwest
@@ -192,14 +183,9 @@ const infrastructure = [
     justify-items: start;
   }
 
-  /* Circular Sawtooth mark: black line art, so it reads on the light section. */
-  .partner__logo {
-    inline-size: min(100%, 8rem);
-    block-size: auto;
-  }
-
-  .partner__title {
-    font-size: var(--text-2xl);
+  /* The club's name, under the section title it belongs to. */
+  .partner__subtitle {
+    font-size: var(--text-xl);
   }
 
   .partner__text {

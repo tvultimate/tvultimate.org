@@ -225,6 +225,14 @@
   --layout-nav-height: 3.5rem;
 
   /*
+    Widest a single supporting photograph may span. A row of two images balances
+    itself against the container; one image on its own would otherwise stretch
+    to the full measure and read as a wall of pixels rather than a captionless
+    illustration of the copy beside it.
+  */
+  --layout-media-max: 40rem;
+
+  /*
     Height reserved for the sticky masthead when jumping to an in-page anchor.
     Matches the masthead's own min-height so a jump never hides its target.
   */
