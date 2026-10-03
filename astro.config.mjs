@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   integrations: [react()],
 
@@ -10,4 +12,6 @@ export default defineConfig({
   // Links across the site include the trailing slash to match, which keeps
   // navigation redirect-free.
   trailingSlash: 'always',
+
+  adapter: cloudflare(),
 });
