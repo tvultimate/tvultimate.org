@@ -14,18 +14,31 @@ import SectionHeader from '../../components/ui/SectionHeader.astro';
 import Card from '../../components/ui/Card.astro';
 import FeatureTile from '../../components/ui/FeatureTile.astro';
 import Button from '../../components/ui/Button.astro';
-import Icon from '../../components/ui/Icon.astro';
 import { partnerClubs, sawtooth } from '../../data/clubs';
 import { contact, images } from '../../data/org';
 
-/** What the umbrella covers on a club's behalf. */
-const infrastructure = [
-  'Tournament entry and bid fees',
-  'Practice field rental support',
-  'Coaching and clinician coordination',
-  'Media, film, and promotional support',
-  '501(c)(3) fiscal sponsorship and tax-deductible giving',
-  'Gear, cones, scoreboards, and shared equipment',
+/** What a partner club gets from the umbrella, by benefit. */
+const benefits = [
+  {
+    label: 'Financial Infrastructure',
+    body: 'Dedicated team bank accounts and debit cards—replacing informal Venmo transfers—plus access to non-profit discounts.',
+  },
+  {
+    label: 'Tax-Deductible Fundraising',
+    body: 'Leverage our 501(c)(3) status to offer tax write-offs for your donors and sponsors.',
+  },
+  {
+    label: 'Event Support & Insurance',
+    body: 'Structural support for hosting events, including access to comprehensive liability insurance.',
+  },
+  {
+    label: 'Access to Drone',
+    body: 'Ability to request use of the non-profit’s drone to film games.',
+  },
+  {
+    label: 'Operational Resources',
+    body: 'Unlock free or heavily discounted software tools to streamline your team management.',
+  },
 ];
 ---
 
@@ -71,24 +84,22 @@ const infrastructure = [
     </Container>
   </Section>
 
-  <!-- What the umbrella provides -->
+  <!-- Partnership benefits -->
   <Section tone="raised">
     <Container>
       <div class="columns">
         <div class="columns__list">
-          <SectionHeader title="What the umbrella covers" level={2} />
-          <ul class="checks">
+          <SectionHeader title="Partnership Benefits" level={2} />
+          <dl class="benefits">
             {
-              infrastructure.map((item) => (
-                <li class="checks__item">
-                  <span class="checks__icon">
-                    <Icon name="check" />
-                  </span>
-                  {item}
-                </li>
+              benefits.map((benefit) => (
+                <div class="benefits__item">
+                  <dt class="benefits__label">{benefit.label}</dt>
+                  <dd class="benefits__body">{benefit.body}</dd>
+                </div>
               ))
             }
-          </ul>
+          </dl>
         </div>
 
         <figure class="columns__media">
@@ -196,7 +207,7 @@ const infrastructure = [
   }
 
   /* -------------------------------------------------------------
-   * Coverage list
+   * Benefits list
    * ----------------------------------------------------------- */
 
   .columns {
@@ -210,30 +221,31 @@ const infrastructure = [
     gap: var(--space-4);
   }
 
-  .checks {
+  .benefits {
     display: grid;
-    gap: var(--space-2);
-    padding: 0;
+    gap: var(--space-4);
     margin: 0;
-    list-style: none;
   }
 
-  .checks__item {
-    display: flex;
-    gap: var(--space-3);
-    align-items: start;
+  .benefits__item {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+  }
+
+  .benefits__label {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .benefits__body {
     margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
     color: var(--text-secondary);
-  }
-
-  .checks__icon {
-    flex: none;
-    inline-size: 1.25rem;
-    block-size: 1.25rem;
-    margin-block-start: 0.1em;
-    color: var(--text-accent);
+    max-inline-size: var(--layout-measure);
   }
 
   .columns__media {
