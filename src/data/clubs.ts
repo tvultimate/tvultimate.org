@@ -18,7 +18,7 @@ export const sawtooth = {
   based: 'Boise, Idaho',
   tagline: "The peak of men's competitive frisbee in Idaho",
   intro:
-    'Named after the Sawtooth mountain range, Sawtooth competes in the Big Sky Section and the Norwest Region. Our roster is a mix of veteran Treasure Valley players, professional athletes, and local coaches dedicated to elevating the sport in our community.',
+    'Named after the Sawtooth mountain range, Sawtooth competes in the Big Sky Section and the Northwest Region. Our roster is a mix of veteran Treasure Valley players, professional athletes, and local coaches dedicated to elevating the sport in our community.',
   mission:
     'We strive for excellence on the field and regional impact off of it. As we climb the national rankings, we invite players to join our mission of high-level competition and community development.',
 } as const;
