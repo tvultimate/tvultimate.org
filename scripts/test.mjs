@@ -330,6 +330,30 @@ const INSPECT = `(() => {
     }
   }
 
+  /*
+   * A use element is the other way this site loads artwork: the Sawtooth logo is
+   * a symbol inside an external sprite. An img check cannot see it. A use whose
+   * fragment does not exist renders an empty box, silently, and the page still
+   * looks structurally sound. Collect the references here; the target lookup
+   * and the painted-pixel proof both need the network and the screenshot
+   * buffer, so they run in Node (see auditUses below).
+   */
+  const uses = [];
+  for (const host of document.querySelectorAll('svg:has(use)')) {
+    const refs = [...host.querySelectorAll('use')].map(
+      (u) => u.getAttribute('href') || u.getAttribute('xlink:href') || '',
+    );
+    uses.push({
+      refs,
+      cls: host.getAttribute('class') || 'svg',
+      label: host.getAttribute('aria-label') || '',
+      box: (() => {
+        const r = host.getBoundingClientRect();
+        return [Math.round(r.width), Math.round(r.height)];
+      })(),
+    });
+  }
+
   for (const el of document.querySelectorAll('input,select,textarea')) {
     const id = el.id;
     const ok =
@@ -352,8 +376,247 @@ const INSPECT = `(() => {
   }
 
   probe.remove();
-  return { texts, overflow, structure, truncated, squished, disclosures, scrollY: window.scrollY, vw };
+  return { texts, overflow, structure, truncated, squished, disclosures, uses, scrollY: window.scrollY, vw };
 })()`;
+
+/*
+ * `<use>` audit, run in Node because it needs the network and pixel buffers.
+ *
+ * Two independent proofs, because each catches what the other misses:
+ *
+ *   1. The fragment resolves to a real element in the referenced file. Catches
+ *      a renamed id, a sprite that 404s, or a typo in the `href`.
+ *   2. The host `<svg>` actually painted opaque pixels. Catches everything the
+ *      first cannot see — a symbol that resolves but whose paths are all
+ *      clipped away, or a fill that resolves to nothing.
+ *
+ * Proof 2 is the one that matters. Proof 1 alone passes for a symbol whose
+ * geometry is invisible, which is precisely the "check that never runs but
+ * still reports PASS" failure this suite exists to prevent.
+ */
+async function auditUses(page, uses) {
+  const problems = [];
+  for (const use of uses) {
+    if (use.refs.length === 0) {
+      problems.push({ kind: 'use-no-href', detail: use.cls });
+      continue;
+    }
+    for (const ref of use.refs) {
+      if (!ref) {
+        problems.push({ kind: 'use-no-href', detail: use.cls });
+        continue;
+      }
+      const hash = ref.indexOf('#');
+      if (hash === -1) {
+        problems.push({ kind: 'use-no-fragment', detail: ref });
+        continue;
+      }
+      const file = ref.slice(0, hash);
+      const fragment = ref.slice(hash + 1);
+      if (!file) continue; // Same-document; the page-side check covers it.
+      try {
+        const res = await fetch(new URL(file, server.base));
+        if (!res.ok) {
+          problems.push({ kind: 'use-target-unreachable', detail: `${ref} ${res.status}` });
+          continue;
+        }
+        const text = await res.text();
+        const target = parseTarget(text, fragment);
+        if (!target.found) {
+          problems.push({ kind: 'use-missing-target', detail: ref });
+        } else if (target.drawable === 0) {
+          /*
+           * The id resolves, so proof 1 passes, yet there is nothing to draw.
+           * A group emptied of its paths, or a symbol whose only content is
+           * hidden, is invisible in the browser and no status code reports it.
+           */
+          problems.push({
+            kind: 'use-target-empty',
+            detail: `${ref} (${target.drawable} drawable nodes)`,
+          });
+        }
+      } catch (err) {
+        problems.push({ kind: 'use-target-unreachable', detail: `${ref} ${err.message}` });
+      }
+    }
+
+    const [w, h] = use.box;
+    if (w < 2 || h < 2) {
+      problems.push({ kind: 'use-zero-size', detail: `${use.cls} ${w}x${h}` });
+      continue;
+    }
+
+    /*
+     * Measure the artwork, not the furniture around it.
+     *
+     * `omitBackground` only drops the page background. A logo that sits on its
+     * own coloured plate has that plate as the element's own background, which
+     * would keep the pixel count above zero and mask a logo that paints nothing
+     * at all. So the host's background, padding and shadow are neutralised for
+     * the duration of the shot, then restored.
+     */
+    const style = await page.addStyleTag({
+      content:
+        'svg:has(use){background:none!important;padding:0!important;' +
+        'box-shadow:none!important;border:0!important}',
+    });
+    const handle = await page
+      .locator(`svg${cssEscapeClass(use.cls)}`)
+      .first()
+      .elementHandle();
+    const shot = await handle?.screenshot({ omitBackground: true }).catch(() => null);
+    await style.evaluate((el) => el.remove()).catch(() => {});
+    if (!shot) continue;
+    const { PNG } = await import('pngjs');
+    const png = PNG.sync.read(shot);
+    let opaque = 0;
+    for (let i = 3; i < png.data.length; i += 4) {
+      if (png.data[i] > 8) opaque += 1;
+    }
+    if (opaque === 0) {
+      problems.push({
+        kind: 'use-paints-nothing',
+        detail: `${use.cls} ${use.refs.join(' ')}`,
+      });
+    }
+  }
+  return problems;
+}
+
+/**
+ * Find a symbol or group by id in an SVG source string and count the nodes in
+ * it that can actually paint.
+ *
+ * Counted as drawable: path, rect, circle, ellipse, line, polyline, polygon,
+ * text, image, and a nested use. Excluded: anything explicitly hidden via
+ * `display="none"`, an inline `opacity="0"`, or a `visibility="hidden"`,
+ * because a caller hiding the artwork is a legitimate thing to do and the
+ * browser will honour it silently.
+ *
+ * This is a structural read of the file, not a layout. It cannot see a path
+ * clipped entirely out of view by a clipPath — nothing short of rendering can
+ * — but it does catch the common failure of a symbol that resolves to nothing.
+ */
+function parseTarget(text, id, depth = 0) {
+  // A self-referential sprite would otherwise recurse forever.
+  if (depth > 8) return { found: true, drawable: 1 };
+  const idPattern = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const first = new RegExp(`<(\\w+)\\b[^>]*\\sid="${idPattern}"[^>]*>`).exec(text);
+  if (!first) return { found: false, drawable: 0 };
+
+  const tag = first[1];
+  // Self-closing with an id has no children to draw.
+  if (/\/>$/.test(first[0])) return { found: true, drawable: 0 };
+
+  /*
+   * The target's own attributes hide its children too. `sawtooth-mark` marked
+   * `opacity="0"` is a group of perfectly normal paths that paint nothing, so
+   * the check has to start here rather than at each descendant.
+   */
+  if (isHidden(first[0])) return { found: true, drawable: 0 };
+
+  /*
+   * Slice to this element's own matching close tag, tracking nesting of the
+   * same tag name. A plain indexOf of the first closing tag would stop at an
+   * inner `</g>` — the mark's paths are wrapped in a nested group, so that
+   * would truncate the body and under-count it to a single path.
+   */
+  const tagOpen = new RegExp(`<${tag}\\b`, 'g');
+  const tagClose = new RegExp(`</${tag}\\s*>`, 'g');
+  let nest = 1;
+  let end = -1;
+  let cursor = first.index + first[0].length;
+  while (nest > 0) {
+    tagOpen.lastIndex = cursor;
+    tagClose.lastIndex = cursor;
+    const nextOpen = tagOpen.exec(text);
+    const nextClose = tagClose.exec(text);
+    if (!nextClose) return { found: true, drawable: 0 };
+    if (nextOpen && nextOpen.index < nextClose.index) {
+      nest += 1;
+      cursor = nextOpen.index + nextOpen[0].length;
+    } else {
+      nest -= 1;
+      end = nextClose.index;
+      cursor = nextClose.index + nextClose[0].length;
+    }
+  }
+  const body = text.slice(first.index + first[0].length, end);
+
+  /*
+   * Count drawable nodes, honouring hidden ancestors.
+   *
+   * `hiddenUpTo` is the index of the nearest enclosing start tag above `body`
+   * that hides its contents. Without it a group marked `opacity="0"` still
+   * reports its children as drawable, because each path's own opening tag looks
+   * perfectly normal — the hiding is on the parent. So before counting, check
+   * every ancestor from the target down to each node.
+   */
+  const matches = [...body.matchAll(/<(path|rect|circle|ellipse|line|polyline|polygon|text|image)\b/g)];
+  let drawable = 0;
+  for (const m of matches) {
+    if (isHidden(openTagAt(text, m.index))) continue;
+    if (hasHiddenAncestor(text, first.index, m.index, tag, depth)) continue;
+    drawable += 1;
+  }
+
+  /*
+   * Resolve nested use references, or the count is meaningless: a symbol whose
+   * entire content is one `<use href="#some-group">` would score zero even
+   * though that group is full of paths. Composition has to be followed, not
+   * just the first level.
+   */
+  const nested = [...body.matchAll(/<use\b[^>]*\bhref="#([^"]+)"/g)];
+  for (const m of nested) {
+    const openTag = openTagAt(text, m.index);
+    if (isHidden(openTag)) continue;
+    if (hasHiddenAncestor(text, first.index, m.index, tag, depth)) continue;
+    const child = parseTarget(text, m[1], depth + 1);
+    if (!child.found) continue; // Reported by its own reference, not here.
+    drawable += child.drawable;
+  }
+
+  return { found: true, drawable };
+}
+
+/**
+ * True if any start tag strictly between `from` and `to` hides its contents.
+ * Scans backwards for `<g>`-like openers and checks each one's attributes, so a
+ * hidden wrapper group cannot hide the fact that its children are drawable.
+ */
+function hasHiddenAncestor(text, from, to, tag, depth) {
+  if (depth > 8) return false;
+  const inner = text.slice(from, to);
+  const openers = [...inner.matchAll(/<(\w+)\b[^>]*?(?<!\/)>/g)];
+  for (const o of openers) {
+    if (o[1] === tag && o.index === 0) continue; // The target itself.
+    if (isHidden(o[0])) return true;
+  }
+  return false;
+}
+
+function openTagAt(text, index) {
+  const end = text.indexOf('>', index);
+  return end === -1 ? '' : text.slice(index, end + 1);
+}
+
+function isHidden(openTag) {
+  return (
+    /display\s*=\s*"none"/.test(openTag) ||
+    /visibility\s*=\s*"hidden"/.test(openTag) ||
+    /opacity\s*=\s*"0(\.0+)?"/.test(openTag)
+  );
+}
+
+/** Turn a class attribute into a CSS class selector, e.g. "a b" -> ".a.b". */
+function cssEscapeClass(value) {
+  return value
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((c) => `.${c.replace(/([^\w-])/g, '\\$1')}`)
+    .join('');
+}
 
 const server = await startServer();
 const { chromium } = await import('playwright-core');
@@ -492,8 +755,18 @@ try {
       }
 
       const where = `[${width}] ${route}`;
-      const { texts, overflow, structure, truncated, squished, disclosures, scrollY } =
+      const { texts, overflow, structure, truncated, squished, disclosures, uses, scrollY } =
         await page.evaluate(INSPECT);
+
+      /*
+       * Audited here, before HIDE_TEXT blanks the glyphs and before sampling
+       * reflows the page, so each `use` host is screenshotted as the visitor
+       * would see it.
+       */
+      for (const p of await auditUses(page, uses)) {
+        checks += 1;
+        failures.push(`${where}: ${p.kind} — ${p.detail}`);
+      }
 
       // Layout is now known; blank the glyphs so the pixels behind each text
       // run are unambiguous, then read the backdrop from that screenshot.
@@ -584,14 +857,18 @@ try {
       }
     }
 
-    /* A URL that does not exist must actually 404. */
-    const missing = await page.goto(server.base + MISSING_ROUTE, {
-      waitUntil: 'load',
+    /* A URL that does not exist must actually 404.
+     *
+     * Asserted with `fetch`, not `page.goto`: Playwright throws on an error
+     * status rather than returning the response, and the thrown error does not
+     * carry the status code. */
+    const missing = await fetch(server.base + MISSING_ROUTE, {
+      redirect: 'manual',
     });
     checks += 1;
-    if (missing?.status() !== 404) {
+    if (missing.status !== 404) {
       failures.push(
-        `[${width}] ${MISSING_ROUTE}: status ${missing?.status()}, expected 404`,
+        `[${width}] ${MISSING_ROUTE}: status ${missing.status}, expected 404`,
       );
     }
 

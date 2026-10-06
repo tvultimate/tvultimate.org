@@ -36,9 +36,16 @@ export const images = {
   logo: '/img/logo-tvu.png',
   logoSmall: '/img/logo-tvu-200.png',
 
-  /** Sawtooth mark, luminance converted to alpha. Dark grounds only. */
-  sawtoothLogo: '/img/logo-sawtooth-mark.png',
-  sawtoothLogoSmall: '/img/logo-sawtooth-400.png',
+  /**
+   * Sawtooth Ultimate logo. Not a URL: the sprite at `/img/sawtooth-logo.svg`
+   * holds the geometry once and exposes two symbols, `#logo` and
+   * `#logo-and-wordmark`. Reach for the `SawtoothLogo` component, which picks a
+   * version by name and lets the fill follow `--sawtooth-logo-fg` /
+   * `currentColor`. The recovered PNGs it replaced were luminance-to-alpha
+   * knockouts, so they could only ever be used on dark grounds.
+   */
+  sawtoothLogoSprite: '/img/sawtooth-logo.svg',
+
   /** Boise cityscape beneath a hand and mountain, in line art. */
   boiseLandscape: '/img/boise-landscape-mark.png',
 

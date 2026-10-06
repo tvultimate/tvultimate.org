@@ -13,9 +13,10 @@ import Container from '../../components/ui/Container.astro';
 import SectionHeader from '../../components/ui/SectionHeader.astro';
 import Button from '../../components/ui/Button.astro';
 import Eyebrow from '../../components/ui/Eyebrow.astro';
+import SawtoothLogo from '../../components/ui/SawtoothLogo.astro';
 import Stat from '../../components/ui/Stat.astro';
 import { sawtooth, sawtoothStats, sawtoothReport } from '../../data/clubs';
-import { contact, links, funds, images } from '../../data/org';
+import { contact, links, funds } from '../../data/org';
 ---
 
 <BaseLayout
@@ -23,15 +24,9 @@ import { contact, links, funds, images } from '../../data/org';
   description="Based in Boise, Sawtooth Ultimate represents the peak of men's competitive frisbee in Idaho."
 >
   <PageHero eyebrow="Partner club" title={sawtooth.name} lede={sawtooth.tagline}>
-    <img
-      class="saw-hero__logo"
-      src={images.sawtoothLogoSmall}
-      alt="Sawtooth Ultimate"
-      width="400"
-      height="258"
-      loading="lazy"
-      decoding="async"
-    />
+    <div class="saw-hero__logo">
+      <SawtoothLogo version="lockup" />
+    </div>
   </PageHero>
 
   <!-- About -->
@@ -139,12 +134,20 @@ import { contact, links, funds, images } from '../../data/org';
 </BaseLayout>
 
 <style>
+  /*
+    The logo is wrapped rather than classed directly: Astro scopes styles to
+    the component that declares them, and a `class` passed into `SawtoothLogo`
+    would match nothing. Sizing and the colour token go on this wrapper, which
+    this page owns. Custom properties inherit, so the logo picks both up.
+
+    `PageHero` applies `on-inverse`, so `--text-primary` here is the light
+    inverse step and the logo takes it as `currentColor`. No plate needed: the
+    ground is already dark.
+  */
   .saw-hero__logo {
     inline-size: 12rem;
     max-inline-size: 40vw;
-    block-size: auto;
     margin-block-start: var(--space-3);
-    /* The hero is already dark, so the white mark needs no plate here. */
   }
 
   /* -------------------------------------------------------------

@@ -1,0 +1,101 @@
+---
+/**
+ * Sawtooth Ultimate logo, drawn from the sprite at `public/img/sawtooth-logo.svg`.
+ *
+ * The sprite holds the geometry once and exposes it as two addressable
+ * symbols, so this component picks a version by name rather than shipping a
+ * second copy of the paths:
+ *
+ *   version="mark"     -> #logo               the roundel alone
+ *   version="lockup"   -> #logo-and-wordmark  roundel plus SAWTOOTH
+ *
+ * Both symbols fill from `--sawtooth-logo-fg`, which falls back to
+ * `currentColor`, so the logo takes the colour of the text around it and needs
+ * no per-ground variant. `PageHero` and `Section tone="inverse"` both apply
+ * `on-inverse`, which flips `--text-primary`, so a logo placed inside either is
+ * already the right colour.
+ *
+ * An external `<use>` is used rather than an inline copy of the paths: the
+ * sprite is fetched once and cached, two pages share the one file, and the
+ * document ends up with no duplicate element ids. The trade-offs are that the
+ * accessible name has to be set here, since a referenced `<title>` is not
+ * reliably exposed across documents, and that the logo is unavailable until
+ * the sprite resolves.
+ *
+ * Sizing: the `<svg>` carries no `viewBox`. Its width and height attributes
+ * give it an intrinsic ratio, so it behaves as a replaced element exactly like
+ * the `<img>` it replaces — `inline-size` plus `block-size: auto` still works.
+ * The symbol brings its own `viewBox` and `preserveAspectRatio`, so it is fitted
+ * and centred inside that box by the browser.
+ */
+
+interface Props {
+  /**
+   * Which cut of the logo to draw. `lockup` is the default because it is the
+   * version the club publishes under; `mark` is for tight squares.
+   */
+  version?: 'mark' | 'lockup';
+  /** Intrinsic width in px. The box the browser lays out. */
+  width?: number;
+  /**
+   * Intrinsic height in px. Defaults to the old raster's box for the version,
+   * so dropping this component in place of the `<img>` does not reflow a page.
+   */
+  height?: number;
+  /**
+   * Extra class names for global stylesheets and test selectors.
+   *
+   * It will NOT pick up the caller's Astro `<style>` block. Those rules compile
+   * to `.name[data-astro-cid-<caller>]`, and this component's root element
+   * carries only its own scope id, so they never match. To size or place the
+   * logo, set `--sawtooth-logo-width` and any layout on a wrapper element the
+   * caller owns — custom properties inherit through, so they reach the logo
+   * regardless of scoping.
+   */
+  class?: string;
+}
+
+/** Intrinsic boxes, matching the rasters this component replaced. */
+const BOXES = {
+  // logo-sawtooth-400.png and logo-sawtooth-mark.png were both 400 x 259.
+  lockup: { width: 400, height: 259 },
+  // The roundel is square.
+  mark: { width: 400, height: 400 },
+} as const;
+
+const {
+  version = 'lockup',
+  width = BOXES[version].width,
+  height = BOXES[version].height,
+  class: className,
+} = Astro.props;
+
+const fragment = version === 'mark' ? 'logo' : 'logo-and-wordmark';
+const label =
+  version === 'mark' ? 'Sawtooth Ultimate' : 'Sawtooth Ultimate wordmark';
+---
+
+<svg
+  class:list={['sawtooth-logo', className]}
+  width={width}
+  height={height}
+  role="img"
+  aria-label={label}
+>
+  <use href={`/img/sawtooth-logo.svg#${fragment}`} width="100%" height="100%"></use>
+</svg>
+
+<style>
+  .sawtooth-logo {
+    display: block;
+    /*
+      Defaults to filling the wrapper. `--sawtooth-logo-width` lets a call site
+      pin an explicit size, which is inherited so it works across the scoping
+      boundary described above.
+    */
+    inline-size: var(--sawtooth-logo-width, 100%);
+    block-size: auto;
+    /* Line art: keep the strokes clean at any scale rather than snapping. */
+    shape-rendering: geometricPrecision;
+  }
+</style>

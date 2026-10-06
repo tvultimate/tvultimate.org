@@ -17,6 +17,7 @@ import Button from '../ui/Button.astro';
 import FeatureTile from '../ui/FeatureTile.astro';
 import Eyebrow from '../ui/Eyebrow.astro';
 import Icon from '../ui/Icon.astro';
+import SawtoothLogo from '../ui/SawtoothLogo.astro';
 import { programs } from '../../data/programs';
 import { org, images, links } from '../../data/org';
 import { tournament } from '../../data/tournament';
@@ -113,15 +114,7 @@ const ctas = {
   <Container>
     <div class="spotlight">
       <figure class="spotlight__media">
-        <img
-          class="spotlight__logo"
-          src={images.sawtoothLogoSmall}
-          alt="Sawtooth Ultimate"
-          width="400"
-          height="258"
-          loading="lazy"
-          decoding="async"
-        />
+        <SawtoothLogo version="lockup" />
       </figure>
 
       <div class="spotlight__body">
@@ -296,29 +289,32 @@ const ctas = {
   }
 
   /*
-    The Sawtooth mark, not a team photo. The mark is white artwork, so it needs
-    a dark plate to stay legible on this light section rather than disappearing
-    into the background.
+    The Sawtooth logo, not a team photo. It sits on a dark plate so it reads on
+    this light section, and so the plate can take `on-inverse` rather than
+    hand-rolling dark colours for its contents.
 
-    The plate belongs on the image, not on a wrapper. The recovered PNG is not
-    truly transparent: its empty pixels are white at alpha 6, a faint veil that
-    lifts the mark's background a few percent. Sitting on a plate of its own
-    colour that veil is invisible; on a wrapper of a slightly different shade it
-    reads as a rectangle drawn around the logo.
+    The plate is the same box as the tournament photo above it — same width,
+    same 4 / 3 ratio — so the two media panels sit level rather than one of
+    them looking undersized. The logo is not 4 / 3, so the symbol's own
+    preserveAspectRatio contains it; the plate is sized, not the artwork.
+
+    The plate styles live here, on the <figure>, and NOT on the logo. Astro
+    scopes a component's styles to that component's own scope id and does not
+    push the parent's id onto a child component's root element, so a class
+    passed into `SawtoothLogo` matches nothing. Anything a call site needs to
+    say about the logo has to go on an element the call site owns.
   */
   .spotlight__media {
     display: grid;
-    place-items: center;
     margin: 0;
-  }
-
-  .spotlight__logo {
-    inline-size: min(100%, 15rem);
-    block-size: auto;
+    aspect-ratio: 4 / 3;
     padding: var(--space-6) var(--space-7);
     background: var(--surface-inverse);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-sm);
+    /* The plate is dark and the section is light, so the logo cannot inherit
+       `currentColor` here — it would be dark ink on a dark plate. */
+    --sawtooth-logo-fg: var(--text-inverse);
   }
 
   .spotlight__body {
