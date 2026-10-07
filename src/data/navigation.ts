@@ -4,6 +4,12 @@
  * This is the single source of truth for the header nav, the mobile drawer,
  * the footer index, and the sub-navigation on each page. Adding a page means
  * adding one entry to `navSections` — the header and footer both pick it up.
+ *
+ * The exception is the policy pages under `/policies/`. They are reference
+ * material rather than a section of the site, and they are deliberately kept out
+ * of this file so they stay out of the masthead, the drawer, and the
+ * sub-navigation; `SiteFooter.astro` indexes them from `data/policies` instead.
+ * They are reachable by direct URL or from the footer.
  */
 
 export interface NavLink {

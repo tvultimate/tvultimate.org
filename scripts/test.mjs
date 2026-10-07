@@ -45,6 +45,11 @@ const ROUTES = [
   '/donations-and-dues/youth-donations/',
   '/donations-and-dues/sawtooth-donations/',
   '/donations-and-dues/team-dues/',
+  // Policy pages. Not in the main navigation, but audited like any other route.
+  '/policies/bylaws/',
+  '/policies/board-governance/',
+  '/policies/club-affiliation-agreement/',
+  '/policies/funds-and-capital-management/',
 ];
 
 /*

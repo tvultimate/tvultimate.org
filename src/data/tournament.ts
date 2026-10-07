@@ -15,10 +15,12 @@ export const tournament = {
   location: 'Heroes Park',
   address: '3064 W Malta Dr, Meridian, ID 83646',
   /**
-   * Sponsors, thanked at the foot of the tournament page. Logos recovered from
-   * the archived tournament page — see `public/img/manifest.json` for
-   * provenance. Intrinsic dimensions are carried with each mark so the wall
-   * reserves the right space before the files land.
+   * Sponsors, thanked at the foot of the tournament page. Most logos were
+   * recovered from the archived tournament page; ICCU is newer artwork supplied
+   * by the sponsor. Provenance for every file — which page it came from, what it
+   * depicts, and where it is contextually accurate — is recorded in
+   * `public/img/manifest.json`. Intrinsic dimensions are carried with each mark
+   * so the wall reserves the right space before the files land.
    */
   sponsors: [
     {
@@ -38,6 +40,12 @@ export const tournament = {
       logo: images.sponsorErth,
       width: 232,
       height: 134,
+    },
+    {
+      name: 'ICCU',
+      logo: images.sponsorIccu,
+      width: 960,
+      height: 400,
     },
   ],
   intro:

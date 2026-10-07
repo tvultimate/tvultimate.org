@@ -48,12 +48,21 @@ things:
    tap targets on small screens.
 7. **Console** — page and console errors, plus an assertion that a missing URL 404s.
 
-Two failure modes worth knowing, because both have already caused false confidence:
+Three failure modes worth knowing, because they have already caused false confidence:
+
+- **A stale preview server reports a confident PASS on an old build.** `npm test`
+  spawns `astro preview` to serve `dist/`, and in this Astro version that server
+  runs in the background and outlives the run that started it. The next run then
+  finds the port taken, silently audits whatever `dist/` that server was started
+  against, and prints a normal-looking result — which is how a whole new section
+  came to "pass" with an identical check count to the branch without it. Stop it
+  before a run you intend to trust: `npx astro preview stop`. If a check count
+  does not move when you add a page, suspect this before you trust the result.
 
 - **A check that never runs is not a pass.** An early version reported `PASS` while
   running zero contrast checks, because a helper detached its probe element on the
   first call and returned `null` for every subsequent element. If you change
-  `scripts/test.mjs`, confirm the check count is plausible (~4,900 for the current
+  `scripts/test.mjs`, confirm the check count is plausible (~7,400 for the current
   site) and deliberately break something to prove the check still fails.
 - **A dark background does not re-theme its contents.** Painting `background:
   var(--surface-inverse)` leaves body copy, links, eyebrows and button inks on their

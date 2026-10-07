@@ -16,6 +16,10 @@ import FeatureTile from '../../components/ui/FeatureTile.astro';
 import Button from '../../components/ui/Button.astro';
 import { partnerClubs, sawtooth } from '../../data/clubs';
 import { contact, images } from '../../data/org';
+import { clubAffiliationAgreement, policyPath } from '../../data/policies';
+
+/** The agreement itself, so this page and its own page cannot describe it differently. */
+const agreement = clubAffiliationAgreement;
 
 /** What a partner club gets from the umbrella, by benefit. */
 const benefits = [
@@ -38,6 +42,42 @@ const benefits = [
   {
     label: 'Operational Resources',
     body: 'Unlock free or heavily discounted software tools to streamline your team management.',
+  },
+];
+
+/**
+ * What the agreement itself contains, so a club can see the commitments before
+ * they get in touch rather than after. Summarised from the signed PDF; the
+ * document is what governs.
+ */
+const agreementContents = [
+  {
+    label: 'Purpose & Scope',
+    body: 'The operational terms, mutual benefits, and financial obligations the affiliation creates between your club and our 501(c)(3).',
+  },
+  {
+    label: 'Independent Entity',
+    body: 'Your club is a separate entity, not a branch of ours, and we carry no liability for its contracts, injuries, or debts.',
+  },
+  {
+    label: 'Board Representation',
+    body: 'At least one active club leader sits on our board of directors, and names a successor in writing if they step down.',
+  },
+  {
+    label: 'Benefits Provided',
+    body: 'The dedicated bank account, tax-deductible giving, tax-exempt purchasing, travel and booking rates, software, and event insurance we extend.',
+  },
+  {
+    label: 'Financial Protocols',
+    body: 'No organizational debt, and every purchase pre-funded and cleared before it is made, with receipts and treasurer approval.',
+  },
+  {
+    label: 'Insurance',
+    body: 'We do not cover your practices, league games, or travel — your club procures any liability and participant cover it needs.',
+  },
+  {
+    label: 'Term & Departure',
+    body: 'The affiliation runs season to season, ends on thirty days’ notice, and leaves any remaining funds to another qualifying 501(c)(3).',
   },
 ];
 ---
@@ -157,6 +197,49 @@ const benefits = [
             </li>
           </ol>
         </div>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- The agreement itself -->
+  <Section tone="page">
+    <Container>
+      <SectionHeader
+        eyebrow="The agreement"
+        title="What your club actually signs"
+        layout="split"
+        lede="Partnership runs on a short written agreement, so every club knows the same terms from the start. Here is what it covers, and you can read the whole thing before you get in touch."
+      />
+
+      <div class="agreement">
+        <dl class="benefits">
+          {
+            agreementContents.map((item) => (
+              <div class="benefits__item">
+                <dt class="benefits__label">{item.label}</dt>
+                <dd class="benefits__body">{item.body}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <Card class="agreement__card">
+          <FeatureTile title={agreement.title} icon="document" level={3}>
+            <p>
+              The full agreement, signed by both parties. Read it online, or
+              download the original to keep with your club’s records.
+            </p>
+          </FeatureTile>
+          <p class="agreement__meta">{agreement.download?.detail}</p>
+          <div class="agreement__actions">
+            <Button href={policyPath(agreement.slug)} variant="solid" size="lg">
+              Read the agreement
+            </Button>
+            <Button href={agreement.download?.file} download variant="outline">
+              {agreement.download?.label}
+            </Button>
+          </div>
+        </Card>
       </div>
     </Container>
   </Section>
@@ -315,6 +398,49 @@ const benefits = [
     border-radius: 50%;
   }
 
+  /* -------------------------------------------------------------
+   * The agreement
+   *
+   * The contents list reuses the benefits list above: same term/body
+   * pairs, same styling, one definition on the page.
+   * ----------------------------------------------------------- */
+
+  /*
+    Stacked by default. The card sits outside the list, so at 320px nothing can
+    squeeze the terms into a narrow column beside it.
+  */
+  .agreement {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .agreement__card {
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .agreement__meta {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  /*
+    Stacked at every width, and deliberately not switched to a row. The card is
+    the narrow track of a two-column grid, and a row of two buttons sets a
+    min-content floor wider than that track — which pushed the whole card past
+    its column and the page past the viewport at 48rem. A column of buttons has
+    no such floor: each label wraps inside its own button instead.
+  */
+  .agreement__actions {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+
   @media (min-width: 48rem) {
     .partner {
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -328,6 +454,16 @@ const benefits = [
 
     .affiliate {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--space-7);
+    }
+
+    /*
+      `minmax(0, ...)` on both tracks: the download button's label is the widest
+      in-flow child in the card, and without the zero minimum its intrinsic width
+      would become the track's floor. The button wraps its label instead.
+    */
+    .agreement {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
       gap: var(--space-7);
     }
   }

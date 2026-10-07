@@ -1,0 +1,42 @@
+---
+/**
+ * One page per published policy or agreement.
+ *
+ * The route is generated from `data/policies`, so publishing a document is a
+ * data change rather than a new page file, and every document gets the same
+ * page shape.
+ *
+ * These pages are reachable by direct URL and from the footer index. They are
+ * intentionally not in `data/navigation.ts`, so they stay out of the masthead,
+ * the mobile drawer, and the sub-navigation.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import PolicyDocument from '../../components/sections/PolicyDocument.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import { policies } from '../../data/policies';
+
+export function getStaticPaths() {
+  return policies.map((policy) => ({
+    params: { slug: policy.slug },
+    props: { policy },
+  }));
+}
+
+const { policy } = Astro.props;
+---
+
+<BaseLayout
+  title={`${policy.title} — Treasure Valley Ultimate`}
+  description={policy.summary}
+>
+  <PageHero eyebrow="Policies & Governance" title={policy.title} lede={policy.summary} />
+
+  <Section tone="page">
+    <Container>
+      <PolicyDocument policy={policy} />
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,181 @@
+---
+/**
+ * Draws one published policy or agreement from its data shape.
+ *
+ * Every document on the site renders through this component, so the measure,
+ * the heading rhythm, and the list treatment are defined once. A clause is an
+ * `h2`; the sections inside it are run-in labels rather than further headings,
+ * which is how the source documents are written and keeps one heading level
+ * across four differently structured documents.
+ */
+
+import Button from '../ui/Button.astro';
+import type { PolicyDocument } from '../../data/policies';
+
+interface Props {
+  policy: PolicyDocument;
+}
+
+const { policy } = Astro.props;
+---
+
+<article class="policy">
+  {
+    policy.subtitle && (
+      <p class="policy__subtitle">{policy.subtitle}</p>
+    )
+  }
+
+  <div class="policy__body">
+    {
+      policy.clauses.map((clause) => (
+        <section class="clause">
+          <h2 class="clause__heading">{clause.heading}</h2>
+          {clause.blocks.map((block) => (
+            <div class="block">
+              {block.kind === 'text' && <p class="block__text">{block.body}</p>}
+
+              {block.kind === 'list' && (
+                <ul class="block__list">
+                  {block.items.map((item) => (
+                    <li class="block__item">{item}</li>
+                  ))}
+                </ul>
+              )}
+
+              {block.kind === 'term' && (
+                <div class="term">
+                  <p class="term__lead">
+                    <strong class="term__name">{block.term}</strong>
+                    {block.body && <> {block.body}</>}
+                  </p>
+                  {block.items && (
+                    <ul class="block__list">
+                      {block.items.map((item) => (
+                        <li class="block__item">{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </section>
+      ))
+    }
+  </div>
+
+  {
+    policy.download && (
+      <footer class="policy__download">
+        <p class="policy__download-label">
+          The signed original is also available as a file.
+        </p>
+        <Button href={policy.download.file} download variant="outline">
+          {policy.download.label}
+        </Button>
+      </footer>
+    )
+  }
+</article>
+
+<style>
+  /*
+    One measure for the whole document. Legal text set to the full width of a
+    wide screen is the single worst readability problem these pages have, so the
+    measure is capped here rather than left to the container.
+  */
+  .policy {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .policy__subtitle {
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-normal);
+    color: var(--text-tertiary);
+  }
+
+  .policy__body {
+    display: grid;
+    gap: var(--space-7);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .clause {
+    display: grid;
+    gap: var(--space-3);
+    /* Anchors land clear of the sticky masthead, like any other section. */
+    scroll-margin-block-start: var(--layout-anchor-offset);
+  }
+
+  /*
+    Clause headings carry the document's own wording, capitals included, so the
+    size is set independently of the case rather than fighting it.
+  */
+  .clause__heading {
+    font-size: var(--text-lg);
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+    padding-block-end: var(--space-2);
+    border-block-end: var(--border-width) solid var(--line-subtle);
+  }
+
+  .block {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .block__text {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .block__list {
+    display: grid;
+    gap: var(--space-2);
+    padding-inline-start: var(--space-5);
+    margin: 0;
+  }
+
+  .block__item {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    /* Wraps under its own marker rather than hanging into the gutter. */
+    padding-inline-start: var(--space-1);
+  }
+
+  .term {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .term__lead {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* The run-in label: the document's own term, emphasised but not shouting. */
+  .term__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .policy__download {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-width) solid var(--line-subtle);
+  }
+
+  .policy__download-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+</style>

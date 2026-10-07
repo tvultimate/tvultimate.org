@@ -79,6 +79,20 @@
       "height": 492,
       "bytes": 17818
     },
+    "logo-iccu.svg": {
+      "file": "logo-iccu.svg",
+      "role": "logo",
+      "alt": "ICCU",
+      "describes": "Battle of Idaho sponsor. Green rising chevrons over a disc, beside an ICCU wordmark in slate. Two flat fills, supplied by the studio as a two-colour Illustrator EPS.",
+      "sourcePage": "",
+      "sourceId": "new artwork supplied by the sponsor",
+      "contexts": [
+        "/battle-of-idaho/"
+      ],
+      "viewBox": "0 0 960 400",
+      "bytes": 3496,
+      "derivation": "Converted from ICCU-logo-2color.eps by scripts/build-iccu-logo.py, which parses the EPS drawing section and rewrites the mo/li/cv/cp paths as SVG. The artwork was never rasterised. Two things about the source are counter-intuitive and are recorded in the build script: the drawing section's coordinates already read top-down, so honouring the page setup line `1 -1 scale 0 -400 translate` renders the wordmark upside down; and neither of the two CMYK fills survives a naive conversion to RGB, so the hexes were sampled from the studio's PNG export of the same artwork. scripts/verify-iccu-logo.mjs rasterises the built SVG and diffs it against that export, which is what confirms both."
+    },
     "sawtooth-disc-mark.png": {
       "file": "sawtooth-disc-mark.png",
       "role": "logo",

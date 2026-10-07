@@ -61,6 +61,12 @@ export const images = {
   sponsorErth: '/img/logo-erth-beverage-co.png',
   sponsorStevenson: '/img/logo-stevenson-real-estate.png',
   sponsorGoldsteins: '/img/logo-goldsteins-bagels.png',
+  /**
+   * ICCU sponsor mark, converted from the studio's Illustrator EPS to SVG by
+   * `scripts/build-iccu-logo.py`. Vector rather than a raster export, so it
+   * stays sharp at any size the sponsor wall gives it.
+   */
+  sponsorIccu: '/img/logo-iccu.svg',
 
     /** A Battle of Idaho team on grass. Tournament context, not Sawtooth. */
   boiTeam: '/img/team-roster.jpg',
@@ -106,6 +112,19 @@ export const links = {
   battleRegister:
     'https://ultimatecentral.com/en_au/e/2026-battle-of-idaho/register?new=new',
   maps: 'https://maps.google.com/?q=Heroes+Park+Meridian+Idaho',
+} as const;
+
+/**
+ * Files we publish for readers to take away, rather than destinations they are
+ * sent to. Held here so a path is written once and cannot drift from the copy
+ * that describes it; the bytes live in `public/documents/`.
+ */
+export const documents = {
+  clubPartnershipAgreement: {
+    label: 'Club Partnership Agreement PDF',
+    file: '/documents/club-partnership-agreement.pdf',
+    detail: '3 pages · PDF',
+  },
 } as const;
 
 /**

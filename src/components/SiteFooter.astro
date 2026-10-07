@@ -8,6 +8,7 @@ import Container from './ui/Container.astro';
 import Icon from './ui/Icon.astro';
 import { org, contact, links, images } from '../data/org';
 import { navSections } from '../data/navigation';
+import { policies, policyPath } from '../data/policies';
 
 const year = new Date().getFullYear();
 ---
@@ -31,6 +32,25 @@ const year = new Date().getFullYear();
           </nav>
         ))
       }
+
+      {/*
+        Policies are indexed here and nowhere else. They are reference material
+        rather than a section of the site, so they are deliberately absent from
+        the masthead and the mobile drawer: reachable by direct URL or from this
+        column, not from the primary navigation.
+      */}
+      <nav class="footer__col" aria-label="Policies and governance">
+        <p class="footer__col-heading">Policies &amp; Governance</p>
+        <ul class="footer__col-list">
+          {
+            policies.map((policy) => (
+              <li>
+                <a href={policyPath(policy.slug)}>{policy.shortTitle}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
     </div>
 
     <div class="footer__contact">

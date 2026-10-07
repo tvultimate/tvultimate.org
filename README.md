@@ -143,6 +143,7 @@ Key images:
 | `logo-sawtooth-mark.png`      | Sawtooth mark with alpha. Dark grounds only        |
 | `logo-erth-beverage-co.png`   | Battle of Idaho sponsor                            |
 | `logo-stevenson-real-estate.png` | Battle of Idaho sponsor                         |
+| `logo-iccu.svg`               | Battle of Idaho sponsor, converted from EPS        |
 | `team-roster-boise.jpg`       | Sawtooth on a park field, foothills behind         |
 | `youth-coaching.jpg`          | A youth player taking instruction                  |
 | `aerial-circle.jpg`           | Overhead drone shot of players in a circle         |
@@ -152,6 +153,61 @@ Key images:
 the old tournament page were lost with the archive, and every sports image we
 did recover is Sawtooth club-team photography. Rather than present a club photo
 as tournament imagery, that page is typographic and leads with the sponsor wall.
+
+### Vector logos
+
+`logo-iccu.svg` is converted from the studio's Illustrator EPS by
+`scripts/build-iccu-logo.py`, which parses the drawing section and rewrites the
+PostScript paths as SVG. Nothing is rasterised. Two things about that source are
+counter-intuitive and are recorded in the build script: the drawing section's
+coordinates already read top-down, so honouring the page setup line
+(`1 -1 scale 0 -400 translate`) renders the wordmark upside down; and neither of
+the two CMYK fills survives a naive CMYK-to-RGB conversion, so the hex values
+were sampled from the studio's own PNG export of the same artwork.
+
+`scripts/verify-iccu-logo.mjs` rasterises the built SVG and diffs it against that
+export. It is what settles both of the questions above, so **run it after any
+change to the build script** — the build calls it automatically when the export
+sits beside the source.
+
+## Policies
+
+The published policies and agreements live in `src/data/policies/`, one file per
+document, and are rendered by `sections/PolicyDocument.astro` through a single
+dynamic route at `src/pages/policies/[slug].astro`. Publishing a document is
+therefore a data change, not a new page file, and every document gets an
+identical page shape.
+
+| Slug                             | Document                                          |
+| :------------------------------- | :------------------------------------------------ |
+| `bylaws`                         | Bylaws                                            |
+| `board-governance`               | Board Governance, Composition, Appointments, and Removal Policy |
+| `club-affiliation-agreement`     | Club Team Affiliation Policy & Partnership Agreement |
+| `funds-and-capital-management`   | Organizational Funds & Capital Management Policy   |
+
+Each document is a list of clauses; each clause is a heading plus blocks of
+plain text, bullets, or a run-in `Term: explanation` with optional sub-bullets.
+That one shape covers all four documents despite their being structured very
+differently, and it keeps a clause from drifting away from its neighbours.
+
+**These pages are not in the main navigation.** They are indexed in the footer
+and reachable by direct URL, but they are deliberately absent from
+`data/navigation.ts`, so they stay out of the masthead, the mobile drawer, and
+the sub-navigation bars. Adding a fifth document means adding it to
+`data/policies/` only — do not add it to `navSections`.
+
+Heading text inside each document is reproduced verbatim from the adopted
+documents, capitals included, because it is part of the legal text. The page
+title and the footer label are the presentational layer and are written in title
+case.
+
+## Downloads
+
+`public/documents/` holds files a reader takes away rather than pages they visit.
+Their paths and labels are registered once in `documents` in `data/org.ts`, so
+the link text and the file it points at cannot drift apart. The club partnership
+agreement is the only document with a published original today; its page under
+`/policies/` and the Partner Clubs page both offer it as a download.
 
 ## Donations
 
