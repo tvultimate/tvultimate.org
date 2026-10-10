@@ -1,0 +1,39 @@
+---
+/**
+ * The four key benefits on a campaign landing page. Identical markup on all
+ * three; only the copy in `data/campaign.ts` changes.
+ */
+
+import Grid from '../../ui/Grid.astro';
+import Card from '../../ui/Card.astro';
+import FeatureTile from '../../ui/FeatureTile.astro';
+import SectionHeader from '../../ui/SectionHeader.astro';
+import type { CampaignBenefits } from '../../../data/campaign';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  items: CampaignBenefits['items'];
+}
+
+const { eyebrow, title, lede, items } = Astro.props;
+---
+
+<SectionHeader eyebrow={eyebrow} title={title} lede={lede} layout="split" />
+
+<!--
+  Four tiles read as one row of scannable points on desktop, so the track is
+  narrow enough that all four fit rather than leaving a lone card on row two.
+-->
+<Grid min="15rem">
+  {
+    items.map((benefit) => (
+      <Card>
+        <FeatureTile title={benefit.title} level={3} icon={benefit.icon}>
+          <p>{benefit.body}</p>
+        </FeatureTile>
+      </Card>
+    ))
+  }
+</Grid>

@@ -1,0 +1,13 @@
+---
+/**
+ * Free Agent landing page — the ad page for individual players with no team.
+ *
+ * Deliberately unlinked from the site navigation: reachable only from the
+ * campaign in `data/campaign.ts`, which supplies all of the copy.
+ */
+
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import { freeAgentLanding } from '../../data/campaign';
+---
+
+<LandingLayout page={freeAgentLanding} />

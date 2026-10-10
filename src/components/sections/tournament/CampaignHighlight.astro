@@ -1,0 +1,94 @@
+---
+/**
+ * The one emphasised block in the middle of a campaign landing page: the raffle
+ * for free agents, the schedule for parents, the discount for captains.
+ *
+ * Sits on the dark ground, so `on-inverse` (applied by `Section tone="inverse"`)
+ * restates the semantic tokens for everything inside it.
+ */
+
+import Eyebrow from '../../ui/Eyebrow.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  body: string;
+  /** Optional email or link action under the body. */
+  link?: { label: string; href: string };
+}
+
+const { eyebrow, title, body, link } = Astro.props;
+---
+
+<!--
+  `on-inverse` because the panel paints its own dark surface. Without it the
+  eyebrow and body keep their light-ground inks and land at 2.2:1 — the
+  "dark background does not re-theme its contents" trap.
+-->
+<div class="feature on-inverse">
+  <div class="feature__body">
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <h2 class="feature__title">{title}</h2>
+    <p class="feature__text">{body}</p>
+  </div>
+
+  {
+    link && (
+      <p class="feature__action">
+        <a class="feature__link" href={link.href}>
+          {link.label}
+        </a>
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .feature {
+    display: grid;
+    gap: var(--space-4);
+    align-items: center;
+    max-inline-size: 46rem;
+    margin-inline: auto;
+    padding: var(--space-6) var(--space-5);
+    text-align: center;
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-xl);
+  }
+
+  .feature__body {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+  }
+
+  .feature__title {
+    font-size: var(--text-2xl);
+  }
+
+  .feature__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  /* 24px minimum tap target (WCAG 2.5.8). */
+  .feature__link {
+    display: inline-block;
+    padding-block: var(--space-2);
+    font-weight: 650;
+    color: var(--text-accent);
+  }
+
+  .feature__link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  @media (min-width: 48rem) {
+    .feature {
+      padding: var(--space-7) var(--space-6);
+    }
+  }
+</style>

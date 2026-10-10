@@ -38,6 +38,11 @@ const ROUTES = [
   '/partner-clubs/sawtooth-ultimate/',
   '/battle-of-idaho/',
   '/battle-of-idaho/battle-of-idaho-sponsorship/',
+  // Google Ads landing pages. Unlinked from the navigation, audited like any
+  // other route.
+  '/battle-of-idaho/free-agent/',
+  '/battle-of-idaho/youth-open/',
+  '/battle-of-idaho/register-a-team/',
   '/youth-community/',
   '/resources-and-media/',
   '/donations-and-dues/',

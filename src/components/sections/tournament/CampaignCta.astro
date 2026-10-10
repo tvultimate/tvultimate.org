@@ -1,0 +1,86 @@
+---
+/**
+ * The call to action at the foot of a campaign landing page: one primary
+ * registration button and the single secondary link to the full tournament
+ * page. Both destinations are fixed by the ad campaigns, so they are passed in
+ * rather than looked up.
+ */
+
+import Button from '../../ui/Button.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  /** Label and destination for the primary registration action. */
+  primary: { label: string; href: string };
+  /** Label and destination for the secondary "more info" action. */
+  secondary: { label: string; href: string };
+  /** Small print under the buttons — a deadline, a fee, a reply address. */
+  note?: string;
+}
+
+const { eyebrow, title, lede, primary, secondary, note } = Astro.props;
+---
+
+<div class="cta">
+  {eyebrow && <p class="cta__eyebrow">{eyebrow}</p>}
+  <h2 class="cta__title">{title}</h2>
+  {lede && <p class="cta__lede">{lede}</p>}
+
+  <div class="cta__actions">
+    <Button href={primary.href} variant="solid" size="lg" external>
+      {primary.label}
+    </Button>
+    <Button href={secondary.href} variant="quiet" size="lg" external={false}>
+      {secondary.label}
+    </Button>
+  </div>
+
+  {note && <p class="cta__note">{note}</p>}
+</div>
+
+<style>
+  .cta {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+    max-inline-size: var(--layout-measure);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .cta__eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    line-height: var(--leading-snug);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .cta__title {
+    font-size: var(--text-2xl);
+  }
+
+  .cta__lede {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-block-start: var(--space-2);
+  }
+
+  .cta__note {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-tertiary);
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+/**
+ * Youth Open landing page — the ad page aimed at parents and coaches of
+ * players under 20.
+ *
+ * Deliberately unlinked from the site navigation: reachable only from the
+ * campaign in `data/campaign.ts`, which supplies all of the copy.
+ */
+
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import { youthLanding } from '../../data/campaign';
+---
+
+<LandingLayout page={youthLanding} />

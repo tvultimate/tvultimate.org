@@ -73,7 +73,7 @@ export const pricing = [
   { label: 'General Registration', amount: '$250', note: 'per team' },
   {
     label: 'Free Agents',
-    amount: '$30',
+    amount: '$20',
     note: 'placed on a dedicated free agent team',
   },
 ] as const;
@@ -107,7 +107,7 @@ export const divisions: Division[] = [
     format:
       'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday.',
     schedule: [
-      { day: 'Friday', detail: 'Swiss rounds begin at 3:00 PM' },
+      { day: 'Friday', detail: 'Swiss rounds begin at 2:00 PM' },
       { day: 'Saturday', detail: 'Bracket play begins at 10:00 AM' },
     ],
   },

@@ -1,0 +1,111 @@
+---
+/**
+ * The shared body of the three Google Ads landing pages.
+ *
+ * Each page file supplies only its copy (from `data/campaign.ts`) and this
+ * layout assembles the same five blocks every time: hero with the registration
+ * button above the fold, intro, key benefits, the single emphasised panel,
+ * tournament details, and the closing call to action. Global header and footer
+ * come from `BaseLayout`, unchanged from the rest of the site.
+ */
+
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import CampaignBenefits from '../components/sections/tournament/CampaignBenefits.astro';
+import CampaignHighlight from '../components/sections/tournament/CampaignHighlight.astro';
+import CampaignDetails from '../components/sections/tournament/CampaignDetails.astro';
+import CampaignCta from '../components/sections/tournament/CampaignCta.astro';
+import { campaignLinks, campaignSecondary } from '../data/campaign';
+import type { CampaignLanding } from '../data/campaign';
+import { links } from '../data/org';
+
+interface Props {
+  page: CampaignLanding;
+}
+
+const { page } = Astro.props;
+
+/* Fixed by the ad campaigns, and identical on all three pages. */
+const secondary = campaignSecondary;
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  <PageHero eyebrow={page.eyebrow} title={page.heading} lede={page.lede}>
+    <div class="hero-actions">
+      <Button href={campaignLinks.register} variant="solid" size="lg" external>
+        {page.cta.primary}
+      </Button>
+      <Button href={secondary.href} variant="quiet" size="lg" external={false}>
+        {secondary.label}
+      </Button>
+    </div>
+  </PageHero>
+
+  <Section tone="page">
+    <Container>
+      <p class="intro">{page.intro}</p>
+    </Container>
+  </Section>
+
+  <Section tone="raised">
+    <Container>
+      <CampaignBenefits
+        eyebrow={page.benefits.eyebrow}
+        title={page.benefits.title}
+        lede={page.benefits.lede}
+        items={page.benefits.items}
+      />
+    </Container>
+  </Section>
+
+  <Section tone="sunken">
+    <Container>
+      <CampaignHighlight {...page.highlight} />
+    </Container>
+  </Section>
+
+  <Section tone="page">
+    <Container>
+      <CampaignDetails
+        eyebrow="Tournament details"
+        title="Everything you need to know"
+        details={page.details}
+        schedule={page.schedule}
+        rules={page.rules}
+        venueHref={links.maps}
+      />
+    </Container>
+  </Section>
+
+  <Section tone="inverse">
+    <Container>
+      <CampaignCta
+        eyebrow={page.cta.eyebrow}
+        title={page.cta.title}
+        lede={page.cta.lede}
+        primary={{ label: page.cta.primary, href: campaignLinks.register }}
+        secondary={secondary}
+        note={page.cta.note}
+      />
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+
+  .intro {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+</style>

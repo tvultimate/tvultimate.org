@@ -16,7 +16,12 @@ interface Props {
   href?: string;
   variant?: Variant;
   size?: 'sm' | 'md' | 'lg';
-  /** Renders a trailing arrow and marks the link as external. */
+  /**
+   * Renders a trailing arrow and marks the link as external. Defaults to
+   * detecting an absolute URL, so callers rarely set it; pass `false`
+   * explicitly to keep an absolute URL on this site's own domain in the same
+   * tab.
+   */
   external?: boolean;
   type?: 'button' | 'submit';
   class?: string;
@@ -35,7 +40,7 @@ const {
   href,
   variant = 'solid',
   size = 'md',
-  external = false,
+  external,
   type = 'button',
   class: className,
   ...rest
@@ -50,7 +55,9 @@ if (variant in LEGACY) {
 
 const resolved: Variant = variant in LEGACY ? LEGACY[variant] : (variant as Variant);
 
-const isExternal = external || (href?.startsWith('http') ?? false);
+/* Unset means "infer"; an explicit boolean always wins, so `external={false}`
+   keeps an absolute URL on this domain in the same tab. */
+const isExternal = external ?? href?.startsWith('http') ?? false;
 const classes = ['btn', `btn--${resolved}`, `btn--${size}`, className];
 ---
 

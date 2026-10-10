@@ -1,0 +1,122 @@
+---
+/**
+ * Tournament details for a campaign landing page: the four-fact strip, the
+ * day-by-day schedule, and the game rules.
+ *
+ * The facts strip is `tournament/TournamentFacts.astro` so a date reads the same
+ * way here as on the full tournament page.
+ */
+
+import TournamentFacts from './TournamentFacts.astro';
+import CheckList from '../../ui/CheckList.astro';
+import SectionHeader from '../../ui/SectionHeader.astro';
+import type { CampaignDetail } from '../../../data/campaign';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  details: readonly CampaignDetail[];
+  schedule: readonly { day: string; detail: string }[];
+  rules: readonly string[];
+  /** Maps the "Where" fact to a link. */
+  venueHref?: string;
+}
+
+const { eyebrow, title, lede, details, schedule, rules, venueHref } = Astro.props;
+
+const icons: Record<string, 'calendar' | 'pin' | 'users' | 'sparkle'> = {
+  Division: 'users',
+  Dates: 'calendar',
+  Start: 'calendar',
+  Where: 'pin',
+  Entry: 'sparkle',
+  Bid: 'sparkle',
+};
+
+const facts = details.map((detail) => ({
+  icon: icons[detail.label] ?? 'sparkle',
+  label: detail.label,
+  value: detail.value,
+  note: detail.note,
+  href: detail.label === 'Where' ? venueHref : undefined,
+}));
+---
+
+<SectionHeader eyebrow={eyebrow} title={title} lede={lede} layout="split" />
+
+<TournamentFacts facts={facts} />
+
+<div class="details">
+  <div class="details__block">
+    <h3 class="details__heading">Schedule</h3>
+    <ul class="schedule">
+      {
+        schedule.map((slot) => (
+          <li class="schedule__slot">
+            <span class="schedule__day">{slot.day}</span>
+            <span class="schedule__detail">{slot.detail}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="details__block">
+    <h3 class="details__heading">The basics</h3>
+    <CheckList items={rules} />
+  </div>
+</div>
+
+<style>
+  .details {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--space-7);
+  }
+
+  .details__heading {
+    font-size: var(--text-lg);
+  }
+
+  .schedule {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    list-style: none;
+  }
+
+  .schedule__slot {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0;
+    padding: var(--space-4);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .schedule__day {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .schedule__detail {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 48rem) {
+    .details {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-7);
+    }
+  }
+</style>
