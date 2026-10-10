@@ -17,7 +17,11 @@ interface Props {
   title: string;
   lede?: string;
   details: readonly CampaignDetail[];
-  schedule: readonly { day: string; detail: string }[];
+  /**
+   * Day-by-day slots. `division` is optional and, when a page covers more than
+   * one division, names which squad the slot belongs to.
+   */
+  schedule: readonly { day: string; detail: string; division?: string }[];
   rules: readonly string[];
   /** Maps the "Where" fact to a link. */
   venueHref?: string;
@@ -25,10 +29,12 @@ interface Props {
 
 const { eyebrow, title, lede, details, schedule, rules, venueHref } = Astro.props;
 
+/* Icon per fact label, so the strip stays readable as a set. */
 const icons: Record<string, 'calendar' | 'pin' | 'users' | 'sparkle'> = {
   Division: 'users',
+  Divisions: 'users',
   Dates: 'calendar',
-  Start: 'calendar',
+  'Start times': 'calendar',
   Where: 'pin',
   Entry: 'sparkle',
   Bid: 'sparkle',
@@ -56,6 +62,7 @@ const facts = details.map((detail) => ({
           <li class="schedule__slot">
             <span class="schedule__day">{slot.day}</span>
             <span class="schedule__detail">{slot.detail}</span>
+            {slot.division && <span class="schedule__division">{slot.division}</span>}
           </li>
         ))
       }
@@ -111,6 +118,12 @@ const facts = details.map((detail) => ({
     font-weight: 700;
     line-height: var(--leading-snug);
     color: var(--text-primary);
+  }
+
+  /* Names the division on a page that offers more than one. */
+  .schedule__division {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
   }
 
   @media (min-width: 48rem) {

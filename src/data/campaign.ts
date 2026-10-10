@@ -75,7 +75,8 @@ export interface CampaignLanding {
   benefits: CampaignBenefits;
   highlight: CampaignHighlight;
   details: readonly CampaignDetail[];
-  schedule: readonly { day: string; detail: string }[];
+  /** `division` names the squad on a page that offers more than one. */
+  schedule: readonly { day: string; detail: string; division?: string }[];
   rules: readonly string[];
   cta: CampaignCta;
 }
@@ -165,12 +166,12 @@ const daySchedule = (id: string) =>
 export const freeAgentLanding: CampaignLanding = {
   path: '/battle-of-idaho/free-agent/',
   title: `${tournament.name} ${tournament.year} — Free Agent Signup`,
-  description: `Sign up solo for the ${tournament.name} ${tournament.year} on ${tournament.dates} and get drafted onto a dedicated free agent team. Enter the raffle for a full refund.`,
-  eyebrow: `${tournament.edition} · Mixed Adult · Free Agents`,
+  description: `Sign up solo for the ${tournament.name} ${tournament.year} and get drafted onto a dedicated free agent squad — Mixed Adult (Sat–Sun) or Adult Open (Sat). Enter the raffle for a full refund.`,
+  eyebrow: `${tournament.edition} · Free Agents · Mixed or Open`,
   heading: 'Play the Tourney for Free?',
-  lede: 'No team? No problem. Register solo and the directors draft you onto a dedicated Free Agent squad for the Mixed Adult division.',
+  lede: 'No team? No problem. Register solo and the directors draft you onto a dedicated Free Agent squad — Mixed Adult for the full weekend, or Adult Open for Saturday only.',
   intro:
-    'One of the best weekends of the fall happens at Heroes Park, and you do not need a roster to be part of it. Sign up as a free agent and we will place you on a team built for players who came without one.',
+    'One of the best weekends of the fall happens at Heroes Park, and you do not need a roster to be part of it. Sign up as a free agent and we will place you on a squad built for players who came without one, in whichever division suits you.',
   benefits: {
     eyebrow: 'Why play here',
     title: 'No roster, no problem, no catch',
@@ -179,7 +180,7 @@ export const freeAgentLanding: CampaignLanding = {
       {
         icon: 'users',
         title: 'Sign up solo, get drafted',
-        body: 'Register as an individual and we place you on a dedicated free agent squad. You show up, we hand you a jersey.',
+        body: 'Register as an individual and we place you on a dedicated free agent squad — Mixed Adult or Adult Open. You show up, we hand you a jersey.',
       },
       {
         icon: 'trophy',
@@ -193,8 +194,8 @@ export const freeAgentLanding: CampaignLanding = {
       },
       {
         icon: 'calendar',
-        title: 'Saturday and Sunday',
-        body: `Two full days of Swiss rounds and bracket play, on ${mixedDates}.`,
+        title: 'One day or both',
+        body: `Saturday only in Adult Open, or the full weekend in Mixed Adult on ${mixedDates}.`,
       },
     ],
   },
@@ -208,17 +209,24 @@ export const freeAgentLanding: CampaignLanding = {
     },
   },
   details: [
-    { label: 'Division', value: 'Mixed Adult', note: 'Standard ABBA gender ratio' },
-    { label: 'Dates', value: shortDates('mixed'), note: 'Two full days' },
+    {
+      label: 'Divisions',
+      value: 'Mixed Adult or Adult Open',
+      note: 'ABBA ratio in Mixed · any composition in Open',
+    },
+    { label: 'Dates', value: shortDates('mixed'), note: 'Open plays Saturday only' },
     { label: 'Where', value: tournament.location, note: tournament.address },
     { label: 'Entry', value: freeAgentFee, note: 'per free agent' },
   ],
-  schedule: daySchedule('mixed'),
+  schedule: [
+    ...daySchedule('mixed').map((slot) => ({ ...slot, division: 'Mixed Adult' })),
+    ...daySchedule('open').map((slot) => ({ ...slot, division: 'Adult Open' })),
+  ],
   rules: [
-    'Mixed Adult division played to a standard ABBA gender ratio.',
+    'Mixed Adult plays Saturday and Sunday, to a standard ABBA gender ratio.',
+    'Adult Open plays Saturday only, open to any gender composition.',
     '75-minute rounds, games to 13, hard cap in effect.',
     '15 minutes between rounds for rest and field transition.',
-    'Swiss rounds seed the division into the Sunday bracket.',
   ],
   cta: {
     eyebrow: 'Free Agent signups are open',
