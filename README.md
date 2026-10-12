@@ -5,15 +5,15 @@ Ultimate Frisbee across Idaho's Treasure Valley.
 
 ## Commands
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build the production site to `./dist/`            |
-| `npm run preview`         | Preview the production build locally             |
-| `npm test`                | Audit the build — run this before every commit   |
-| `npm run test:dev`        | Audit a running dev server instead               |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| Command             | Action                                           |
+| :------------------ | :----------------------------------------------- |
+| `npm install`       | Installs dependencies                            |
+| `npm run dev`       | Starts local dev server at `localhost:4321`      |
+| `npm run build`     | Build the production site to `./dist/`           |
+| `npm run preview`   | Preview the production build locally             |
+| `npm test`          | Audit the build — run this before every commit   |
+| `npm run test:dev`  | Audit a running dev server instead               |
+| `npm run astro ...` | Run CLI commands like `astro add`, `astro check` |
 
 The dev server also runs in background mode: `astro dev --background`, then
 `astro dev stop`, `astro dev status`, and `astro dev logs`.
@@ -33,24 +33,24 @@ console errors. See `scripts/test.mjs` for the details and
 The structure mirrors the previous site, and keeps its URLs so existing links
 continue to work.
 
-| URL                                              | Page                        |
-| :----------------------------------------------- | :-------------------------- |
-| `/`                                               | Home                        |
-| `/partner-clubs/`                                 | Partner Information         |
-| `/partner-clubs/sawtooth-ultimate/`               | Sawtooth Ultimate           |
-| `/battle-of-idaho/`                               | 2026 Battle of Idaho        |
-| `/battle-of-idaho/battle-of-idaho-sponsorship/`   | Battle of Idaho Sponsorship |
-| `/youth-community/`                               | Youth & Community           |
-| `/resources-and-media/`                           | Resources and Media         |
-| `/donations-and-dues/`                            | Donations Information        |
-| `/donations-and-dues/general-donation/`           | General Donation            |
-| `/donations-and-dues/youth-donations/`            | Youth Donations             |
-| `/donations-and-dues/sawtooth-donations/`         | Sawtooth Donations          |
-| `/donations-and-dues/team-dues/`                  | Team Dues                   |
+| URL                                             | Page                        |
+| :---------------------------------------------- | :-------------------------- |
+| `/`                                             | Home                        |
+| `/partner-clubs/`                               | Partner Information         |
+| `/partner-clubs/sawtooth-ultimate/`             | Sawtooth Ultimate           |
+| `/battle-of-idaho/`                             | 2026 Battle of Idaho        |
+| `/battle-of-idaho/battle-of-idaho-sponsorship/` | Battle of Idaho Sponsorship |
+| `/youth-community/`                             | Youth & Community           |
+| `/resources-and-media/`                         | Resources and Media         |
+| `/donations-and-dues/`                          | Donations Information       |
+| `/donations-and-dues/general-donation/`         | General Donation            |
+| `/donations-and-dues/youth-donations/`          | Youth Donations             |
+| `/donations-and-dues/sawtooth-donations/`       | Sawtooth Donations          |
+| `/donations-and-dues/team-dues/`                | Team Dues                   |
 
 ## Project structure
 
-```
+```text
 src/
 ├── data/          All copy and content, split by concern
 ├── styles/        Design tokens, global element styles, island styles
@@ -104,11 +104,11 @@ be re-themed by editing one file. See the Code Standards section of `AGENTS.md`.
 
 Three weights, and a section should have at most one `solid`:
 
-| Variant            | Use                                             |
-| :----------------- | :---------------------------------------------- |
-| `variant="solid"`  | The one real call to action on a screen          |
-| `variant="outline"`| A real alternative, one step down                |
-| `variant="quiet"`  | A tertiary action                                |
+| Variant             | Use                                     |
+| :------------------ | :-------------------------------------- |
+| `variant="solid"`   | The one real call to action on a screen |
+| `variant="outline"` | A real alternative, one step down       |
+| `variant="quiet"`   | A tertiary action                       |
 
 All three are defined in tokens (`--btn-solid-*`, `--btn-outline-*`,
 `--btn-quiet-*`), so `.on-inverse` re-themes all of them at once. That is why
@@ -135,19 +135,19 @@ club-team photo came to be labelled as tournament imagery.
 
 Key images:
 
-| File                          | Shows                                              |
-| :---------------------------- | :------------------------------------------------- |
-| `logo-tvu.png`                | The organisation mark — a rainbow TVU, Sawtooth ridgeline |
-| `logo-tvu-roundel.png`        | Circular TVU badge, alternative treatment          |
-| `sawtooth-disc-mark.png`      | Sawtooth mountain-and-disc circle, black line art  |
-| `logo-sawtooth-mark.png`      | Sawtooth mark with alpha. Dark grounds only        |
-| `logo-erth-beverage-co.png`   | Battle of Idaho sponsor                            |
-| `logo-stevenson-real-estate.png` | Battle of Idaho sponsor                         |
-| `logo-iccu.svg`               | Battle of Idaho sponsor, converted from EPS        |
-| `team-roster-boise.jpg`       | Sawtooth on a park field, foothills behind         |
-| `youth-coaching.jpg`          | A youth player taking instruction                  |
-| `aerial-circle.jpg`           | Overhead drone shot of players in a circle         |
-| `boise-landscape-mark.png`    | Boise cityscape in line art                       |
+| File                             | Shows                                                     |
+| :------------------------------- | :-------------------------------------------------------- |
+| `logo-tvu.png`                   | The organisation mark — a rainbow TVU, Sawtooth ridgeline |
+| `logo-tvu-roundel.png`           | Circular TVU badge, alternative treatment                 |
+| `sawtooth-disc-mark.png`         | Sawtooth mountain-and-disc circle, black line art         |
+| `logo-sawtooth-mark.png`         | Sawtooth mark with alpha. Dark grounds only               |
+| `logo-erth-beverage-co.png`      | Battle of Idaho sponsor                                   |
+| `logo-stevenson-real-estate.png` | Battle of Idaho sponsor                                   |
+| `logo-iccu.svg`                  | Battle of Idaho sponsor, converted from EPS               |
+| `team-roster-boise.jpg`          | Sawtooth on a park field, foothills behind                |
+| `youth-coaching.jpg`             | A youth player taking instruction                         |
+| `aerial-circle.jpg`              | Overhead drone shot of players in a circle                |
+| `boise-landscape-mark.png`       | Boise cityscape in line art                               |
 
 **The Battle of Idaho pages carry no photography.** The four images that were on
 the old tournament page were lost with the archive, and every sports image we
@@ -178,12 +178,12 @@ dynamic route at `src/pages/policies/[slug].astro`. Publishing a document is
 therefore a data change, not a new page file, and every document gets an
 identical page shape.
 
-| Slug                             | Document                                          |
-| :------------------------------- | :------------------------------------------------ |
-| `bylaws`                         | Bylaws                                            |
-| `board-governance`               | Board Governance, Composition, Appointments, and Removal Policy |
-| `club-affiliation-agreement`     | Club Team Affiliation Policy & Partnership Agreement |
-| `funds-and-capital-management`   | Organizational Funds & Capital Management Policy   |
+| Slug                           | Document                                                        |
+| :----------------------------- | :-------------------------------------------------------------- |
+| `bylaws`                       | Bylaws                                                          |
+| `board-governance`             | Board Governance, Composition, Appointments, and Removal Policy |
+| `club-affiliation-agreement`   | Club Team Affiliation Policy & Partnership Agreement            |
+| `funds-and-capital-management` | Organizational Funds & Capital Management Policy                |
 
 Each document is a list of clauses; each clause is a heading plus blocks of
 plain text, bullets, or a run-in `Term: explanation` with optional sub-bullets.

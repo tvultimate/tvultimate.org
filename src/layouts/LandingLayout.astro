@@ -32,7 +32,7 @@ const { page } = Astro.props;
 const secondary = campaignSecondary;
 ---
 
-<BaseLayout title={page.title} description={page.description}>
+<BaseLayout title={page.title} description={page.description} noindex>
   <PageHero eyebrow={page.eyebrow} title={page.heading} lede={page.lede}>
     <div class="hero-actions">
       <Button href={campaignLinks.register} variant="solid" size="lg" external>
