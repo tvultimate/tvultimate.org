@@ -324,6 +324,19 @@
       ],
       "viewBox": "#logo 1548.74 581.953 1402.25 1402.25 | #logo-and-wordmark 901.238 581.953 2673.3 1751.05",
       "bytes": 12454
+    },
+    "logo-beeline-sprinkler-repair.png": {
+      "file": "logo-beeline-sprinkler-repair.png",
+      "role": "logo",
+      "alt": "Beeline Sprinkler Repair",
+      "describes": "Battle of Idaho sponsor. Yellow 'Beeline' wordmark with the 'l' drawn as a sprinkler head throwing a blue arc, over the words SPRINKLER REPAIR.",
+      "sourcePage": "",
+      "sourceId": "new artwork supplied by the sponsor",
+      "contexts": [
+        "/battle-of-idaho/"
+      ],
+      "bytes": 106734,
+      "derivation": "Supplied by the sponsor as a cropped 1329x609 PNG with an alpha channel, downscaled to 418x192 \u2014 twice the height the sponsor wall renders it at (--space-9, 6rem), which keeps it sharp on a high-DPI screen. Replaces an auto-traced SVG export of the same artwork that weighed ~920KB and carried no viewBox; the PNG is 88% smaller and its edges are cleaner than the tracer's flat-filled paths."
     }
   },
   "unrecovered": {

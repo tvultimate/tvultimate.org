@@ -18,9 +18,11 @@ interface Props {
   secondary: { label: string; href: string };
   /** Small print under the buttons — a deadline, a fee, a reply address. */
   note?: string;
+  /** Marks the primary button as a tracked conversion click. */
+  trackConversion?: boolean;
 }
 
-const { eyebrow, title, lede, primary, secondary, note } = Astro.props;
+const { eyebrow, title, lede, primary, secondary, note, trackConversion = false } = Astro.props;
 ---
 
 <div class="cta">
@@ -29,7 +31,13 @@ const { eyebrow, title, lede, primary, secondary, note } = Astro.props;
   {lede && <p class="cta__lede">{lede}</p>}
 
   <div class="cta__actions">
-    <Button href={primary.href} variant="solid" size="lg" external>
+    <Button
+      href={primary.href}
+      variant="solid"
+      size="lg"
+      external
+      data-conversion={trackConversion ? '' : undefined}
+    >
       {primary.label}
     </Button>
     <Button href={secondary.href} variant="quiet" size="lg" external={false}>

@@ -34,18 +34,32 @@ export const tournament = {
       logo: images.sponsorStevenson,
       width: 424,
       height: 100,
+      href: 'https://stevensonrealestateboise.com/',
     },
     {
       name: 'ERTH Beverage Co.',
       logo: images.sponsorErth,
       width: 232,
       height: 134,
+      href: 'https://erthbeveragecompany.com/',
     },
     {
       name: 'ICCU',
       logo: images.sponsorIccu,
       width: 960,
       height: 400,
+    },
+    {
+      /*
+        Supplied as a cropped PNG with an alpha channel, sized at twice the
+        height the wall renders it at so it stays sharp on a retina display.
+        It replaced an auto-traced SVG export that was ~920KB.
+      */
+      name: 'Beeline Sprinkler Repair',
+      logo: images.sponsorBeeline,
+      width: 418,
+      height: 192,
+      href: 'https://www.beelinesprinklerrepair.com/',
     },
   ],
   intro:

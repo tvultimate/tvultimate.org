@@ -10,6 +10,8 @@ export interface Sponsor {
   readonly logo: string;
   readonly width: number;
   readonly height: number;
+  /** Sponsor's own site. Rendered as a link when present. */
+  readonly href?: string;
 }
 
 interface Props {
@@ -23,15 +25,43 @@ const { sponsors } = Astro.props;
   {
     sponsors.map((sponsor) => (
       <li class="wall__item">
-        <img
-          class="wall__logo"
-          src={sponsor.logo}
-          alt={sponsor.name}
-          width={sponsor.width}
-          height={sponsor.height}
-          loading="lazy"
-          decoding="async"
-        />
+        {
+          sponsor.href ? (
+            /*
+             * A linked mark is one tap target, so the whole plate is the hit
+             * area rather than the image alone. The accessible name is the
+             * sponsor plus the fact that it leaves the site, which a bare
+             * "ERTH Beverage Co." would not convey.
+             */
+            <a
+              class="wall__link"
+              href={sponsor.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${sponsor.name} (opens in a new tab)`}
+            >
+              <img
+                class="wall__logo"
+                src={sponsor.logo}
+                alt={sponsor.name}
+                width={sponsor.width}
+                height={sponsor.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          ) : (
+            <img
+              class="wall__logo"
+              src={sponsor.logo}
+              alt={sponsor.name}
+              width={sponsor.width}
+              height={sponsor.height}
+              loading="lazy"
+              decoding="async"
+            />
+          )
+        }
       </li>
     ))
   }
@@ -61,7 +91,7 @@ const { sponsors } = Astro.props;
   */
   .wall__logo {
     display: block;
-    block-size: var(--space-7);
+    block-size: var(--space-9);
     inline-size: auto;
     max-inline-size: 100%;
     object-fit: contain;
@@ -70,5 +100,20 @@ const { sponsors } = Astro.props;
     background: var(--surface-bright);
     border: var(--border-width) solid var(--line-subtle);
     border-radius: var(--radius-xs);
+  }
+
+  /*
+    The plate is the tap target when the mark is a link, so the hit area matches
+    what the eye reads as the button. The focus ring sits outside the plate so
+    it is not clipped by the mark's own border.
+  */
+  .wall__link {
+    display: inline-flex;
+    border-radius: var(--radius-xs);
+  }
+
+  .wall__link:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
   }
 </style>

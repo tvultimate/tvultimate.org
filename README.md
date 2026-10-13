@@ -21,8 +21,8 @@ The dev server also runs in background mode: `astro dev --background`, then
 Live reload is on via Vite HMR. Editing `src/data/*.ts` triggers a full reload;
 editing a component or stylesheet hot-updates in place.
 
-`npm test` builds, serves the build, and drives headless Chrome over every route at
-six viewport widths. It checks text contrast by sampling the pixels actually painted
+`npm test` builds, serves the build, and drives headless Chrome over every route
+at six viewport widths. It checks text contrast by sampling the pixels actually painted
 behind each run of text, then container overflow, text truncation, squished mobile
 columns, primary-nav popovers, document structure, image loading, tap targets, and
 console errors. See `scripts/test.mjs` for the details and
@@ -33,20 +33,21 @@ console errors. See `scripts/test.mjs` for the details and
 The structure mirrors the previous site, and keeps its URLs so existing links
 continue to work.
 
-| URL                                             | Page                        |
-| :---------------------------------------------- | :-------------------------- |
-| `/`                                             | Home                        |
-| `/partner-clubs/`                               | Partner Information         |
-| `/partner-clubs/sawtooth-ultimate/`             | Sawtooth Ultimate           |
-| `/battle-of-idaho/`                             | 2026 Battle of Idaho        |
-| `/battle-of-idaho/battle-of-idaho-sponsorship/` | Battle of Idaho Sponsorship |
-| `/youth-community/`                             | Youth & Community           |
-| `/resources-and-media/`                         | Resources and Media         |
-| `/donations-and-dues/`                          | Donations Information       |
-| `/donations-and-dues/general-donation/`         | General Donation            |
-| `/donations-and-dues/youth-donations/`          | Youth Donations             |
-| `/donations-and-dues/sawtooth-donations/`       | Sawtooth Donations          |
-| `/donations-and-dues/team-dues/`                | Team Dues                   |
+| URL                                             | Page                               |
+| :---------------------------------------------- | :--------------------------------- |
+| `/`                                             | Home                               |
+| `/partner-clubs/`                               | Partner Information                |
+| `/partner-clubs/sawtooth-ultimate/`             | Sawtooth Ultimate                  |
+| `/battle-of-idaho/`                             | 2026 Battle of Idaho               |
+| `/battle-of-idaho/battle-of-idaho-sponsorship/` | Battle of Idaho Sponsorship        |
+| `/battle-of-idaho/food-vendor-application/`     | Food Vendor Application (unlinked) |
+| `/youth-community/`                             | Youth & Community                  |
+| `/resources-and-media/`                         | Resources and Media                |
+| `/donations-and-dues/`                          | Donations Information              |
+| `/donations-and-dues/general-donation/`         | General Donation                   |
+| `/donations-and-dues/youth-donations/`          | Youth Donations                    |
+| `/donations-and-dues/sawtooth-donations/`       | Sawtooth Donations                 |
+| `/donations-and-dues/team-dues/`                | Team Dues                          |
 
 ## Project structure
 
@@ -154,6 +155,29 @@ the old tournament page were lost with the archive, and every sports image we
 did recover is Sawtooth club-team photography. Rather than present a club photo
 as tournament imagery, that page is typographic and leads with the sponsor wall.
 
+### Sponsor marks
+
+Sponsors live in `data/tournament.ts` and render through
+`sections/SponsorWall.astro`, which normalises every mark to one height
+(`--space-9`) so a wide wordmark cannot dominate. A sponsor with an `href` is
+linked to its own site, opens in a new tab, and gets a focus ring around the
+whole plate rather than the image alone.
+
+`logo-beeline-sprinkler-repair.png` arrived as a cropped 1329×609 PNG and is
+downscaled to 418×192 — twice the height the wall renders it at, which is what
+keeps it sharp on a high-DPI screen. It replaced an auto-traced SVG export of the
+same artwork that weighed ~920KB for 2636 flat-filled paths, had no `viewBox`,
+and left roughly the bottom third of its canvas empty. The PNG is 88% smaller and
+its edges are cleaner than the tracer's.
+
+`scripts/trim-svg-bounds.mjs` is what measured that empty margin. It rasterises
+an SVG and reports the inked bounds, which is the first thing to reach for when a
+supplied vector describes a canvas rather than a drawing:
+
+```sh
+node scripts/trim-svg-bounds.mjs public/img/logo-iccu.svg /tmp
+```
+
 ### Vector logos
 
 `logo-iccu.svg` is converted from the studio's Illustrator EPS by
@@ -228,6 +252,37 @@ Zeffy form; deriving it means the embed and the outbound link cannot drift.
 Zeffy owns the interior of the iframe, so its accent colour is set in the Zeffy
 dashboard, not in this repo. What the site themes is the frame and everything
 around it — see `src/styles/embed.css`.
+
+## Conversion tracking
+
+Google Ads conversions are reported by `CampaignConversion.astro`, which renders
+an inline script that listens for a click on any link carrying
+`data-conversion` and sends one `conversion` event before the visitor leaves for
+Ultimate Central.
+
+A page opts in by setting `conversion` in its `data/campaign.ts` entry, using
+`battleConversion` for the label issued by the Ads account. Only the free agent
+page is configured today. Both registration buttons on a page — the hero and the
+closing call to action — are marked, and one delegated listener serves both, so a
+single click reports a single conversion.
+
+Two behaviours are deliberate:
+
+- A registration link opens in a new tab, so the current page survives to
+  deliver the beacon and the browser's own navigation is left alone. Only a
+  link that navigates in place defers its hop until the event is queued.
+- The wait for that beacon is capped at 1.5 seconds, so a blocked analytics
+  request cannot strand someone on the page after they asked to leave.
+
+`scripts/verify-conversion.mjs` drives a real browser against the preview build
+to confirm the event fires exactly once with the right label and value, that the
+new tab still opens, and that untracked links stay silent. Run it after changing
+anything in this flow:
+
+```sh
+npx astro preview &
+node scripts/verify-conversion.mjs
+```
 
 ## Content notes
 

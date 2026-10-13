@@ -68,6 +68,12 @@ export const images = {
    */
   sponsorIccu: '/img/logo-iccu.svg',
 
+    /**
+     * Beeline Sprinkler Repair. Cropped PNG with an alpha channel, at twice the
+     * rendered height so the wall shows it sharply on a high-DPI screen.
+     */
+  sponsorBeeline: '/img/logo-beeline-sprinkler-repair.png',
+
     /** A Battle of Idaho team on grass. Tournament context, not Sawtooth. */
   boiTeam: '/img/team-roster.jpg',
   /** Sawtooth roster with the Boise foothills behind. Club-team context. */

@@ -18,6 +18,7 @@ import CampaignBenefits from '../components/sections/tournament/CampaignBenefits
 import CampaignHighlight from '../components/sections/tournament/CampaignHighlight.astro';
 import CampaignDetails from '../components/sections/tournament/CampaignDetails.astro';
 import CampaignCta from '../components/sections/tournament/CampaignCta.astro';
+import CampaignConversion from '../components/sections/tournament/CampaignConversion.astro';
 import { campaignLinks, campaignSecondary } from '../data/campaign';
 import type { CampaignLanding } from '../data/campaign';
 import { links } from '../data/org';
@@ -30,12 +31,26 @@ const { page } = Astro.props;
 
 /* Fixed by the ad campaigns, and identical on all three pages. */
 const secondary = campaignSecondary;
+
+/*
+ * Only pages that opt into a conversion report one, and only the link to the
+ * registration form is tracked — the secondary link stays on this site.
+ */
+const trackRegistration = Boolean(page.conversion);
 ---
 
 <BaseLayout title={page.title} description={page.description} noindex>
+  <CampaignConversion page={page} />
+
   <PageHero eyebrow={page.eyebrow} title={page.heading} lede={page.lede}>
     <div class="hero-actions">
-      <Button href={campaignLinks.register} variant="solid" size="lg" external>
+      <Button
+        href={campaignLinks.register}
+        variant="solid"
+        size="lg"
+        external
+        data-conversion={trackRegistration ? '' : undefined}
+      >
         {page.cta.primary}
       </Button>
       <Button href={secondary.href} variant="quiet" size="lg" external={false}>
@@ -89,6 +104,7 @@ const secondary = campaignSecondary;
         primary={{ label: page.cta.primary, href: campaignLinks.register }}
         secondary={secondary}
         note={page.cta.note}
+        trackConversion={trackRegistration}
       />
     </Container>
   </Section>

@@ -1,0 +1,471 @@
+---
+/**
+ * Food Vendor Application — invites food trucks and dessert vendors to serve at
+ * the tournament.
+ *
+ * Deliberately absent from `data/navigation.ts`: this page is sent to vendors
+ * directly, one at a time, rather than advertised. It still builds a route like
+ * any other page and appears in the sitemap, so it is reachable if you ever
+ * decide to link it publicly.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Card from '../../components/ui/Card.astro';
+import Grid from '../../components/ui/Grid.astro';
+import Button from '../../components/ui/Button.astro';
+import FeatureTile from '../../components/ui/FeatureTile.astro';
+import { tournament } from '../../data/tournament';
+import { contact } from '../../data/org';
+
+/** Where the email CTA and the closing button both point. */
+const APPLY_ANCHOR = '#how-to-apply';
+
+const vendorEmail = contact.battle.email;
+
+/** Why a vendor says yes. Framed as the business case, not the mission. */
+const opportunity = [
+  {
+    title: 'A captive audience that stays all day',
+    body: 'Players run multiple games a day and are on-site between them. They are not passing through — they are spending the whole tournament in one place, and hungry.',
+    icon: 'users' as const,
+  },
+  {
+    title: 'Only three vendors',
+    body: 'We are limiting the event to 2 food trucks and 1 dessert vendor so each of you gets real volume and a strong weekend, instead of competing with a row of trucks.',
+    icon: 'shield' as const,
+  },
+  {
+    title: 'You are the real meal',
+    body: 'We provide basic morning snacks and drinks. Meals are entirely up to you — and that is where the revenue is.',
+    icon: 'heart' as const,
+  },
+];
+
+/** Day-by-day hours and head counts, as quoted to vendors. */
+const days = [
+  {
+    day: 'Friday, Nov 13',
+    hours: '2:00 PM – 5:00 PM',
+    traffic: '150–200 athletes + spectators',
+    note: 'The post-game dinner rush — the busiest window on the Friday.',
+  },
+  {
+    day: 'Saturday, Nov 14',
+    hours: '9:00 AM – 3:30 PM',
+    traffic: '500 athletes + spectators',
+    note: 'Our biggest day, with steady foot traffic from open to close.',
+  },
+  {
+    day: 'Sunday, Nov 15',
+    hours: '9:00 AM – 2:00 PM',
+    traffic: '150–200 athletes + spectators',
+    note: 'A strong finish to the weekend as the finals wrap.',
+  },
+];
+
+/**
+ * The copy-and-paste email template. Rendered as a styled list rather than a
+ * `<pre>` so it wraps on a phone — a vendor reading this on mobile is the
+ * common case, and a horizontally scrolling block would hide half the fields.
+ */
+const fields = [
+  'Business / Food Truck Name:',
+  'Contact Name:',
+  'Phone Number:',
+  'Brief description of your menu/cuisine:',
+  'Average ticket/prep time for large crowds:',
+  'Availability (Friday, Saturday, Sunday — all 3 preferred):',
+  'Preferred Fee Option ($100/day Flat Fee OR 10% Revenue Split):',
+  'Website or Social Media Link:',
+];
+
+/** The two ways to pay, presented as equals rather than a price list. */
+const feeOptions = [
+  {
+    title: 'Option A — Flat booth fee',
+    amount: '$100',
+    unit: 'per day',
+    body: 'A flat $100 per day, or $300 for the full weekend. Predictable, and you keep every dollar you take in.',
+  },
+  {
+    title: 'Option B — Revenue split',
+    amount: '10%',
+    unit: 'of sales',
+    body: 'No upfront cost. You pay 10% of your sales at the end of the weekend, and keep the other 90%.',
+  },
+];
+---
+
+<BaseLayout
+  title={`Food Vendor Application — ${tournament.name} ${tournament.year}`}
+  description={`Apply to serve food at the ${tournament.edition} ${tournament.name} at ${tournament.location}, ${tournament.dates}. Limited to 2 food trucks and 1 dessert vendor.`}
+>
+  <PageHero
+    eyebrow="Vendor opportunity"
+    title={`Become a Food Vendor at the ${tournament.edition} ${tournament.name}!`}
+    lede={`Join us ${tournament.dates}, at ${tournament.location} in Meridian, Idaho, and serve hundreds of hungry athletes and spectators.`}
+  >
+    <div class="hero-actions">
+      <Button href={APPLY_ANCHOR} variant="solid" size="lg">
+        Apply via Email
+      </Button>
+    </div>
+  </PageHero>
+
+  <Section tone="page">
+    <Container>
+      <p class="intro">
+        We run {tournament.name} as a fundraising tournament for a non-profit, and
+        every vendor fee goes straight back into our youth and community programs.
+        We are looking for food trucks and a dessert vendor to feed our athletes,
+        their families, and the spectators who come out to watch.
+      </p>
+    </Container>
+  </Section>
+
+  <Section tone="raised">
+    <Container>
+      <SectionHeader
+        eyebrow="The opportunity"
+        title="Why partner with us"
+        layout="split"
+      />
+
+      <Grid min="17rem">
+        {
+          opportunity.map((item) => (
+            <Card>
+              <FeatureTile title={item.title} icon={item.icon}>
+                <p>{item.body}</p>
+              </FeatureTile>
+            </Card>
+          ))
+        }
+      </Grid>
+    </Container>
+  </Section>
+
+  <Section tone="page">
+    <Container>
+      <SectionHeader
+        eyebrow="Schedule and traffic"
+        title="What the weekend looks like"
+        lede="These are the hours we expect you to be open, and roughly how many people are on-site."
+        layout="split"
+      />
+
+      <ol class="days">
+        {
+          days.map((day) => (
+            <li class="day">
+              <div class="day__head">
+                <h3 class="day__name">{day.day}</h3>
+                <p class="day__hours">{day.hours}</p>
+              </div>
+              <p class="day__traffic">{day.traffic}</p>
+              <p class="day__note">{day.note}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Container>
+  </Section>
+
+  <Section tone="sunken">
+    <Container>
+      <SectionHeader
+        eyebrow="Fees"
+        title="Two ways to pay"
+        lede="All vendor fees directly support our non-profit youth and community programs. We strongly prefer vendors who can commit to all three days."
+        layout="split"
+      />
+
+      <Grid min="17rem">
+        {
+          feeOptions.map((option) => (
+            <Card class="fee">
+              <p class="fee__title">{option.title}</p>
+              <p class="fee__amount">
+                {option.amount} <span class="fee__unit">{option.unit}</span>
+              </p>
+              <p class="fee__body">{option.body}</p>
+            </Card>
+          ))
+        }
+      </Grid>
+    </Container>
+  </Section>
+
+  <Section tone="inverse" id="how-to-apply">
+    <Container>
+      <div class="apply">
+        <div class="apply__body">
+          <Eyebrow>How to apply</Eyebrow>
+          <h2 class="apply__title">Send us an email</h2>
+          <p class="apply__text">
+            There is no form to fill in. Email{' '}
+            <a class="apply__email" href={`mailto:${vendorEmail}`}>{vendorEmail}</a>{' '}
+            with the details below and the tournament directors will reply. Copy the
+            template, fill it in, and send.
+          </p>
+        </div>
+
+        <div class="apply__aside">
+          <div class="template">
+            <p class="template__label">Copy and paste</p>
+            <p class="template__subject">
+              <span class="template__key">Subject:</span> Food Vendor Application — [Your
+              Food Truck Name]
+            </p>
+            <ul class="template__fields">
+              {
+                fields.map((field) => (
+                  <li class="template__field">{field}</li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div class="apply__actions">
+            <Button
+              href={`mailto:${vendorEmail}?subject=Food%20Vendor%20Application`}
+              variant="solid"
+              size="lg"
+            >
+              Email {vendorEmail}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+
+  .intro {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  /* -------------------------------------------------------------
+   * Schedule
+   *
+   * A list, not a table: it stacks without horizontal scroll on a
+   * phone, which is where a vendor will actually read it.
+   * ----------------------------------------------------------- */
+  .days {
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .day {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .day__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .day__name {
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+  }
+
+  .day__hours {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    letter-spacing: var(--tracking-snug);
+    color: var(--text-accent);
+  }
+
+  .day__traffic {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    color: var(--text-accent);
+  }
+
+  .day__note {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  /* -------------------------------------------------------------
+   * Fees
+   * ----------------------------------------------------------- */
+  .fee {
+    gap: var(--space-2);
+  }
+
+  .fee__title {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .fee__amount {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 800;
+    line-height: var(--leading-tight);
+    color: var(--text-primary);
+  }
+
+  .fee__unit {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-normal);
+    text-transform: none;
+    color: var(--text-tertiary);
+  }
+
+  .fee__body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* -------------------------------------------------------------
+   * Apply
+   *
+   * `tone="inverse"` re-themes the whole subtree, so the template
+   * block paints itself with the inverse tokens rather than needing
+   * a dark-mode variant.
+   * ----------------------------------------------------------- */
+  .apply {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .apply__body {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+
+  .apply__title {
+    font-size: var(--text-xl);
+    color: var(--color-pine-50);
+  }
+
+  .apply__text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-100);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .apply__email {
+    font-weight: 700;
+    color: var(--color-sunset-300);
+    overflow-wrap: anywhere;
+  }
+
+  .apply__aside {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /*
+   * The template is the one thing a visitor will copy, so it gets a
+   * panel of its own rather than sitting loose in the prose. Long
+   * email addresses are allowed to wrap rather than overflow.
+   */
+  .template {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--color-pine-950);
+    border: var(--border-width) solid var(--line-inverse);
+    border-radius: var(--radius-lg);
+  }
+
+  .template__label {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-sunset-300);
+  }
+
+  .template__subject {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-50);
+    padding-block-end: var(--space-3);
+    border-block-end: var(--border-width) solid var(--line-inverse);
+  }
+
+  .template__key {
+    color: var(--color-pine-200);
+  }
+
+  .template__fields {
+    display: grid;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-pine-100);
+  }
+
+  .template__field {
+    /* A vendor's answer here can be long; never clip it. */
+    overflow-wrap: anywhere;
+  }
+
+  .template__field::before {
+    content: '·';
+    display: inline-block;
+    inline-size: 1ch;
+    color: var(--color-sunset-300);
+  }
+
+  .apply__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 48rem) {
+    .apply {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--space-7);
+    }
+  }
+</style>

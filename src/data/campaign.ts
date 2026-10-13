@@ -79,6 +79,11 @@ export interface CampaignLanding {
   schedule: readonly { day: string; detail: string; division?: string }[];
   rules: readonly string[];
   cta: CampaignCta;
+  /**
+   * Set on a page whose registration clicks should report a Google Ads
+   * conversion. Only the free agent page is configured for this today.
+   */
+  conversion?: typeof battleConversion;
 }
 
 /** Shared by all three pages: the registration and the "full info" links. */
@@ -86,6 +91,19 @@ export const campaignLinks = {
   register: links.battleRegister,
   info: 'https://tvultimate.org/battle-of-idaho/',
   email: contact.battle.email,
+} as const;
+
+/**
+ * Google Ads conversion to report when a visitor leaves for Ultimate Central.
+ *
+ * `sendTo` is the conversion label issued by the Google Ads account, not the
+ * account ID alone. `value` is in the units `currency` names, so this counts as
+ * one USD registration click.
+ */
+export const battleConversion = {
+  sendTo: 'AW-18508946300/XJyNCImOuJodEPy24PlE',
+  value: 1,
+  currency: 'USD',
 } as const;
 
 /** The secondary link, identical on every page by ad-campaign requirement. */
@@ -165,6 +183,7 @@ const daySchedule = (id: string) =>
 
 export const freeAgentLanding: CampaignLanding = {
   path: '/battle-of-idaho/free-agent/',
+  conversion: battleConversion,
   title: `${tournament.name} ${tournament.year} — Free Agent Signup`,
   description: `Sign up solo for the ${tournament.name} ${tournament.year} and get drafted onto a dedicated free agent squad — Mixed Adult (Sat–Sun) or Adult Open (Sat). Enter the raffle for a full refund.`,
   eyebrow: `${tournament.edition} · Free Agents · Mixed or Open`,

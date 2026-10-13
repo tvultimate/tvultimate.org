@@ -1,0 +1,90 @@
+---
+/**
+ * Reports a Google Ads conversion when a visitor leaves for the registration
+ * form, so the click is counted before the page navigates away.
+ *
+ * Google's generated snippet attaches an inline `onclick` to the link and
+ * navigates from `event_callback`. This does the same work with one delegated
+ * listener on the document instead: the registration button appears in two
+ * places on a landing page (the hero and the closing call to action), and two
+ * inline handlers would fire the conversion twice for a single intent.
+ *
+ * Only links carrying `data-conversion` are tracked, and a page opts in by
+ * setting `conversion` in `data/campaign.ts`. A page without it renders
+ * nothing at all. See README for how to add a second conversion.
+ */
+
+import type { CampaignLanding } from '../../data/campaign';
+
+interface Props {
+  page: CampaignLanding;
+}
+
+const { page } = Astro.props;
+const conversion = page.conversion;
+---
+
+{
+  conversion && (
+    <script
+      is:inline
+      define:vars={{ sendTo: conversion.sendTo, value: conversion.value, currency: conversion.currency }}
+    >
+      (function () {
+        /*
+         * A ceiling on how long a visitor waits for the beacon. Without it a
+         * blocked or slow analytics request could strand someone on the page
+         * after they asked to leave.
+         */
+        var NAVIGATE_TIMEOUT = 1500;
+
+        function report(url, followCallback) {
+          var settled = false;
+
+          function finish() {
+            if (settled) return;
+            settled = true;
+            followCallback();
+          }
+
+          window.gtag('event', 'conversion', {
+            send_to: sendTo,
+            value: value,
+            currency: currency,
+            event_callback: finish,
+          });
+
+          window.setTimeout(finish, NAVIGATE_TIMEOUT);
+        }
+
+        document.addEventListener('click', function (event) {
+          var origin = event.target;
+          if (!origin || typeof origin.closest !== 'function') return;
+
+          var trigger = origin.closest('[data-conversion]');
+          if (!trigger) return;
+
+          var url = trigger.getAttribute('href');
+          if (!url) return;
+
+          /*
+           * The registration link opens in a new tab, so the current page
+           * survives to deliver the beacon and the browser's own navigation is
+           * left alone. Only when a link navigates in place do we defer the
+           * hop until the event has been queued, because an unload mid-flight
+           * would drop it.
+           */
+          if (trigger.target === '_blank') {
+            report(url, function () {});
+            return;
+          }
+
+          event.preventDefault();
+          report(url, function () {
+            window.location.href = url;
+          });
+        });
+      })();
+    </script>
+  )
+}
