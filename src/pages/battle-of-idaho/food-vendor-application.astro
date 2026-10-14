@@ -24,6 +24,13 @@ import { contact } from '../../data/org';
 /** Where the email CTA and the closing button both point. */
 const APPLY_ANCHOR = '#how-to-apply';
 
+/**
+ * Secure payment form for an accepted vendor's fee. Third-party (Zeffy), so it
+ * opens in a new tab and is not treated as a link on this domain.
+ */
+const PAY_VENDOR_FEE_URL =
+  'https://www.zeffy.com/en-US/donation-form/battle-of-idaho-vendor-fee';
+
 const vendorEmail = contact.battle.email;
 
 /** Why a vendor says yes. Framed as the business case, not the mission. */
@@ -318,6 +325,30 @@ const selection = [
           </div>
         </div>
       </div>
+
+      {/*
+        Payment sits below the apply panel rather than inside it: a vendor
+        reading this page cold is not a vendor who has already been selected,
+        and a payment link sitting beside "Apply via email" invites the wrong
+        one of them to use it. Deliberately outline weight, because this
+        section already spends its single solid action on the application.
+      */}
+      <div class="pay">
+        <div class="pay__body">
+          <p class="pay__label">Already selected?</p>
+          <p class="pay__text">
+            If you have been chosen and are ready to pay your vendor fee, use
+            the link below. It opens our secure payment form, and the fee is due
+            before you arrive on site.
+          </p>
+        </div>
+
+        <div class="pay__actions">
+          <Button href={PAY_VENDOR_FEE_URL} variant="outline" size="lg" external>
+            Pay your vendor fee
+          </Button>
+        </div>
+      </div>
     </Container>
   </Section>
 </BaseLayout>
@@ -580,7 +611,59 @@ const selection = [
     gap: var(--space-3);
   }
 
+  /* -------------------------------------------------------------
+   * Pay
+   *
+   * A ruled-off closing note. The rule above is what makes it read as a
+   * separate step rather than as a third bullet in the apply panel.
+   * ----------------------------------------------------------- */
+  .pay {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    margin-block-start: var(--space-7);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--border-width) solid var(--line-subtle);
+  }
+
+  .pay__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .pay__label {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .pay__text {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .pay__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
   @media (min-width: 48rem) {
+    .pay {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-7);
+      justify-items: stretch;
+    }
+
+    .pay__actions {
+      justify-content: flex-end;
+    }
+
     .selection__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--space-5);
