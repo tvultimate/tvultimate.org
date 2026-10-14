@@ -11,11 +11,36 @@ import Grid from '../components/ui/Grid.astro';
 import Card from '../components/ui/Card.astro';
 import FeatureTile from '../components/ui/FeatureTile.astro';
 
+/*
+ * Each suggestion carries its own link text. A bare "Learn more" repeated four
+ * times is indistinguishable in a screen reader's link list, in a search
+ * result, and to a crawler — the destination is the point.
+ */
 const suggestions = [
-  { label: 'Home', href: '/', summary: 'Start from the beginning.' },
-  { label: 'Battle of Idaho', href: '/battle-of-idaho/', summary: 'Tournament dates, divisions, and registration.' },
-  { label: 'Partner Clubs', href: '/partner-clubs/', summary: 'Club teams and how to affiliate.' },
-  { label: 'Donations and Dues', href: '/donations-and-dues/', summary: 'Support the work.' },
+  {
+    label: 'Home',
+    href: '/',
+    cta: 'Back to the home page',
+    summary: 'Start from the beginning.',
+  },
+  {
+    label: 'Battle of Idaho',
+    href: '/battle-of-idaho/',
+    cta: 'Battle of Idaho tournament details',
+    summary: 'Tournament dates, divisions, and registration.',
+  },
+  {
+    label: 'Partner Clubs',
+    href: '/partner-clubs/',
+    cta: 'Partner club information',
+    summary: 'Club teams and how to affiliate.',
+  },
+  {
+    label: 'Donations and Dues',
+    href: '/donations-and-dues/',
+    cta: 'Ways to support the club',
+    summary: 'Support the work.',
+  },
 ] as const;
 ---
 
@@ -40,7 +65,7 @@ const suggestions = [
         {
           suggestions.map((item) => (
             <Card>
-              <FeatureTile level={2} title={item.label} href={item.href}>
+              <FeatureTile level={2} title={item.label} href={item.href} cta={item.cta}>
                 <p>{item.summary}</p>
               </FeatureTile>
             </Card>

@@ -33,5 +33,27 @@ export default defineConfig({
   // navigation redirect-free.
   trailingSlash: 'always',
 
+  build: {
+    /*
+     * Inline every stylesheet into the page's <head> rather than emitting a
+     * linked .css file.
+     *
+     * Astro's default (`'auto'`) inlines only stylesheets under Vite's
+     * 4 KiB asset limit. Our shared chunk — which carries the token sheet and
+     * every common component's styles — is ~29 KiB raw, so it always missed
+     * that threshold and shipped as a linked file. One render-blocking
+     * round trip, measured at 190 ms on a throttled mobile connection and
+     * flagged by Lighthouse on every route.
+     *
+     * Inlining costs nothing here: the whole stylesheet is ~6 KiB gzipped
+     * against an HTML document that is already two to three times that, and
+     * the CSS is now parsed in the same pass as the markup instead of
+     * blocking first paint. There is no cacheable-CSS win to lose, because
+     * every visitor to a given page already downloads a fresh copy of the
+     * HTML for it.
+     */
+    inlineStylesheets: 'always',
+  },
+
   adapter: cloudflare(),
 });

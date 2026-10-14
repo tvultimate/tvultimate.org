@@ -22,6 +22,13 @@ interface Props {
     | 'document';
   /** Trailing call to action rendered as a text link. */
   href?: string;
+  /**
+   * The link's own text. Required whenever `href` is set — there is
+   * deliberately no default, because "Learn more" is not descriptive link
+   * text. Out of context, in a search result, or in a screen reader's link
+   * list, five of them are indistinguishable from each other. A caller that
+   * forgets it fails the build rather than shipping another one.
+   */
   cta?: string;
   /** Heading level. Must fit the page's document outline. */
   level?: 2 | 3 | 4;
@@ -32,10 +39,22 @@ const {
   title,
   icon,
   href,
-  cta = 'Learn more',
+  cta,
   level = 3,
   class: className,
 } = Astro.props;
+
+/*
+ * A link with no text of its own is a defect, not a style question. Failing the
+ * build is the right place to catch it: it is the only moment every call site
+ * is visible at once, and nothing is left behind on a live page.
+ */
+if (href && !cta?.trim()) {
+  throw new Error(
+    `[ui/FeatureTile] "${title}" links to ${href} but has no cta. ` +
+      'Link text must describe the destination; "Learn more" does not.',
+  );
+}
 ---
 
 <article class:list={['tile', className]}>

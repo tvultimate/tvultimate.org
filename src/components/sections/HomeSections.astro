@@ -35,9 +35,15 @@ const destinations = {
   events: '/battle-of-idaho/',
 } as const;
 
+/**
+ * Link text for each program's tile. Written out rather than defaulting to a
+ * generic "Learn more": the three tiles carry different destinations, and
+ * "Learn more" three times tells a reader, a screen reader, or a crawler
+ * nothing about which is which.
+ */
 const ctas = {
-  sponsorship: 'Learn more',
-  youth: 'Learn more',
+  sponsorship: 'Sponsor the Battle of Idaho',
+  youth: 'Youth programs and clinics',
   events: 'Tournament details',
 } as const;
 ---
@@ -147,7 +153,12 @@ const ctas = {
 
     <Grid min="17rem">
       <Card>
-        <FeatureTile title="Clinics" icon="users" href="/youth-community/">
+        <FeatureTile
+          title="Clinics"
+          icon="users"
+          href="/youth-community/"
+          cta="How our youth clinics work"
+        >
           <p>
             Treasure Valley Ultimate coordinates with partner club teams to provide
             coaching at clinics for youth to be able to attend.
@@ -156,7 +167,12 @@ const ctas = {
       </Card>
 
       <Card>
-        <FeatureTile title="Youth Donation Fund" icon="heart" href="/donations-and-dues/youth-donations/">
+        <FeatureTile
+          title="Youth Donation Fund"
+          icon="heart"
+          href="/donations-and-dues/youth-donations/"
+          cta="Give to the youth donation fund"
+        >
           <p>
             All funds are used to support U20 youth players in their ultimate frisbee
             careers — travel for tournaments, league and tournament fees, and gear.
@@ -165,7 +181,12 @@ const ctas = {
       </Card>
 
       <Card>
-        <FeatureTile title="Aerial Game Film" icon="video" href="/resources-and-media/">
+        <FeatureTile
+          title="Aerial Game Film"
+          icon="video"
+          href="/resources-and-media/"
+          cta="Free film and photo services"
+        >
           <p>
             Complimentary aerial drone videography and photography for local high
             school teams, youth programs, community leagues, and partner clubs.
