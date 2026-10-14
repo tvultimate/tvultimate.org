@@ -272,6 +272,23 @@ const selection = [
           ))
         }
       </div>
+
+      {/*
+        Drinks are already settled, and a vendor who only finds that out after
+        writing an application has wasted their afternoon. It is a reason we
+        will decline rather than a criterion we weigh, so it sits outside the
+        grid and is styled as an exclusion — the warm ground is already spoken
+        for elsewhere on the site.
+      */}
+      <div class="excluded">
+        <h3 class="excluded__label">Already covered: drinks</h3>
+        <p class="excluded__text">
+          We have a drink vendor on site for the whole weekend who paid for
+          exclusive rights, so we will not be selecting anyone who sells drinks,
+          and we ask our food vendors not to sell them either. Your menu does
+          not need to work around that — it is already handled.
+        </p>
+      </div>
     </Container>
   </Section>
 
@@ -451,6 +468,39 @@ const selection = [
   .selection__grid {
     display: grid;
     gap: var(--space-4);
+  }
+
+  /*
+   * Drinks are a settled fact, not a criterion to compete on. Warm ground,
+   * because the green-accented rules used elsewhere on this page would read as
+   * another thing being weighed.
+   */
+  .excluded {
+    display: grid;
+    gap: var(--space-2);
+    margin-block-start: var(--space-5);
+    padding: var(--space-5);
+    background: var(--surface-warm);
+    border: var(--border-width) solid
+      color-mix(in oklab, var(--color-sunset-300) 60%, transparent);
+    border-radius: var(--radius-lg);
+  }
+
+  .excluded__label {
+    margin: 0;
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--surface-warm-ink);
+  }
+
+  .excluded__text {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--surface-warm-ink);
+    max-inline-size: var(--layout-measure);
   }
 
   /* -------------------------------------------------------------
