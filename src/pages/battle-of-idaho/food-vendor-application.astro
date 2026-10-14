@@ -14,7 +14,6 @@ import PageHero from '../../components/sections/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import Container from '../../components/ui/Container.astro';
 import SectionHeader from '../../components/ui/SectionHeader.astro';
-import Eyebrow from '../../components/ui/Eyebrow.astro';
 import Card from '../../components/ui/Card.astro';
 import Grid from '../../components/ui/Grid.astro';
 import Button from '../../components/ui/Button.astro';
@@ -90,13 +89,40 @@ const feeOptions = [
     title: 'Option A — Flat booth fee',
     amount: '$100',
     unit: 'per day',
-    body: 'A flat $100 per day, or $300 for the full weekend. Predictable, and you keep every dollar you take in.',
+    body: 'A flat $100 per day, or $300 for the full weekend. You know the cost before you load the truck, and you keep every dollar you take in.',
   },
   {
     title: 'Option B — Revenue split',
     amount: '10%',
     unit: 'of sales',
-    body: 'No upfront cost. You pay 10% of your sales at the end of the weekend, and keep the other 90%.',
+    body: 'Nothing up front and nothing out of your pocket. You pay 10% of what you actually sell, once, at the end of the weekend, and keep the other 90%.',
+  },
+];
+
+/**
+ * What we actually weigh when choosing between applicants. Stated plainly so
+ * vendors can self-select before they spend an afternoon writing an email.
+ */
+const selection = [
+  {
+    title: 'You can feed a rush',
+    body: 'Saturday alone puts several hundred people through your window in about six hours, and it happens in waves rather than evenly. Tell us your average ticket and how fast you can push food out — we would rather hear an honest number than a flattering one.',
+    icon: 'users' as const,
+  },
+  {
+    title: 'You want all three days',
+    body: 'Friday, Saturday and Sunday is the goal. A vendor who covers the whole weekend is worth more to us than two vendors who split the days, so say plainly which days you can do.',
+    icon: 'calendar' as const,
+  },
+  {
+    title: 'You are flexible on hours',
+    body: 'Game times move, a bracket runs long, and a good day can stretch an hour past when we said we would close. The published hours are a target, not a hard stop — we need someone who treats them that way.',
+    icon: 'clock' as const,
+  },
+  {
+    title: 'Your menu fits the crowd',
+    body: 'Athletes and parents eating on a curb between games, not a seated dinner service. Fast handheld items, at least one vegetarian option, and a clear answer on allergens earn you more consideration than a broad menu would.',
+    icon: 'heart' as const,
   },
 ];
 ---
@@ -181,8 +207,9 @@ const feeOptions = [
       <SectionHeader
         eyebrow="Fees"
         title="Two ways to pay"
-        lede="All vendor fees directly support our non-profit youth and community programs. We strongly prefer vendors who can commit to all three days."
-        layout="split"
+        lede="Pick whichever fits your business. Every dollar comes straight back into our non-profit youth and community programs."
+        layout="stack"
+        class="fees__header"
       />
 
       <Grid min="17rem">
@@ -198,23 +225,58 @@ const feeOptions = [
           ))
         }
       </Grid>
+
+      <p class="fees__note">
+        <strong>Not sure which is safer for you?</strong> The revenue split is
+        the lower-risk option, because you are never out of pocket before you
+        have sold a dollar. If a game runs long, the weather turns, or your truck
+        has a bad day, you still keep 90% of what you sold — where a flat fee
+        has already cost you $100. On a normal weekend both options land in a
+        similar place, so choose the one that costs you less when things go
+        wrong. Name your preference in your email and we will confirm it in
+        writing.
+      </p>
     </Container>
   </Section>
 
-  <Section tone="inverse" id="how-to-apply">
+  <Section tone="page">
     <Container>
-      <div class="apply">
-        <div class="apply__body">
-          <Eyebrow>How to apply</Eyebrow>
-          <h2 class="apply__title">Send us an email</h2>
-          <p class="apply__text">
-            There is no form to fill in. Email{' '}
-            <a class="apply__email" href={`mailto:${vendorEmail}`}>{vendorEmail}</a>{' '}
-            with the details below and the tournament directors will reply. Copy the
-            template, fill it in, and send.
-          </p>
-        </div>
+      <SectionHeader
+        eyebrow="Selection"
+        title="How we choose who we pick"
+        lede="We only have two food truck slots and one dessert slot, so we do have to turn people down. These are the things we weigh, in plain terms, so you can tell whether it is worth applying."
+        layout="stack"
+        class="selection__header"
+      />
 
+      {/*
+        Written out rather than using ui/Grid: four criteria want a balanced
+        2x2 block, and auto-fit would break them 3 + 1.
+      */}
+      <div class="selection__grid">
+        {
+          selection.map((item) => (
+            <Card>
+              <FeatureTile title={item.title} icon={item.icon}>
+                <p>{item.body}</p>
+              </FeatureTile>
+            </Card>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <Section tone="raised" id="how-to-apply">
+    <Container>
+      <SectionHeader
+        eyebrow="How to apply"
+        title="Send us one email"
+        layout="stack"
+        class="apply__header"
+      />
+
+      <div class="apply">
         <div class="apply__aside">
           <div class="template">
             <p class="template__label">Copy and paste</p>
@@ -230,6 +292,21 @@ const feeOptions = [
               }
             </ul>
           </div>
+        </div>
+
+        <div class="apply__body">
+          <p class="apply__text">
+            There is no form to fill in and nothing to download. Copy the
+            template, fill in the blanks, and send it to{' '}
+            <a class="apply__email" href={`mailto:${vendorEmail}`}>{vendorEmail}</a>.
+            A tournament director reads every application and replies with next
+            steps within a few days.
+          </p>
+          <p class="apply__note">
+            Applying commits you to nothing. Tell us which days and which fee
+            option work for you, and we will confirm the details in writing
+            before you plan for the trip.
+          </p>
 
           <div class="apply__actions">
             <Button
@@ -320,8 +397,23 @@ const feeOptions = [
   }
 
   /* -------------------------------------------------------------
+   * Selection
+   * ----------------------------------------------------------- */
+  .selection__grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* -------------------------------------------------------------
    * Fees
    * ----------------------------------------------------------- */
+  .fees__header,
+  .selection__header {
+    /* The lede reads as a subheader under the title, not as a competing
+       column beside it, so it is capped rather than floated wide. */
+    max-inline-size: var(--layout-measure);
+  }
+
   .fee {
     gap: var(--space-2);
   }
@@ -356,12 +448,27 @@ const feeOptions = [
     color: var(--text-secondary);
   }
 
+  .fees__note {
+    margin-block-start: var(--space-5);
+    padding-inline-start: var(--space-4);
+    border-inline-start: var(--border-width-thick) solid var(--line-accent);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .fees__note strong {
+    color: var(--text-primary);
+  }
+
   /* -------------------------------------------------------------
    * Apply
    *
-   * `tone="inverse"` re-themes the whole subtree, so the template
-   * block paints itself with the inverse tokens rather than needing
-   * a dark-mode variant.
+   * Deliberately a light section. The footer is `--surface-inverse`,
+   * and a dark CTA directly above it read as one tall green block
+   * with no edge between them — the closing section now sits on the
+   * raised surface and hands off to the footer cleanly.
    * ----------------------------------------------------------- */
   .apply {
     display: grid;
@@ -371,25 +478,27 @@ const feeOptions = [
 
   .apply__body {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-4);
     justify-items: start;
-  }
-
-  .apply__title {
-    font-size: var(--text-xl);
-    color: var(--color-pine-50);
   }
 
   .apply__text {
     font-size: var(--text-md);
     line-height: var(--leading-relaxed);
-    color: var(--color-pine-100);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .apply__note {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
     max-inline-size: var(--layout-measure);
   }
 
   .apply__email {
     font-weight: 700;
-    color: var(--color-sunset-300);
+    color: var(--text-accent);
     overflow-wrap: anywhere;
   }
 
@@ -407,8 +516,8 @@ const feeOptions = [
     display: grid;
     gap: var(--space-3);
     padding: var(--space-5);
-    background: var(--color-pine-950);
-    border: var(--border-width) solid var(--line-inverse);
+    background: var(--surface-sunken);
+    border: var(--border-width) solid var(--line-subtle);
     border-radius: var(--radius-lg);
   }
 
@@ -417,20 +526,21 @@ const feeOptions = [
     font-weight: 700;
     letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
-    color: var(--color-sunset-300);
+    color: var(--text-accent);
   }
 
   .template__subject {
     font-size: var(--text-sm);
     font-weight: 700;
     line-height: var(--leading-relaxed);
-    color: var(--color-pine-50);
+    color: var(--text-primary);
     padding-block-end: var(--space-3);
-    border-block-end: var(--border-width) solid var(--line-inverse);
+    border-block-end: var(--border-width) solid var(--line-subtle);
   }
 
   .template__key {
-    color: var(--color-pine-200);
+    color: var(--text-tertiary);
+    font-weight: 600;
   }
 
   .template__fields {
@@ -441,7 +551,7 @@ const feeOptions = [
     padding: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
-    color: var(--color-pine-100);
+    color: var(--text-secondary);
   }
 
   .template__field {
@@ -453,7 +563,7 @@ const feeOptions = [
     content: '·';
     display: inline-block;
     inline-size: 1ch;
-    color: var(--color-sunset-300);
+    color: var(--text-accent);
   }
 
   .apply__actions {
@@ -463,8 +573,14 @@ const feeOptions = [
   }
 
   @media (min-width: 48rem) {
+    .selection__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+
     .apply {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      /* The template is the thing to copy, so it takes the wider track. */
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
       gap: var(--space-7);
     }
   }
