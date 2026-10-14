@@ -90,12 +90,14 @@ const feeOptions = [
     amount: '$100',
     unit: 'per day',
     body: 'A flat $100 per day, or $300 for the full weekend. You know the cost before you load the truck, and you keep every dollar you take in.',
+    detail: 'The flat fee is a maximum, not a percentage — so on a big weekend you can take home considerably more than $300. If your sales are strong, this is the option that pays you better.',
   },
   {
     title: 'Option B — Revenue split',
     amount: '10%',
     unit: 'of sales',
     body: 'Nothing up front and nothing out of your pocket. You pay 10% of what you actually sell, once, at the end of the weekend, and keep the other 90%.',
+    detail: 'A strong weekend can make this worth more than the flat fee. It is also the safer of the two: if the weather turns or the crowd is light, you still keep 90% of what you sold instead of paying a flat $100 for a slow day.',
   },
 ];
 
@@ -121,7 +123,7 @@ const selection = [
   },
   {
     title: 'Your menu fits the crowd',
-    body: 'Athletes and parents eating on a curb between games, not a seated dinner service. Fast handheld items, at least one vegetarian option, and a clear answer on allergens earn you more consideration than a broad menu would.',
+    body: 'Athletes and parents eating on a curb between games, not a seated dinner service. Fast handheld items that the majority of people would enjoy!',
     icon: 'heart' as const,
   },
 ];
@@ -199,6 +201,15 @@ const selection = [
           ))
         }
       </ol>
+
+      <p class="hours__note">
+        <strong>These hours are an estimate, not a commitment.</strong> They run
+        off the game schedule, and game schedules are not locked in until teams
+        are set closer to the weekend — so these times can move, in either
+        direction. We are completely fine with you staying open longer or
+        closing earlier, whichever you think will be best for your business. We
+        will confirm the final hours with you once the teams are set.
+      </p>
     </Container>
   </Section>
 
@@ -221,21 +232,11 @@ const selection = [
                 {option.amount} <span class="fee__unit">{option.unit}</span>
               </p>
               <p class="fee__body">{option.body}</p>
+              <p class="fee__detail">{option.detail}</p>
             </Card>
           ))
         }
       </Grid>
-
-      <p class="fees__note">
-        <strong>Not sure which is safer for you?</strong> The revenue split is
-        the lower-risk option, because you are never out of pocket before you
-        have sold a dollar. If a game runs long, the weather turns, or your truck
-        has a bad day, you still keep 90% of what you sold — where a flat fee
-        has already cost you $100. On a normal weekend both options land in a
-        similar place, so choose the one that costs you less when things go
-        wrong. Name your preference in your email and we will confirm it in
-        writing.
-      </p>
     </Container>
   </Section>
 
@@ -279,7 +280,6 @@ const selection = [
       <div class="apply">
         <div class="apply__aside">
           <div class="template">
-            <p class="template__label">Copy and paste</p>
             <p class="template__subject">
               <span class="template__key">Subject:</span> Food Vendor Application — [Your
               Food Truck Name]
@@ -296,8 +296,7 @@ const selection = [
 
         <div class="apply__body">
           <p class="apply__text">
-            There is no form to fill in and nothing to download. Copy the
-            template, fill in the blanks, and send it to{' '}
+            Copy the template, fill in the blanks, and send it to{' '}
             <a class="apply__email" href={`mailto:${vendorEmail}`}>{vendorEmail}</a>.
             A tournament director reads every application and replies with next
             steps within a few days.
@@ -396,6 +395,25 @@ const selection = [
     max-inline-size: var(--layout-measure);
   }
 
+  /*
+   * The published hours are provisional, and that caveat is worth more than a
+   * footnote — it is the thing a vendor is actually anxious about. Set as a
+   * ruled note so it reads as a condition on the list above it.
+   */
+  .hours__note {
+    margin-block-start: var(--space-5);
+    padding-inline-start: var(--space-4);
+    border-inline-start: var(--border-width-thick) solid var(--line-accent);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .hours__note strong {
+    color: var(--text-primary);
+  }
+
   /* -------------------------------------------------------------
    * Selection
    * ----------------------------------------------------------- */
@@ -448,17 +466,15 @@ const selection = [
     color: var(--text-secondary);
   }
 
-  .fees__note {
-    margin-block-start: var(--space-5);
-    padding-inline-start: var(--space-4);
-    border-inline-start: var(--border-width-thick) solid var(--line-accent);
+  /* The second line in each fee card is the part that actually helps a vendor
+     choose, so it gets its own weight rather than reading as another sentence
+     of the same pitch. */
+  .fee__detail {
+    margin-block-start: var(--space-2);
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line-subtle);
     font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
-    color: var(--text-secondary);
-    max-inline-size: var(--layout-measure);
-  }
-
-  .fees__note strong {
     color: var(--text-primary);
   }
 
@@ -519,14 +535,6 @@ const selection = [
     background: var(--surface-sunken);
     border: var(--border-width) solid var(--line-subtle);
     border-radius: var(--radius-lg);
-  }
-
-  .template__label {
-    font-size: var(--text-2xs);
-    font-weight: 700;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-accent);
   }
 
   .template__subject {
