@@ -40,7 +40,6 @@ continue to work.
 | `/partner-clubs/sawtooth-ultimate/`             | Sawtooth Ultimate                  |
 | `/battle-of-idaho/`                             | 2026 Battle of Idaho               |
 | `/battle-of-idaho/battle-of-idaho-sponsorship/` | Battle of Idaho Sponsorship        |
-| `/battle-of-idaho/food-vendor-application/`     | Food Vendor Application (unlinked) |
 | `/youth-community/`                             | Youth & Community                  |
 | `/resources-and-media/`                         | Resources and Media                |
 | `/donations-and-dues/`                          | Donations Information              |

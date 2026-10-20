@@ -70,20 +70,20 @@ export const tournament = {
 export const stats = [
   { value: '16', unit: 'teams', label: 'Max per division' },
   { value: '3', unit: 'divisions', label: 'Youth, Open, Mixed' },
-  { value: '6', unit: '+ games', label: 'Guaranteed per team' },
-  { value: '$225', unit: 'early', label: 'Per-team entry' },
+  { value: '5', unit: 'games', label: 'Guaranteed per team' },
+  { value: '$250', unit: 'per team', label: 'Registration' },
 ] as const;
 
 /**
  * Entry fees.
  *
- * The two team fees are quoted verbatim from the old site. The free-agent fee
- * is not stated there — the old page only says free agents are placed on a
- * dedicated team — so this figure comes from the tournament directors and is
+ * The early-bird tier ran to the end of September and is gone now that we are
+ * in October, so general registration is the only team fee. The free-agent fee
+ * is not stated on the old page — it only says free agents are placed on a
+ * dedicated team — so that figure comes from the tournament directors and is
  * flagged as current-only in the sources doc.
  */
 export const pricing = [
-  { label: 'End of September', amount: '$225', note: 'per team' },
   { label: 'General Registration', amount: '$250', note: 'per team' },
   {
     label: 'Free Agents',
@@ -91,6 +91,12 @@ export const pricing = [
     note: 'placed on a dedicated free agent team',
   },
 ] as const;
+
+/**
+ * Youth teams pay a reduced rate. A note under the price list rather than a
+ * third price card, so the headline a captain reads is the one they pay.
+ */
+export const youthPricingNote = 'Youth Open teams register for $200 per team.';
 
 export const freeAgentPolicy =
   'Don’t have a team? Sign up as a free agent and you will be placed on a dedicated free agent team. If there aren’t enough players to fill a roster, we will notify you by the Wednesday before the tournament and issue a full refund.';
@@ -122,7 +128,7 @@ export const divisions: Division[] = [
       'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday.',
     schedule: [
       { day: 'Friday', detail: 'Swiss rounds begin at 2:00 PM' },
-      { day: 'Saturday', detail: 'Bracket play begins at 10:00 AM' },
+      { day: 'Saturday', detail: 'Bracket play begins at 9:30 AM' },
     ],
   },
   {
@@ -134,7 +140,7 @@ export const divisions: Division[] = [
     format:
       'Swiss rounds on Saturday seed the division, then play moves into a single-elimination bracket on Sunday.',
     schedule: [
-      { day: 'Saturday', detail: 'Swiss rounds begin at 9:00 AM' },
+      { day: 'Saturday', detail: 'Swiss rounds begin at 9:30 AM' },
       { day: 'Sunday', detail: 'Bracket play begins at 10:00 AM' },
     ],
   },
@@ -146,7 +152,7 @@ export const divisions: Division[] = [
     rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
     format:
       'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead.',
-    schedule: [{ day: 'Saturday', detail: 'Play begins at 9:00 AM' }],
+    schedule: [{ day: 'Saturday', detail: 'Play begins at 9:30 AM' }],
   },
 ];
 
@@ -168,15 +174,31 @@ export const amenities = [
   'Trained recovery staff available for player care.',
 ] as const;
 
+/**
+ * Food vendors booked for the weekend. They are on site for the whole
+ * tournament, so a team can buy a meal between games on any day.
+ */
+export const foodVendors = [
+  { name: 'Pizza Piou', detail: 'Wood-fired artisan pizza' },
+  { name: 'Gyro Shack', detail: 'Greek gyros and Mediterranean' },
+] as const;
+
+export const foodIntro =
+  'Food trucks are on site for the whole tournament, so you can buy breakfast, lunch, and dinner between games on any day of the weekend.';
+
 export const housing =
   'There are plenty of affordable Airbnbs and hotels in the Treasure Valley, and local traffic will be minimal. Anywhere in the valley works well. If you don’t mind floors, couches, or air mattresses, reach out to the tournament coordinators and we will do our best to match your team with a local host family.';
 
 export const fundraising =
   'The Battle of Idaho is a bring-your-own-team, fundraising tournament where all proceeds are reinvested directly into the Idaho ultimate frisbee community. Your team fee covers tournament costs, and any additional amount helps local clubs and provides resources to make the sport more accessible.';
 
+/**
+ * The four tournament directors, with the address a captain should use for
+ * that person rather than the general tournament inbox.
+ */
 export const directors = [
-  { name: 'McKayle Burner', role: 'Mixed', detail: 'FMP' },
-  { name: 'Julian Colins', role: 'Mixed', detail: 'MMP' },
-  { name: 'David Nichols', role: 'Youth', detail: 'MMP' },
-  { name: 'Jason Burner', role: 'General', detail: 'MMP' },
+  { name: 'McKayle Burner', role: 'Mixed', detail: 'FMP', email: 'Mckayle@tvultimate.org' },
+  { name: 'Julian Colins', role: 'Mixed', detail: 'MMP', email: 'julian@tvultimate.org' },
+  { name: 'David Nichols', role: 'Youth', detail: 'MMP', email: 'david@tvultimate.org' },
+  { name: 'Jason Burner', role: 'General', detail: 'MMP', email: 'jason@tvultimate.org' },
 ] as const;

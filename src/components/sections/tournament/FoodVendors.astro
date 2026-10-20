@@ -1,0 +1,75 @@
+---
+/**
+ * The food vendors booked for the tournament, and the promise that they are on
+ * site for the whole weekend.
+ *
+ * Kept as its own component because it is a fact about the event rather than
+ * part of the amenities list: it names who is cooking, and the vendor list is
+ * data, not prose.
+ */
+
+interface Vendor {
+  name: string;
+  detail: string;
+}
+
+interface Props {
+  vendors: readonly Vendor[];
+  intro: string;
+}
+
+const { vendors, intro } = Astro.props;
+---
+
+<div class="food">
+  <p class="food__intro">{intro}</p>
+  <ul class="food__list">
+    {
+      vendors.map((vendor) => (
+        <li class="food__vendor">
+          <span class="food__name">{vendor.name}</span>
+          <span class="food__detail">{vendor.detail}</span>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .food__intro {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-inline-size: var(--layout-measure);
+  }
+
+  .food__list {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    list-style: none;
+  }
+
+  .food__vendor {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .food__name {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .food__detail {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+</style>

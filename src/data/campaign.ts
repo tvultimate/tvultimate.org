@@ -334,10 +334,10 @@ export const youthLanding: CampaignLanding = {
 export const teamLanding: CampaignLanding = {
   path: '/battle-of-idaho/register-a-team/',
   title: `${tournament.name} ${tournament.year} — Register a Team`,
-  description: `Register your Mixed Adult team for the ${tournament.name} ${tournament.year} at Heroes Park: $200 team bid with a $50 discount, 16 spots per division, six-plus games guaranteed.`,
+  description: `Register your Mixed Adult team for the ${tournament.name} ${tournament.year} at Heroes Park: $200 team bid with a $50 discount, 16 spots per division, five games guaranteed.`,
   eyebrow: `${tournament.edition} · Mixed Adult · Team Registration`,
   heading: 'Keep Your Season Going',
-  lede: 'Gather your squad for the premier fall destination tournament in Idaho, then take home six-plus games and a full weekend of film.',
+  lede: 'Gather your squad for the premier fall destination tournament in Idaho, then take home five games and a full weekend of film.',
   intro:
     'The fall season is long and the weather is not. Battle of Idaho is the weekend that keeps a team together when the grass turns brown — a full tournament schedule, a real bracket, and one of the strongest fields in the region.',
   benefits: {
@@ -352,7 +352,7 @@ export const teamLanding: CampaignLanding = {
       },
       {
         icon: 'calendar',
-        title: 'Six-plus games guaranteed',
+        title: 'Five games guaranteed',
         body: 'Swiss rounds on Saturday seed the division into a single-elimination bracket on Sunday. Nobody rides home with one game.',
       },
       {
@@ -386,7 +386,7 @@ export const teamLanding: CampaignLanding = {
   rules: [
     '75-minute rounds, games to 13, hard cap in effect.',
     '15 minutes between rounds for rest and field transition.',
-    'Six-plus games guaranteed for every team.',
+    'Five games guaranteed for every team.',
     '16 teams max per division, waitlist after.',
   ],
   cta: {

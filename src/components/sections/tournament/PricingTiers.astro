@@ -15,9 +15,16 @@ interface Props {
 }
 
 const { tiers } = Astro.props;
+
+/*
+ * One column per tier, capped at three. The list is sized by its own count
+ * rather than a fixed number, so dropping a tier (the early-bird fee expired
+ * in September) does not leave a hole in the row.
+ */
+const columns = Math.min(tiers.length, 3);
 ---
 
-<ul class="tiers">
+<ul class="tiers" style={`--tier-columns: ${columns}`}>
   {
     tiers.map((tier) => (
       <li class="tiers__item">
@@ -36,6 +43,11 @@ const { tiers } = Astro.props;
     padding: 0;
     margin: 0;
     list-style: none;
+    /*
+     * Capped to the measure the lede above it uses. A price card stretched
+     * across a full-width container reads as a mostly empty box.
+     */
+    max-inline-size: var(--layout-measure);
   }
 
   .tiers__item {
@@ -73,7 +85,7 @@ const { tiers } = Astro.props;
 
   @media (min-width: 48rem) {
     .tiers {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--tier-columns, 3), minmax(0, 1fr));
     }
 
     .tiers__item {
