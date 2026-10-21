@@ -81,7 +81,8 @@ export const stats = [
  * in October, so general registration is the only team fee. The free-agent fee
  * is not stated on the old page — it only says free agents are placed on a
  * dedicated team — so that figure comes from the tournament directors and is
- * flagged as current-only in the sources doc.
+ * flagged as current-only in the sources doc. The youth free-agent rate is
+ * likewise a directors' figure.
  */
 export const pricing = [
   { label: 'General Registration', amount: '$250', note: 'per team' },
@@ -89,6 +90,11 @@ export const pricing = [
     label: 'Free Agents',
     amount: '$20',
     note: 'placed on a dedicated free agent team',
+  },
+  {
+    label: 'Youth Free Agents',
+    amount: '$15',
+    note: 'placed on a dedicated youth team',
   },
 ] as const;
 

@@ -15,13 +15,14 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      // The three Google Ads landing pages are excluded from the organic
-      // index so they do not compete with the tournament and registration
-      // pages for the same terms, or cannibalise the ad spend.
+      // The Google Ads landing pages are excluded from the organic index so
+      // they do not compete with the tournament and registration pages for the
+      // same terms, or cannibalise the ad spend.
       // 404 is excluded by the integration itself.
       filter: (page) =>
         ![
           'https://tvultimate.org/battle-of-idaho/free-agent/',
+          'https://tvultimate.org/battle-of-idaho/youth-free-agent/',
           'https://tvultimate.org/battle-of-idaho/youth-open/',
           'https://tvultimate.org/battle-of-idaho/register-a-team/',
         ].includes(page),

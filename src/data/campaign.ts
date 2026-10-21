@@ -1,11 +1,12 @@
 /**
- * Copy for the three Google Ads landing pages under `/battle-of-idaho/`.
+ * Copy for the four Google Ads landing pages under `/battle-of-idaho/`.
  *
  * These pages are deliberately absent from `data/navigation.ts`: they exist
- * only to answer one audience each — a solo player, a parent, a team captain —
- * so every block below is written for that one reader and skimmable on a
- * phone. Both destinations on each page (Ultimate Central registration and the
- * full tournament page) are fixed by the ad campaigns.
+ * only to answer one audience each — a solo player, a young solo player, a
+ * parent, a team captain — so every block below is written for that one
+ * reader and skimmable on a phone. Both destinations on each page (Ultimate
+ * Central registration and the full tournament page) are fixed by the ad
+ * campaigns.
  *
  * Facts are drawn from `data/tournament`; nothing here restates a date, a fee,
  * or a venue that the tournament module already owns unless the campaign
@@ -14,7 +15,7 @@
 
 import { contact, links } from './org';
 import { adsAccounts } from './ads';
-import { divisions, pricing, tournament } from './tournament';
+import { amenities, divisions, freeAgentPolicy, pricing, tournament } from './tournament';
 
 /** Icons come from `ui/Icon.astro`, so a benefit cannot invent its own. */
 export type CampaignIcon =
@@ -279,7 +280,93 @@ export const freeAgentLanding: CampaignLanding = {
 };
 
 /* ------------------------------------------------------------------ *
- * Page 2 — Youth Open
+ * Page 2 — Youth free agents
+ * ------------------------------------------------------------------ */
+
+/**
+ * The entry fee for a youth free agent, read out of the shared price list so
+ * the landing page and the tournament page cannot disagree about it.
+ */
+const youthFreeAgentFee =
+  pricing.find((tier) => tier.label === 'Youth Free Agents')?.amount ?? '$15';
+
+/**
+ * The youth free agent rules: the game format that holds in every division,
+ * the division's own eligibility rule, and what is on site for the weekend.
+ */
+const youthFreeAgentRules = [
+  '75-minute rounds, games to 13, hard cap in effect.',
+  '15 minutes between rounds for rest and field transition.',
+  division('youth')?.rules ?? '',
+  ...amenities,
+].filter(Boolean);
+
+export const youthFreeAgentLanding: CampaignLanding = {
+  path: '/battle-of-idaho/youth-free-agent/',
+  adsAccount: adsAccounts.battle,
+  conversion: battleConversion,
+  title: `${tournament.name} ${tournament.year} — Youth Free Agent Signup`,
+  description: `Sign up solo for the ${tournament.name} ${tournament.year} Youth Open and get drafted onto a dedicated youth free agent squad — Friday Swiss rounds and Saturday bracket play, for players under 20. ${youthFreeAgentFee} to play.`,
+  eyebrow: `${tournament.edition} · Youth Free Agents · Under 20`,
+  heading: 'Play the Tourney — No Team Needed',
+  lede: 'No team? No problem. Register solo and the directors draft you onto a dedicated Youth Open squad — Friday Swiss rounds, Saturday bracket play, for players under 20.',
+  intro:
+    'One of the best weekends of the fall happens at Heroes Park, and you do not need a roster to be part of it. Sign up as a youth free agent and we will place you on a squad built for players who came without one.',
+  benefits: {
+    eyebrow: 'Why play here',
+    title: 'No roster, no problem, no catch',
+    lede: 'Everything a youth player gets when they sign up solo and we put them on a team.',
+    items: [
+      {
+        icon: 'users',
+        title: 'Sign up solo, get drafted',
+        body: 'Register as an individual and we place you on a dedicated Youth Open squad. You show up, we hand you a jersey.',
+      },
+      {
+        icon: 'shield',
+        title: 'Under 20, open format',
+        body: 'Open to players under 20. Mixed roster composition is welcome, and gender ratios are agreed by the captains and coaches before the first game.',
+      },
+      {
+        icon: 'heart',
+        title: 'Recovery staff on site',
+        body: 'Trained recovery staff all weekend, plus water, field snacks, and bathrooms on location the whole time.',
+      },
+      {
+        icon: 'calendar',
+        title: 'Friday and Saturday',
+        body: `Swiss rounds Friday at ${youthStart}, then single-elimination bracket play Saturday at ${youthBracket}.`,
+      },
+    ],
+  },
+  highlight: {
+    eyebrow: 'How free agents work',
+    title: 'We find you a squad',
+    body: freeAgentPolicy,
+    link: {
+      label: 'Email us about youth registration',
+      href: `mailto:${contact.youth.email}?subject=${encodeURIComponent('Youth Free Agent — 2026 Battle of Idaho')}`,
+    },
+  },
+  details: [
+    { label: 'Division', value: 'Youth Open', note: 'Open to players under 20' },
+    { label: 'Dates', value: shortDates('youth'), note: 'Friday Swiss · Saturday bracket' },
+    { label: 'Where', value: tournament.location, note: tournament.address },
+    { label: 'Entry', value: youthFreeAgentFee, note: 'per youth free agent' },
+  ],
+  schedule: daySchedule('youth'),
+  rules: youthFreeAgentRules,
+  cta: {
+    eyebrow: 'Youth free agent signups are open',
+    title: 'Take the field with a jersey we hand you',
+    lede: 'Register as a youth free agent, then email us if you have any questions about the division.',
+    primary: 'Register as a Youth Free Agent',
+    note: `Youth free agents are ${youthFreeAgentFee}. Players under 20 — email ${contact.youth.email} if you need help registering.`,
+  },
+};
+
+/* ------------------------------------------------------------------ *
+ * Page 3 — Youth Open
  * ------------------------------------------------------------------ */
 
 export const youthLanding: CampaignLanding = {
@@ -351,7 +438,7 @@ export const youthLanding: CampaignLanding = {
 };
 
 /* ------------------------------------------------------------------ *
- * Page 3 — Team registration
+ * Page 4 — Team registration
  * ------------------------------------------------------------------ */
 
 export const teamLanding: CampaignLanding = {

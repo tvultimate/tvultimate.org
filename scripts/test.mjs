@@ -41,6 +41,7 @@ const ROUTES = [
   // Google Ads landing pages. Unlinked from the navigation, audited like any
   // other route.
   '/battle-of-idaho/free-agent/',
+  '/battle-of-idaho/youth-free-agent/',
   '/battle-of-idaho/youth-open/',
   '/battle-of-idaho/register-a-team/',
   '/youth-community/',

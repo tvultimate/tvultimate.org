@@ -264,7 +264,7 @@ no ads tag at all. Account IDs live in `src/data/ads.ts`.
 The tag used to be hardcoded in `BaseLayout`, which put every page of the site
 into one account no matter which campaign sent the visitor there. It now sits
 only on the pages the Battle of Idaho campaign actually sends people to: the
-three ad landing pages under `/battle-of-idaho/` and the tournament page
+four ad landing pages under `/battle-of-idaho/` and the tournament page
 itself, which the landing pages link to.
 
 ### Conversions
@@ -275,10 +275,10 @@ an inline script that listens for a click on any link carrying
 Ultimate Central.
 
 A page opts in by setting `conversion` in its `data/campaign.ts` entry, using
-`battleConversion`. Only the free agent page is configured today. Both
-registration buttons on a page — the hero and the closing call to action — are
-marked, and one delegated listener serves both, so a single click reports a
-single conversion.
+`battleConversion`. The two free agent pages are configured today — the adult
+one and the youth one. Both registration buttons on a page — the hero and the
+closing call to action — are marked, and one delegated listener serves both, so
+a single click reports a single conversion.
 
 `send_to` names where the conversion is credited. `battleConversion` carries
 the account and an optional `label`:
