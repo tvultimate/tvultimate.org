@@ -39,7 +39,12 @@ const secondary = campaignSecondary;
 const trackRegistration = Boolean(page.conversion);
 ---
 
-<BaseLayout title={page.title} description={page.description} noindex>
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  noindex
+  adsAccount={page.adsAccount}
+>
   <CampaignConversion page={page} />
 
   <PageHero eyebrow={page.eyebrow} title={page.heading} lede={page.lede}>

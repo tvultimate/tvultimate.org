@@ -1,0 +1,33 @@
+---
+/**
+ * The Google Ads global site tag for one account.
+ *
+ * Its own component so the markup — the loader and the config call that
+ * defines the global `gtag` — is written once. A page names the account it
+ * reports to instead of the tag being hardcoded across the site.
+ *
+ * The inline script assigns `window.gtag` explicitly rather than declaring a
+ * global function: Astro wraps a `define:vars` script in a function of its
+ * own, so a bare `function gtag(){}` would end up scoped to that wrapper and
+ * the conversion reporter would find nothing to call.
+ */
+
+interface Props {
+  /** The Google Ads account ID, e.g. `AW-18501242003`. */
+  account: string;
+}
+
+const { account } = Astro.props;
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${account}`}></script>
+<script is:inline define:vars={{ account }}>
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () {
+    window.dataLayer.push(arguments);
+  };
+  window.gtag('js', new Date());
+
+  window.gtag('config', account);
+</script>

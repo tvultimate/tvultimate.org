@@ -254,16 +254,42 @@ around it — see `src/styles/embed.css`.
 
 ## Conversion tracking
 
+### The Google tag
+
+The Google Ads global site tag is **opt-in per page**. `GoogleAdsTag.astro`
+renders the tag for one account, and a page names the account it reports to
+through the `adsAccount` prop on `BaseLayout`; a page that names none carries
+no ads tag at all. Account IDs live in `src/data/ads.ts`.
+
+The tag used to be hardcoded in `BaseLayout`, which put every page of the site
+into one account no matter which campaign sent the visitor there. It now sits
+only on the pages the Battle of Idaho campaign actually sends people to: the
+three ad landing pages under `/battle-of-idaho/` and the tournament page
+itself, which the landing pages link to.
+
+### Conversions
+
 Google Ads conversions are reported by `CampaignConversion.astro`, which renders
 an inline script that listens for a click on any link carrying
 `data-conversion` and sends one `conversion` event before the visitor leaves for
 Ultimate Central.
 
 A page opts in by setting `conversion` in its `data/campaign.ts` entry, using
-`battleConversion` for the label issued by the Ads account. Only the free agent
-page is configured today. Both registration buttons on a page — the hero and the
-closing call to action — are marked, and one delegated listener serves both, so a
-single click reports a single conversion.
+`battleConversion`. Only the free agent page is configured today. Both
+registration buttons on a page — the hero and the closing call to action — are
+marked, and one delegated listener serves both, so a single click reports a
+single conversion.
+
+`send_to` names where the conversion is credited. `battleConversion` carries
+the account and an optional `label`:
+
+- **Account only** — `send_to` is the account ID, which credits the account's
+  global tag. This is what the campaign reports today.
+- **Account and label** — `send_to` is `AW-<account>/<label>`, which credits one
+  named conversion action inside that account. The label comes from Google Ads
+  under Goals &gt; Conversions &gt; Tag setup; drop it into `label` in
+  `data/campaign.ts` and the reporter picks it up. The account and the label
+  must come from the same account, or Google silently credits nothing.
 
 Two behaviours are deliberate:
 
@@ -271,12 +297,14 @@ Two behaviours are deliberate:
   deliver the beacon and the browser's own navigation is left alone. Only a
   link that navigates in place defers its hop until the event is queued.
 - The wait for that beacon is capped at 1.5 seconds, so a blocked analytics
-  request cannot strand someone on the page after they asked to leave.
+  request cannot strand someone on the page after they asked to leave. If an
+  ad blocker takes the Google tag with it, the click still goes through.
 
 `scripts/verify-conversion.mjs` drives a real browser against the preview build
-to confirm the event fires exactly once with the right label and value, that the
-new tab still opens, and that untracked links stay silent. Run it after changing
-anything in this flow:
+to confirm the event fires exactly once with the right account and value, that
+the new tab still opens, that untracked links stay silent, and that each page
+carries the tag it should and no other. Run it after changing anything in this
+flow:
 
 ```sh
 npx astro preview &

@@ -14,6 +14,7 @@ import '../styles/embed.css';
 
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import GoogleAdsTag from '../components/GoogleAdsTag.astro';
 import { images } from '../data/org';
 
 interface Props {
@@ -27,23 +28,21 @@ interface Props {
    * alone does not stop a page being indexed from an inbound link.
    */
   noindex?: boolean;
+  /**
+   * The Google Ads account this page reports to. The tag is opt-in: a page
+   * that names no account carries no ads tag at all, so a visitor is only
+   * measured against the campaign that sent them there.
+   */
+  adsAccount?: string;
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, adsAccount } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18508946300"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'AW-18508946300');
-    </script>
+    {adsAccount && <GoogleAdsTag account={adsAccount} />}
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

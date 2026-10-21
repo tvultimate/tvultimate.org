@@ -13,6 +13,7 @@
  */
 
 import { contact, links } from './org';
+import { adsAccounts } from './ads';
 import { divisions, pricing, tournament } from './tournament';
 
 /** Icons come from `ui/Icon.astro`, so a benefit cannot invent its own. */
@@ -80,10 +81,16 @@ export interface CampaignLanding {
   rules: readonly string[];
   cta: CampaignCta;
   /**
+   * The Google Ads account this page reports to. Every landing page here is
+   * reached from the same ad campaign, so they share one account; a page that
+   * names none would carry no ads tag at all.
+   */
+  adsAccount?: string;
+  /**
    * Set on a page whose registration clicks should report a Google Ads
    * conversion. Only the free agent page is configured for this today.
    */
-  conversion?: typeof battleConversion;
+  conversion?: CampaignConversion;
 }
 
 /** Shared by all three pages: the registration and the "full info" links. */
@@ -94,17 +101,31 @@ export const campaignLinks = {
 } as const;
 
 /**
- * Google Ads conversion to report when a visitor leaves for Ultimate Central.
- *
- * `sendTo` is the conversion label issued by the Google Ads account, not the
- * account ID alone. `value` is in the units `currency` names, so this counts as
- * one USD registration click.
+ * A Google Ads conversion to report when a visitor leaves for Ultimate Central.
  */
-export const battleConversion = {
-  sendTo: 'AW-18508946300/XJyNCImOuJodEPy24PlE',
+export interface CampaignConversion {
+  /** The account the conversion is reported to. */
+  account: string;
+  /**
+   * The label of the conversion action inside that account. Optional: a
+   * `send_to` of the account alone credits the account's global tag, which is
+   * what the campaign reports today. Fill in the label from Google Ads
+   * (Goals > Conversions > Tag setup) to credit one named action instead.
+   */
+  label?: string;
+  /** In the units `currency` names, so this counts as one USD registration. */
+  value: number;
+  currency: string;
+}
+
+/**
+ * The registration conversion for the Battle of Idaho campaign.
+ */
+export const battleConversion: CampaignConversion = {
+  account: adsAccounts.battle,
   value: 1,
   currency: 'USD',
-} as const;
+};
 
 /** The secondary link, identical on every page by ad-campaign requirement. */
 export const campaignSecondary = {
@@ -183,6 +204,7 @@ const daySchedule = (id: string) =>
 
 export const freeAgentLanding: CampaignLanding = {
   path: '/battle-of-idaho/free-agent/',
+  adsAccount: adsAccounts.battle,
   conversion: battleConversion,
   title: `${tournament.name} ${tournament.year} — Free Agent Signup`,
   description: `Sign up solo for the ${tournament.name} ${tournament.year} and get drafted onto a dedicated free agent squad — Mixed Adult (Sat–Sun) or Adult Open (Sat). Enter the raffle for a full refund.`,
@@ -262,6 +284,7 @@ export const freeAgentLanding: CampaignLanding = {
 
 export const youthLanding: CampaignLanding = {
   path: '/battle-of-idaho/youth-open/',
+  adsAccount: adsAccounts.battle,
   title: `${tournament.name} ${tournament.year} — Youth Open (U20)`,
   description: `Youth Open ultimate at Heroes Park, Meridian: Swiss rounds Friday Nov 13, bracket play Saturday Nov 14, for players under 20.`,
   eyebrow: `${tournament.edition} · Youth Open · Under 20`,
@@ -333,6 +356,7 @@ export const youthLanding: CampaignLanding = {
 
 export const teamLanding: CampaignLanding = {
   path: '/battle-of-idaho/register-a-team/',
+  adsAccount: adsAccounts.battle,
   title: `${tournament.name} ${tournament.year} — Register a Team`,
   description: `Register your Mixed Adult team for the ${tournament.name} ${tournament.year} at Heroes Park: $200 team bid with a $50 discount, 16 spots per division, five games guaranteed.`,
   eyebrow: `${tournament.edition} · Mixed Adult · Team Registration`,

@@ -22,13 +22,24 @@ interface Props {
 
 const { page } = Astro.props;
 const conversion = page.conversion;
+
+/*
+ * `send_to` names where the conversion is credited: the account on its own
+ * credits that account's global tag, and the account with a label credits one
+ * named conversion action inside it.
+ */
+const sendTo = conversion
+  ? conversion.label
+    ? `${conversion.account}/${conversion.label}`
+    : conversion.account
+  : '';
 ---
 
 {
   conversion && (
     <script
       is:inline
-      define:vars={{ sendTo: conversion.sendTo, value: conversion.value, currency: conversion.currency }}
+      define:vars={{ sendTo, value: conversion.value, currency: conversion.currency }}
     >
       (function () {
         /*
@@ -38,13 +49,23 @@ const conversion = page.conversion;
          */
         var NAVIGATE_TIMEOUT = 1500;
 
-        function report(url, followCallback) {
+        function report(followCallback) {
           var settled = false;
 
           function finish() {
             if (settled) return;
             settled = true;
             followCallback();
+          }
+
+          /*
+           * An ad blocker can take the Google tag with it. A missing beacon
+           * must not strand the visitor on a page they have already asked to
+           * leave, so the click goes through untagged rather than not at all.
+           */
+          if (typeof window.gtag !== 'function') {
+            finish();
+            return;
           }
 
           window.gtag('event', 'conversion', {
@@ -75,12 +96,12 @@ const conversion = page.conversion;
            * would drop it.
            */
           if (trigger.target === '_blank') {
-            report(url, function () {});
+            report(function () {});
             return;
           }
 
           event.preventDefault();
-          report(url, function () {
+          report(function () {
             window.location.href = url;
           });
         });
