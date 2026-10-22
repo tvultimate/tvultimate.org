@@ -195,6 +195,8 @@
   */
   --text-warm: var(--color-sunset-700);
   --text-link: var(--color-pine-700);
+  /* Validation copy: the one place the site has to say "no". */
+  --text-critical: var(--color-critical-600);
 
   /* ---------------------------------------------------------------
    * 7. Semantics — line
@@ -263,6 +265,8 @@
      (pine-600, sunset-700) fall below 3:1 on a dark surface. */
   --text-accent: var(--color-pine-200);
   --text-warm: var(--color-sunset-300);
+  /* The light-ground critical is too dark to read here. */
+  --text-critical: var(--color-sunset-300);
 
   --line-subtle: var(--line-inverse);
   --line-default: color-mix(in oklab, var(--color-pine-300) 40%, transparent);

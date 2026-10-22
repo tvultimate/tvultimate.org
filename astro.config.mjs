@@ -25,6 +25,11 @@ export default defineConfig({
           'https://tvultimate.org/battle-of-idaho/youth-free-agent/',
           'https://tvultimate.org/battle-of-idaho/youth-open/',
           'https://tvultimate.org/battle-of-idaho/register-a-team/',
+          /*
+            The staff index is noindex and unlisted: it is a convenience page,
+            not something to hand a search engine.
+          */
+          'https://tvultimate.org/admin/',
         ].includes(page),
     }),
   ],

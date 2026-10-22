@@ -64,7 +64,7 @@ Four failure modes worth knowing, because they have already caused false confide
 - **A check that never runs is not a pass.** An early version reported `PASS` while
   running zero contrast checks, because a helper detached its probe element on the
   first call and returned `null` for every subsequent element. If you change
-  `scripts/test.mjs`, confirm the check count is plausible (~9,650 for the current
+  `scripts/test.mjs`, confirm the check count is plausible (~10,660 for the current
   site) and deliberately break something to prove the check still fails.
 
 - **A screenshot must be taken at the scroll position its rects were measured at.**

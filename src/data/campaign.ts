@@ -4,9 +4,14 @@
  * These pages are deliberately absent from `data/navigation.ts`: they exist
  * only to answer one audience each — a solo player, a young solo player, a
  * parent, a team captain — so every block below is written for that one
- * reader and skimmable on a phone. Both destinations on each page (Ultimate
- * Central registration and the full tournament page) are fixed by the ad
+ * reader and skimmable on a phone. Both destinations on each page (the
+ * registration form and the full tournament page) are fixed by the ad
  * campaigns.
+ *
+ * Registration is split by who is signing up: a team captain goes to the team
+ * form, a solo player to the individual form. Both are Zeffy forms we run
+ * ourselves while Ulticentral is unavailable, so the `href` lives on each
+ * page's `cta` rather than being shared.
  *
  * Facts are drawn from `data/tournament`; nothing here restates a date, a fee,
  * or a venue that the tournament module already owns unless the campaign
@@ -62,6 +67,12 @@ export interface CampaignCta {
   lede: string;
   /** Label for the primary registration button, reused in the hero. */
   primary: string;
+  /**
+   * Where that button goes. A team page points at the team form, a solo page
+   * at the individual one; nothing here is shared, so a page cannot inherit
+   * the wrong destination.
+   */
+  href: string;
   note?: string;
 }
 
@@ -94,15 +105,17 @@ export interface CampaignLanding {
   conversion?: CampaignConversion;
 }
 
-/** Shared by all three pages: the registration and the "full info" links. */
+/** Shared by all four pages: the "full info" link and the address to reply to. */
 export const campaignLinks = {
-  register: links.battleRegister,
+  teamRegister: links.battleTeamRegistration,
+  individualRegister: links.battleIndividualRegistration,
   info: 'https://tvultimate.org/battle-of-idaho/',
   email: contact.battle.email,
 } as const;
 
 /**
- * A Google Ads conversion to report when a visitor leaves for Ultimate Central.
+ * A Google Ads conversion to report when a visitor leaves for a registration
+ * form.
  */
 export interface CampaignConversion {
   /** The account the conversion is reported to. */
@@ -275,6 +288,7 @@ export const freeAgentLanding: CampaignLanding = {
     title: 'Take the field with a team that needs you',
     lede: 'Register as a free agent, then email us to enter the raffle. We will take care of the rest.',
     primary: 'Register as a Free Agent',
+    href: campaignLinks.individualRegister,
     note: `Free agents are ${freeAgentFee}. Email ${contact.battle.email} after you register to lock in your raffle entry.`,
   },
 };
@@ -361,6 +375,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
     title: 'Take the field with a team that needs you',
     lede: 'Register as a youth free agent, then email us if you have any questions about the division.',
     primary: 'Register as a Youth Free Agent',
+    href: campaignLinks.individualRegister,
     note: `Youth free agents are ${youthFreeAgentFee}. Players under 20 — email ${contact.youth.email} if you need help registering.`,
   },
 };
@@ -433,7 +448,8 @@ export const youthLanding: CampaignLanding = {
     title: 'Give them a weekend worth talking about',
     lede: 'Register your player for the Youth Open, or bring the whole squad and enter a team.',
     primary: 'Register for the Youth Division',
-    note: `Questions? Email ${contact.youth.email} or ${contact.battle.email}.`,
+    href: campaignLinks.teamRegister,
+    note: 'Youth teams register for $200. Players without a squad can sign up as a youth free agent at tvultimate.org/battle-of-idaho/youth-free-agent/.',
   },
 };
 
@@ -505,6 +521,18 @@ export const teamLanding: CampaignLanding = {
     title: 'Sixteen spots. No waitlist if you move now.',
     lede: 'Register your team, or reply to us first to lock in the $50 discount.',
     primary: "Secure Your Team's Spot",
+    href: campaignLinks.teamRegister,
     note: `Reply to ${contact.battle.email} to claim the $50 discount and we will confirm your $200 rate.`,
   },
 };
+/**
+ * Every campaign landing page, in the order the staff index lists them. Kept
+ * beside the pages themselves so a new landing page cannot be missing from
+ * `/admin/`.
+ */
+export const campaignLandings: readonly CampaignLanding[] = [
+  freeAgentLanding,
+  youthFreeAgentLanding,
+  youthLanding,
+  teamLanding,
+];

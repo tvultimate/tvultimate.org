@@ -1,0 +1,442 @@
+---
+/**
+ * Staff index at `/admin/`.
+ *
+ * Not linked from anywhere and not in the sitemap: it exists so nobody has to
+ * remember a URL during an event. The password is a convenience gate, not
+ * authentication — see the note on `adminPassword` — so nothing here is
+ * private, only tucked away.
+ *
+ * Rows can be hidden from this browser, which keeps the list short for whoever
+ * uses it without changing what anyone else sees.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Button from '../../components/ui/Button.astro';
+import {
+  adminGroups,
+  adminHiddenKey,
+  adminLinkCount,
+  adminPassword,
+  adminUnlockKey,
+} from '../../data/admin';
+---
+
+<BaseLayout
+  title="Site index — Treasure Valley Ultimate"
+  description="Internal index of every page and destination Treasure Valley Ultimate runs."
+  noindex
+>
+  <Section tone="page">
+    <Container>
+      <div class="index">
+        <header class="index__intro">
+          <Eyebrow>Staff</Eyebrow>
+          <h1 class="index__title">Site index</h1>
+          <p class="index__lede">
+            Every page and destination we run, including the ones deliberately kept
+            out of the sitemap. Hiding a row only changes this browser.
+          </p>
+        </header>
+
+        <form class="gate" data-admin-gate>
+          <label class="gate__label" for="site-password">Password</label>
+          <div class="gate__row">
+            <input
+              class="gate__input"
+              id="site-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              aria-describedby="site-password-error"
+              data-admin-password
+            />
+            <Button type="submit" variant="solid">Unlock</Button>
+          </div>
+          <p class="gate__error" id="site-password-error" data-admin-error role="alert" hidden>
+            That password does not match.
+          </p>
+        </form>
+
+        <div class="panel" data-admin-panel tabindex="-1" hidden>
+          <div class="panel__bar">
+            <p class="panel__count" data-admin-count>{adminLinkCount} links</p>
+            <div class="panel__controls">
+              <button class="panel__control" type="button" data-admin-restore hidden>
+                Show hidden
+              </button>
+              <button class="panel__control" type="button" data-admin-lock>Lock</button>
+            </div>
+          </div>
+
+          {
+            adminGroups.map((group) => (
+              <section class="group" aria-labelledby={`group-${group.id}`}>
+                <div class="group__head">
+                  <h2 class="group__title" id={`group-${group.id}`}>
+                    {group.title}
+                  </h2>
+                  <p class="group__summary">{group.summary}</p>
+                </div>
+
+                <ul class="links">
+                  {group.links.map((link) => (
+                    <li class="link" data-admin-item data-href={link.href}>
+                      <div class="link__body">
+                        <a class="link__anchor" href={link.href}>
+                          {link.label}
+                        </a>
+                        <p class="link__path">{link.href}</p>
+                        {link.note && <p class="link__note">{link.note}</p>}
+                      </div>
+                      <button
+                        class="link__hide"
+                        type="button"
+                        data-admin-hide
+                        aria-label={`Hide ${link.label} from this list`}
+                      >
+                        Hide
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<script is:inline define:vars={{ adminPassword, adminUnlockKey, adminHiddenKey }}>
+  (() => {
+    const gate = document.querySelector('[data-admin-gate]');
+    const panel = document.querySelector('[data-admin-panel]');
+    const input = document.querySelector('[data-admin-password]');
+    const error = document.querySelector('[data-admin-error]');
+    const restore = document.querySelector('[data-admin-restore]');
+    const lock = document.querySelector('[data-admin-lock]');
+    const count = document.querySelector('[data-admin-count]');
+    if (!gate || !panel || !input || !error || !restore || !lock || !count) return;
+
+    const items = [...document.querySelectorAll('[data-admin-item]')];
+    let hidden = new Set();
+
+    const read = (key) => {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    };
+
+    const write = (key, value) => {
+      try {
+        if (value === null) localStorage.removeItem(key);
+        else localStorage.setItem(key, value);
+      } catch {
+        /* Storage blocked: the change lasts until the page is reloaded. */
+      }
+    };
+
+    const readHidden = () => {
+      try {
+        const parsed = JSON.parse(read(adminHiddenKey) ?? '[]');
+        return new Set(
+          Array.isArray(parsed) ? parsed.filter((value) => typeof value === 'string') : [],
+        );
+      } catch {
+        return new Set();
+      }
+    };
+
+    const paint = () => {
+      for (const item of items) {
+        item.hidden = hidden.has(item.dataset.href);
+      }
+      const visible = items.length - hidden.size;
+      count.textContent =
+        hidden.size === 0 ? `${items.length} links` : `${visible} of ${items.length} shown`;
+      restore.hidden = hidden.size === 0;
+      restore.textContent =
+        hidden.size === 0 ? 'Show hidden' : `Show ${hidden.size} hidden`;
+    };
+
+    const show = (focus) => {
+      gate.hidden = true;
+      panel.hidden = false;
+      if (focus) panel.focus();
+    };
+
+    gate.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (input.value.trim() === adminPassword) {
+        error.hidden = true;
+        write(adminUnlockKey, '1');
+        show(true);
+        return;
+      }
+      error.hidden = false;
+      input.select();
+    });
+
+    lock.addEventListener('click', () => {
+      write(adminUnlockKey, null);
+      panel.hidden = true;
+      gate.hidden = false;
+      error.hidden = true;
+      input.value = '';
+      input.focus();
+    });
+
+    restore.addEventListener('click', () => {
+      hidden = new Set();
+      write(adminHiddenKey, null);
+      paint();
+    });
+
+    /*
+      One listener on the panel rather than one per row: the rows are static, but
+      delegation keeps the count of listeners independent of the list length.
+    */
+    panel.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest('[data-admin-hide]');
+      if (!button) return;
+      const item = button.closest('[data-admin-item]');
+      if (!item) return;
+      hidden.add(item.dataset.href);
+      write(adminHiddenKey, JSON.stringify([...hidden]));
+      paint();
+    });
+
+    hidden = readHidden();
+    paint();
+
+    if (read(adminUnlockKey) === '1') show(false);
+  })();
+</script>
+
+<style>
+  /* Hiding is a state change on elements that also have a display rule. */
+  [hidden] {
+    display: none !important;
+  }
+
+  .index {
+    display: grid;
+    gap: var(--space-5);
+    max-inline-size: 58rem;
+  }
+
+  .index__title {
+    font-size: var(--text-3xl);
+  }
+
+  .index__lede {
+    max-inline-size: var(--layout-measure);
+    margin-block-start: var(--space-2);
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* -------------------------------------------------------------
+   * Password gate
+   * ----------------------------------------------------------- */
+
+  .gate {
+    display: grid;
+    gap: var(--space-2);
+    max-inline-size: 28rem;
+  }
+
+  .gate__label {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    color: var(--text-primary);
+  }
+
+  .gate__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: stretch;
+  }
+
+  .gate__input {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    padding: var(--space-3) var(--space-4);
+    font: inherit;
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    background: var(--surface-raised);
+    border: var(--border-width-thick) solid var(--line-default);
+    border-radius: var(--radius-md);
+  }
+
+  .gate__input:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .gate__error {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-critical);
+  }
+
+  /* -------------------------------------------------------------
+   * The index itself
+   * ----------------------------------------------------------- */
+
+  .panel {
+    display: grid;
+    gap: var(--space-6);
+    padding-block-start: var(--space-2);
+  }
+
+  .panel__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block-end: var(--space-3);
+    border-block-end: var(--border-width-thick) solid var(--line-strong);
+  }
+
+  .panel__count {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .panel__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .panel__control {
+    min-block-size: 2rem;
+    padding: var(--space-1) var(--space-3);
+    font: inherit;
+    font-size: var(--text-xs);
+    font-weight: 650;
+    color: var(--text-secondary);
+    background: transparent;
+    border: var(--border-width) solid var(--line-default);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition:
+      color var(--motion-fast) var(--ease-out-soft),
+      border-color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .panel__control:hover {
+    color: var(--text-primary);
+    border-color: var(--line-strong);
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .group__title {
+    font-size: var(--text-xl);
+  }
+
+  .group__summary {
+    max-inline-size: var(--layout-measure);
+    margin-block-start: var(--space-1);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .links {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border-block-start: var(--border-width) solid var(--line-subtle);
+  }
+
+  .link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-3);
+    align-items: start;
+    padding-block: var(--space-3);
+    margin: 0;
+    border-block-end: var(--border-width) solid var(--line-subtle);
+  }
+
+  .link__body {
+    display: grid;
+    gap: var(--space-1);
+    min-inline-size: 0;
+  }
+
+  .link__anchor {
+    font-weight: 650;
+    color: var(--text-link);
+    overflow-wrap: anywhere;
+  }
+
+  .link__path {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--text-tertiary);
+    overflow-wrap: anywhere;
+  }
+
+  .link__note {
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /*
+    A 32px target that still reads as a small quiet control: the row already
+    supplies the vertical rhythm, so the button only needs to be big enough to
+    hit.
+  */
+  .link__hide {
+    min-block-size: 2rem;
+    min-inline-size: 2rem;
+    padding: var(--space-1) var(--space-2);
+    font: inherit;
+    font-size: var(--text-xs);
+    font-weight: 650;
+    color: var(--text-secondary);
+    background: transparent;
+    border: var(--border-width) solid var(--line-default);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      color var(--motion-fast) var(--ease-out-soft),
+      border-color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .link__hide:hover {
+    color: var(--text-primary);
+    border-color: var(--line-strong);
+  }
+
+  .panel__bar :global(.btn),
+  .gate__row :global(.btn) {
+    flex: none;
+  }
+</style>

@@ -337,6 +337,21 @@
       ],
       "bytes": 106734,
       "derivation": "Supplied by the sponsor as a cropped 1329x609 PNG with an alpha channel, downscaled to 418x192 \u2014 twice the height the sponsor wall renders it at (--space-9, 6rem), which keeps it sharp on a high-DPI screen. Replaces an auto-traced SVG export of the same artwork that weighed ~920KB and carried no viewBox; the PNG is 88% smaller and its edges are cleaner than the tracer's flat-filled paths."
+    },
+    "logo-altitude-pt.svg": {
+      "file": "logo-altitude-pt.svg",
+      "role": "logo",
+      "alt": "Altitude Physical Therapy",
+      "describes": "Battle of Idaho sponsor. A navy, teal, and lime mountain-and-cross mark beside the white ALTITUDE PHYSICAL THERAPY wordmark.",
+      "sourcePage": "",
+      "sourceId": "new artwork supplied by the sponsor",
+      "contexts": [
+        "/battle-of-idaho/"
+      ],
+      "width": 806.8,
+      "height": 109.8,
+      "bytes": 4846,
+      "derivation": "Supplied by the sponsor as the vector original, 'logo-horizontal-white-text.svg', copied unchanged. The wordmark is white (#FFFFFF), so the sponsor wall renders this mark on the inverse surface rather than the bright plate the other logos sit on \u2014 see the `plate` field in data/tournament.ts. The 7.3:1 aspect ratio is the artwork's own."
     }
   },
   "unrecovered": {

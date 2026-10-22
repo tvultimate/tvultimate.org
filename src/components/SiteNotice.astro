@@ -3,8 +3,8 @@
  * A dismissible notice that floats over the bottom of every page.
  *
  * Rendered from the base layout so it appears site-wide, including the ads
- * landing pages — those point at the registration flow that is currently down,
- * so they need it most.
+ * landing pages — those are where most visitors arrive during a registration
+ * push, so they are where the caveat about rosters matters most.
  *
  * Dismissal is remembered per device: the key is written to `localStorage`,
  * which is scoped to one browser on one machine. A visitor who clears it here
@@ -24,8 +24,16 @@ import { contact, links } from '../data/org';
       {notice.title}
     </p>
     <p class="notice__body">
-      {notice.body}{' '}
-      If you need anything, email <a href={`mailto:${contact.general.email}`}
+      {
+        notice.body.map((part) =>
+          typeof part === 'string' ? (
+            part
+          ) : (
+            <a href={part.href}>{part.label}</a>
+          ),
+        )
+      }{' '}
+      Questions? Email <a href={`mailto:${contact.general.email}`}
         >{contact.general.email}</a
       > or find us on <a href={links.discord}>Discord</a>.
     </p>

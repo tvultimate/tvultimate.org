@@ -1,6 +1,6 @@
 ---
 /**
- * The shared body of the three Google Ads landing pages.
+ * The shared body of the four Google Ads landing pages.
  *
  * Each page file supplies only its copy (from `data/campaign.ts`) and this
  * layout assembles the same five blocks every time: hero with the registration
@@ -19,7 +19,7 @@ import CampaignHighlight from '../components/sections/tournament/CampaignHighlig
 import CampaignDetails from '../components/sections/tournament/CampaignDetails.astro';
 import CampaignCta from '../components/sections/tournament/CampaignCta.astro';
 import CampaignConversion from '../components/sections/tournament/CampaignConversion.astro';
-import { campaignLinks, campaignSecondary } from '../data/campaign';
+import { campaignSecondary } from '../data/campaign';
 import type { CampaignLanding } from '../data/campaign';
 import { links } from '../data/org';
 
@@ -29,7 +29,7 @@ interface Props {
 
 const { page } = Astro.props;
 
-/* Fixed by the ad campaigns, and identical on all three pages. */
+/* Fixed by the ad campaigns, and identical on all four pages. */
 const secondary = campaignSecondary;
 
 /*
@@ -50,7 +50,7 @@ const trackRegistration = Boolean(page.conversion);
   <PageHero eyebrow={page.eyebrow} title={page.heading} lede={page.lede}>
     <div class="hero-actions">
       <Button
-        href={campaignLinks.register}
+        href={page.cta.href}
         variant="solid"
         size="lg"
         external
@@ -106,7 +106,7 @@ const trackRegistration = Boolean(page.conversion);
         eyebrow={page.cta.eyebrow}
         title={page.cta.title}
         lede={page.cta.lede}
-        primary={{ label: page.cta.primary, href: campaignLinks.register }}
+        primary={{ label: page.cta.primary, href: page.cta.href }}
         secondary={secondary}
         note={page.cta.note}
         trackConversion={trackRegistration}

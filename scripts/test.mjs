@@ -38,6 +38,7 @@ const ROUTES = [
   '/partner-clubs/sawtooth-ultimate/',
   '/battle-of-idaho/',
   '/battle-of-idaho/battle-of-idaho-sponsorship/',
+  '/battle-of-idaho/teams/',
   // Google Ads landing pages. Unlinked from the navigation, audited like any
   // other route.
   '/battle-of-idaho/free-agent/',
@@ -56,6 +57,12 @@ const ROUTES = [
   '/policies/board-governance/',
   '/policies/club-affiliation-agreement/',
   '/policies/funds-and-capital-management/',
+  /*
+    The staff index. Audited in its locked state: the gate is a password form,
+    and the rows behind it are public URLs already audited from the pages that
+    link them.
+  */
+  '/admin/',
 ];
 
 /*

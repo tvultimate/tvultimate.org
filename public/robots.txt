@@ -1,12 +1,12 @@
 # https://tvultimate.org
 #
-# Everything is open to crawlers. The three Google Ads landing pages
-# (/battle-of-idaho/free-agent/, /battle-of-idaho/youth-open/, and
-# /battle-of-idaho/register-a-team/) are deliberately absent from the sitemap
-# because they are paid-traffic landing pages, but they are not blocked here —
-# robots.txt governs crawling, not indexing. They carry a `noindex` meta tag
-# instead, which is the correct tool for keeping a page out of search results
-# while still letting ad crawlers read it.
+# Everything is open to crawlers. The Google Ads landing pages
+# (/battle-of-idaho/free-agent/, /battle-of-idaho/youth-free-agent/,
+# /battle-of-idaho/youth-open/, and /battle-of-idaho/register-a-team/) and the
+# staff index (/admin/) are deliberately absent from the sitemap, but they are
+# not blocked here — robots.txt governs crawling, not indexing. They carry a
+# `noindex` meta tag instead, which is the correct tool for keeping a page out
+# of search results while still letting ad crawlers read it.
 
 User-agent: *
 Allow: /

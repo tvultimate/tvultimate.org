@@ -61,6 +61,19 @@ export const tournament = {
       height: 192,
       href: 'https://www.beelinesprinklerrepair.com/',
     },
+    {
+      /*
+        Vector artwork supplied by the sponsor. Its wordmark is white, so it is
+        the only mark on the wall that needs a dark plate rather than the bright
+        one the rest sit on.
+      */
+      name: 'Altitude Physical Therapy',
+      logo: images.sponsorAltitude,
+      width: 807,
+      height: 110,
+      href: 'https://www.altitudept.com/',
+      plate: 'dark',
+    },
   ],
   intro:
     'An ultimate frisbee tournament dedicated to growing the sport in our state. This event is perfect for all levels of teams looking for a fun and competitive weekend on the field.',

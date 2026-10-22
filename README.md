@@ -39,6 +39,7 @@ continue to work.
 | `/partner-clubs/`                               | Partner Information                |
 | `/partner-clubs/sawtooth-ultimate/`             | Sawtooth Ultimate                  |
 | `/battle-of-idaho/`                             | 2026 Battle of Idaho               |
+| `/battle-of-idaho/teams/`                       | 2026 Battle of Idaho Teams         |
 | `/battle-of-idaho/battle-of-idaho-sponsorship/` | Battle of Idaho Sponsorship        |
 | `/youth-community/`                             | Youth & Community                  |
 | `/resources-and-media/`                         | Resources and Media                |
@@ -47,6 +48,7 @@ continue to work.
 | `/donations-and-dues/youth-donations/`          | Youth Donations                    |
 | `/donations-and-dues/sawtooth-donations/`       | Sawtooth Donations                 |
 | `/donations-and-dues/team-dues/`                | Team Dues                          |
+| `/admin/`                                       | Staff index (noindex, unlisted)    |
 
 ## Project structure
 
@@ -87,6 +89,23 @@ no navigation state is threaded through props.
 The active section is deliberately `undefined` on the home page: being on the
 home page means no section is selected, rather than defaulting to the first
 entry and falsely highlighting it.
+
+### Staff index
+
+`/admin/` is a link directory: every page and destination, assembled in
+`src/data/admin.ts` from the same modules the site renders from — the
+navigation, the policy list, the campaign landings, the registration links — so
+a new page appears there by existing rather than by being remembered twice. It
+is `noindex`, absent from the sitemap, and absent from the navigation.
+
+The password is checked in the browser. That is a convenience gate, not
+authentication: the site is static files on a CDN, so the string ships in the
+bundle and every link behind it is already public. It keeps the index out of
+the way of someone who guesses the URL and protects nothing else. Do not put
+anything private there without a backend to check it.
+
+Hiding a row is remembered in `localStorage` for that browser only, the same
+per-device mechanism the site-wide notice uses for dismissal.
 
 ### Donation fund pages
 
@@ -168,6 +187,13 @@ keeps it sharp on a high-DPI screen. It replaced an auto-traced SVG export of th
 same artwork that weighed ~920KB for 2636 flat-filled paths, had no `viewBox`,
 and left roughly the bottom third of its canvas empty. The PNG is 88% smaller and
 its edges are cleaner than the tracer's.
+
+`logo-altitude-pt.svg` is the one mark supplied with a white wordmark, so it is
+the one that cannot sit on the bright plate the others use: `plate: 'dark'` on
+its entry in `data/tournament.ts` swaps the ground for `--surface-inverse` and
+the hairline for `--line-inverse`. Supplied white-on-transparent artwork should
+be handled this way rather than recoloured, so the sponsor's own file stays the
+source of truth.
 
 `scripts/trim-svg-bounds.mjs` is what measured that empty margin. It rasterises
 an SVG and reports the inked bounds, which is the first thing to reach for when a
@@ -272,7 +298,7 @@ itself, which the landing pages link to.
 Google Ads conversions are reported by `CampaignConversion.astro`, which renders
 an inline script that listens for a click on any link carrying
 `data-conversion` and sends one `conversion` event before the visitor leaves for
-Ultimate Central.
+a registration form.
 
 A page opts in by setting `conversion` in its `data/campaign.ts` entry, using
 `battleConversion`. The two free agent pages are configured today — the adult

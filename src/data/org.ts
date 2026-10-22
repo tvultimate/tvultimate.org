@@ -74,6 +74,13 @@ export const images = {
      */
   sponsorBeeline: '/img/logo-beeline-sprinkler-repair.png',
 
+  /**
+   * Altitude Physical Therapy. Supplied as vector artwork whose wordmark is
+   * white, so it is the one mark on the sponsor wall that needs a dark plate
+   * rather than the bright one the rest sit on.
+   */
+  sponsorAltitude: '/img/logo-altitude-pt.svg',
+
     /** A Battle of Idaho team on grass. Tournament context, not Sawtooth. */
   boiTeam: '/img/team-roster.jpg',
   /** Sawtooth roster with the Boise foothills behind. Club-team context. */
@@ -115,7 +122,18 @@ export const links = {
   youtube: 'https://www.youtube.com/@tv-ultimate',
   youtubeFilm: 'https://www.youtube.com/embed/47sKaHp_PuY',
   sawtoothTryout: 'https://tooth.s.gy/tryout',
-  battleRegister:
+  /**
+   * Battle of Idaho registration. Ulticentral is down, so both public flows
+   * are Zeffy forms we own: one to enter a team, one to register an individual
+   * (a free agent, or a youth player without a squad). The Ulticentral link is
+   * kept only for the roster step — once a team is entered, adding players to
+   * it still happens there when the platform is back.
+   */
+  battleTeamRegistration:
+    'https://www.zeffy.com/en-US/donation-form/battle-of-idaho-team-registration',
+  battleIndividualRegistration:
+    'https://www.zeffy.com/en-US/donation-form/battle-of-idaho-individual-registration',
+  battleRoster:
     'https://ultimatecentral.com/en_au/e/2026-battle-of-idaho/register?new=new',
   maps: 'https://maps.google.com/?q=Heroes+Park+Meridian+Idaho',
 } as const;
