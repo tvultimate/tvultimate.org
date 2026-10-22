@@ -204,6 +204,8 @@
   --line-default: color-mix(in oklab, var(--color-stone-400) 75%, transparent);
   --line-strong: var(--color-stone-500);
   --line-accent: color-mix(in oklab, var(--color-pine-500) 45%, transparent);
+  /* The edge of a warm notice surface, where a neutral rule would read grey. */
+  --line-warm: color-mix(in oklab, var(--color-sunset-500) 35%, transparent);
   --line-inverse: color-mix(in oklab, var(--color-pine-300) 30%, transparent);
 
   /* ---------------------------------------------------------------

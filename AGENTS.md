@@ -26,6 +26,8 @@ things:
    the text's computed colour against WCAG AA. This is why it catches problems a
    static review misses: text over photography, on gradients, inside translucent or
    `oklab()` fills, and text that inherits a colour meant for a different ground.
+   Text a fixed overlay paints over is skipped, the same as text with `opacity: 0`:
+   the pixel there belongs to the overlay, so there is no honest ratio to report.
 2. **Overflow** — elements escaping their parent, exempting anything inside a
    deliberate clip or scroll container.
 3. **Truncation** — any box that clips its own text, which silently drops words.
@@ -48,7 +50,7 @@ things:
    tap targets on small screens.
 7. **Console** — page and console errors, plus an assertion that a missing URL 404s.
 
-Three failure modes worth knowing, because they have already caused false confidence:
+Four failure modes worth knowing, because they have already caused false confidence:
 
 - **A stale preview server reports a confident PASS on an old build.** `npm test`
   spawns `astro preview` to serve `dist/`, and in this Astro version that server
@@ -62,8 +64,16 @@ Three failure modes worth knowing, because they have already caused false confid
 - **A check that never runs is not a pass.** An early version reported `PASS` while
   running zero contrast checks, because a helper detached its probe element on the
   first call and returned `null` for every subsequent element. If you change
-  `scripts/test.mjs`, confirm the check count is plausible (~9,500 for the current
+  `scripts/test.mjs`, confirm the check count is plausible (~9,650 for the current
   site) and deliberately break something to prove the check still fails.
+
+- **A screenshot must be taken at the scroll position its rects were measured at.**
+  `auditUses` scrolls each sprite into view to photograph it, and a fixed or sticky
+  element is painted at the current scroll position rather than at the document
+  coordinate its rect was read at. The contrast pass scrolls back to the captured
+  `scrollY` before it screenshots. Without that, every ratio over something that
+  floats — the masthead, the site notice — silently describes the wrong pixels and
+  still looks like a normal result.
 - **A dark background does not re-theme its contents.** Painting `background:
   var(--surface-inverse)` leaves body copy, links, eyebrows and button inks on their
   light-ground values. `Section tone="inverse"` and `PageHero` add `on-inverse` for

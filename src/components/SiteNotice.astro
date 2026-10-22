@@ -1,0 +1,160 @@
+---
+/**
+ * A dismissible notice that floats over the bottom of every page.
+ *
+ * Rendered from the base layout so it appears site-wide, including the ads
+ * landing pages — those point at the registration flow that is currently down,
+ * so they need it most.
+ *
+ * Dismissal is remembered per device: the key is written to `localStorage`,
+ * which is scoped to one browser on one machine. A visitor who clears it here
+ * still sees it on their phone. The in-head script in `BaseLayout.astro` reads
+ * that key before the first paint, so a cleared notice never flashes in.
+ */
+
+import Icon from './ui/Icon.astro';
+import { notice, noticeDismissKey } from '../data/notice';
+import { contact, links } from '../data/org';
+---
+
+<aside class="notice" aria-label="Site notice" data-site-notice>
+  <div class="notice__text">
+    <p class="notice__title">
+      <Icon name="clock" class="notice__glyph" />
+      {notice.title}
+    </p>
+    <p class="notice__body">
+      {notice.body}{' '}
+      If you need anything, email <a href={`mailto:${contact.general.email}`}
+        >{contact.general.email}</a
+      > or find us on <a href={links.discord}>Discord</a>.
+    </p>
+  </div>
+
+  <button class="notice__close" type="button" aria-label="Dismiss this notice" data-site-notice-close>
+    <Icon name="close" />
+  </button>
+</aside>
+
+<script is:inline define:vars={{ noticeDismissKey }}>
+  (() => {
+    const close = document.querySelector('[data-site-notice-close]');
+    if (!close) return;
+
+    close.addEventListener('click', () => {
+      /*
+        One mechanism for hiding, shared with the pre-paint check in the head:
+        the attribute hides the banner through CSS *and* records the state.
+        Setting `hidden` on the element instead would lose to the component's
+        own `display: grid`.
+      */
+      document.documentElement.dataset.noticeDismissed = '';
+
+      try {
+        localStorage.setItem(noticeDismissKey, '1');
+      } catch {
+        /* Storage blocked: it comes back next page load, which is acceptable. */
+      }
+    });
+  })();
+</script>
+
+<style>
+  .notice {
+    position: fixed;
+    inset-block-end: var(--space-3);
+    inset-inline: var(--space-3);
+    /* Below the masthead (50), so an open mobile menu still covers it. */
+    z-index: 40;
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: var(--space-2);
+
+    /*
+      One comfortable measure of text, not a full-width bar. Sits above the
+      page rather than replacing part of it, so it must stay a compact block
+      that can be read and dismissed without moving the reader's eye.
+    */
+    max-inline-size: var(--layout-measure);
+    margin-inline: auto;
+    padding: var(--space-3) var(--space-4);
+
+    background: var(--surface-warm);
+    border: var(--border-width) solid var(--line-warm);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Hiding is driven by the same attribute the pre-paint check sets. */
+  :global(html[data-notice-dismissed]) .notice {
+    display: none;
+  }
+
+  .notice__text {
+    min-inline-size: 0;
+  }
+
+  .notice__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-snug);
+    color: var(--text-primary);
+  }
+
+  /* Astro's scoped styles do not reach a child component's markup. */
+  :global(.notice__glyph) {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    flex: none;
+    color: var(--text-warm);
+  }
+
+  .notice__body {
+    margin-block-start: var(--space-1);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .notice__body a {
+    color: var(--text-link);
+  }
+
+  /*
+    A 40px target that reads as a 24px glyph: the margin pulls the padding back
+    into the banner's corner so the button does not look detached from the text
+    it dismisses.
+  */
+  .notice__close {
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    margin: calc(-1 * var(--space-1)) calc(-1 * var(--space-2)) 0 0;
+    padding: 0;
+    color: var(--text-secondary);
+    background: none;
+    border: 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .notice__close:hover {
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 48rem) {
+    .notice {
+      inset-block-end: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+    }
+  }
+</style>

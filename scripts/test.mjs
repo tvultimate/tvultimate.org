@@ -138,6 +138,38 @@ const INSPECT = `(() => {
   const squished = [];
   const disclosures = [];
 
+  /* Points the contrast sampler reads: the midpoints of the box's edges. */
+  const probePoints = (r) => [
+    [r.left + 1, r.top + r.height / 2],
+    [r.left + r.width - 1, r.top + r.height / 2],
+    [r.left + r.width / 2, r.top + 1],
+    [r.left + r.width / 2, r.top + r.height - 1],
+  ];
+
+  /*
+   * True if a fixed or sticky element covers any point the contrast sampler
+   * reads.
+   *
+   * The pixel there belongs to the overlay, not to the text's ground, so there
+   * is nothing honest to measure: comparing a light-on-dark button label to a
+   * notice's warm fill reports a ratio no visitor ever sees. Text under an
+   * opaque panel is as unpainted as text with \`opacity: 0\`, and is skipped the
+   * same way. Only elements that leave the flow count — an in-flow sibling is
+   * the ground itself, not something painted over it.
+   */
+  const underOverlay = (el, r) =>
+    overlays.some((o) => {
+      if (o.el === el || o.el.contains(el) || el.contains(o.el)) return false;
+      return probePoints(r).some(
+        ([x, y]) =>
+          x >= o.rect.left && x <= o.rect.right && y >= o.rect.top && y <= o.rect.bottom,
+      );
+    });
+
+  /* Collected during the walk below, applied once every overlay is known. */
+  const textNodes = [];
+  const overlays = [];
+
   for (const el of document.querySelectorAll('body *')) {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden') continue;
@@ -148,6 +180,10 @@ const INSPECT = `(() => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) continue;
 
+    if (cs.position === 'fixed' || cs.position === 'sticky') {
+      overlays.push({ el, rect: r });
+    }
+
     const own = [...el.childNodes]
       .filter((n) => n.nodeType === 3 && n.textContent.trim())
       .map((n) => n.textContent.trim())
@@ -156,6 +192,7 @@ const INSPECT = `(() => {
 
     if (own) {
       const fg = toRGB(cs.color);
+      textNodes.push({ el, rect: r, index: texts.length });
       texts.push({
         el: describe(el),
         text: own.slice(0, 60),
@@ -163,6 +200,7 @@ const INSPECT = `(() => {
         size: parseFloat(cs.fontSize),
         weight: Number(cs.fontWeight) || 400,
         fg: fg ? { r: clamp(fg.r), g: clamp(fg.g), b: clamp(fg.b), a: fg.a } : null,
+        occluded: false,
         scrollY: window.scrollY,
       });
     }
@@ -183,6 +221,15 @@ const INSPECT = `(() => {
         }
       }
     }
+  }
+
+  /*
+   * Second pass, once every overlay is known: the walk above cannot decide
+   * occlusion as it goes, because an overlay may sit anywhere in the document
+   * and has not been collected yet.
+   */
+  for (const n of textNodes) {
+    texts[n.index].occluded = underOverlay(n.el, n.rect);
   }
 
   const vw = document.documentElement.clientWidth;
@@ -782,6 +829,19 @@ try {
       // Layout is now known; blank the glyphs so the pixels behind each text
       // run are unambiguous, then read the backdrop from that screenshot.
       await page.addStyleTag({ content: HIDE_TEXT });
+
+      /*
+       * Back to where the rects were measured. `auditUses` scrolls each sprite
+       * into view to photograph it, and a fixed or sticky element is painted at
+       * the current scroll position rather than at the document coordinate its
+       * rect was read at. Without this, sampling reads whatever the page had
+       * scrolled to and the ratio describes a ground the text never sat on.
+       * `instant`, because the site sets `scroll-behavior: smooth`.
+       */
+      await page.evaluate(
+        (y) => window.scrollTo({ top: y, left: 0, behavior: 'instant' }),
+        scrollY,
+      );
       await page.waitForTimeout(120);
       const shot = PNG.sync.read(await page.screenshot({ fullPage: true }));
       // After sampling, because stripping text reflows the page.
@@ -797,6 +857,8 @@ try {
 
       for (const t of texts) {
         if (!t.fg) continue;
+        // Behind a fixed overlay: no visible ground to measure (see INSPECT).
+        if (t.occluded) continue;
         const bg = sampleBackground(
           shot,
           { x: t.x, y: t.y + scrollY, w: t.w, h: t.h },
