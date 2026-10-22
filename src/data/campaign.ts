@@ -222,7 +222,7 @@ export const freeAgentLanding: CampaignLanding = {
       {
         icon: 'users',
         title: 'Sign up solo, get drafted',
-        body: 'Register as an individual and we place you on a dedicated free agent squad — Mixed Adult or Adult Open. You show up, we hand you a jersey.',
+        body: 'Register as an individual and we place you on a dedicated free agent squad — Mixed Adult or Adult Open. You show up, we play.',
       },
       {
         icon: 'trophy',
@@ -272,7 +272,7 @@ export const freeAgentLanding: CampaignLanding = {
   ],
   cta: {
     eyebrow: 'Free Agent signups are open',
-    title: 'Take the field with a jersey we hand you',
+    title: 'Take the field with a team that needs you',
     lede: 'Register as a free agent, then email us to enter the raffle. We will take care of the rest.',
     primary: 'Register as a Free Agent',
     note: `Free agents are ${freeAgentFee}. Email ${contact.battle.email} after you register to lock in your raffle entry.`,
@@ -320,7 +320,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
       {
         icon: 'users',
         title: 'Sign up solo, get drafted',
-        body: 'Register as an individual and we place you on a dedicated Youth Open squad. You show up, we hand you a jersey.',
+        body: 'Register as an individual and we place you on a dedicated Youth Open squad. You show up, we play.',
       },
       {
         icon: 'shield',
@@ -358,7 +358,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
   rules: youthFreeAgentRules,
   cta: {
     eyebrow: 'Youth free agent signups are open',
-    title: 'Take the field with a jersey we hand you',
+    title: 'Take the field with a team that needs you',
     lede: 'Register as a youth free agent, then email us if you have any questions about the division.',
     primary: 'Register as a Youth Free Agent',
     note: `Youth free agents are ${youthFreeAgentFee}. Players under 20 — email ${contact.youth.email} if you need help registering.`,

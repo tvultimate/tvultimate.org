@@ -109,7 +109,19 @@ const year = new Date().getFullYear();
     position: relative;
     overflow: clip;
     padding-block: var(--space-6);
-    background: var(--surface-inverse);
+    /*
+      A softer ground than the dark sections it can follow. The closing call
+      to action on a landing page is `--surface-inverse`, the same pine-950 as
+      this footer used to be, and the two read as one undivided block. Lifting
+      the footer a step separates the site's furniture from the page's own
+      dark sections.
+
+      The hairline is the belt to that braces: a tonal step alone is easy to
+      miss on a dim screen, and this edge is the only thing telling a reader
+      that the page has ended and the footer has begun.
+    */
+    background: var(--surface-inverse-soft);
+    border-block-start: var(--border-width) solid var(--line-inverse);
     color: var(--color-pine-200);
   }
 
