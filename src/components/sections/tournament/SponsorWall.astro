@@ -12,12 +12,6 @@ export interface Sponsor {
   readonly height: number;
   /** Sponsor's own site. Rendered as a link when present. */
   readonly href?: string;
-  /**
-   * The ground the supplied artwork expects. Most marks are dark-on-transparent
-   * and sit on a bright plate; a mark whose wordmark is white would vanish
-   * there, so it opts into the inverse surface.
-   */
-  readonly plate?: 'bright' | 'dark';
 }
 
 interface Props {
@@ -47,7 +41,7 @@ const { sponsors } = Astro.props;
               title={`${sponsor.name} (opens in a new tab)`}
             >
               <img
-                class:list={['wall__logo', sponsor.plate === 'dark' && 'wall__logo--dark']}
+                class="wall__logo"
                 src={sponsor.logo}
                 alt={sponsor.name}
                 width={sponsor.width}
@@ -58,7 +52,7 @@ const { sponsors } = Astro.props;
             </a>
           ) : (
             <img
-              class:list={['wall__logo', sponsor.plate === 'dark' && 'wall__logo--dark']}
+              class="wall__logo"
               src={sponsor.logo}
               alt={sponsor.name}
               width={sponsor.width}
@@ -106,15 +100,6 @@ const { sponsors } = Astro.props;
     background: var(--surface-bright);
     border: var(--border-width) solid var(--line-subtle);
     border-radius: var(--radius-xs);
-  }
-
-  /*
-    A mark whose wordmark is white cannot sit on the bright plate — the text
-    would disappear. These few swap the ground and the hairline with it.
-  */
-  .wall__logo--dark {
-    background: var(--surface-inverse);
-    border-color: var(--line-inverse);
   }
 
   /*

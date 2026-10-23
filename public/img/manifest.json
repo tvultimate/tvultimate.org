@@ -342,7 +342,7 @@
       "file": "logo-altitude-pt.svg",
       "role": "logo",
       "alt": "Altitude Physical Therapy",
-      "describes": "Battle of Idaho sponsor. A navy, teal, and lime mountain-and-cross mark beside the white ALTITUDE PHYSICAL THERAPY wordmark.",
+      "describes": "Battle of Idaho sponsor. A navy, teal, and lime mountain-and-cross mark beside the ALTITUDE PHYSICAL THERAPY wordmark.",
       "sourcePage": "",
       "sourceId": "new artwork supplied by the sponsor",
       "contexts": [
@@ -350,8 +350,8 @@
       ],
       "width": 806.8,
       "height": 109.8,
-      "bytes": 4846,
-      "derivation": "Supplied by the sponsor as the vector original, 'logo-horizontal-white-text.svg', copied unchanged. The wordmark is white (#FFFFFF), so the sponsor wall renders this mark on the inverse surface rather than the bright plate the other logos sit on \u2014 see the `plate` field in data/tournament.ts. The 7.3:1 aspect ratio is the artwork's own."
+      "bytes": 4867,
+      "derivation": "Supplied by the sponsor as the vector original, 'logo-horizontal-white-text.svg', copied unchanged except for the wordmark fill: the 23 text paths were moved from `.st0` (white) to a new `.st4` class carrying the mark's own navy, #2A357A, so the logo reads on the bright plate every other sponsor sits on. The icon keeps its original fills (white base, navy, teal, lime), and the 7.3:1 aspect ratio is the artwork's own."
     }
   },
   "unrecovered": {

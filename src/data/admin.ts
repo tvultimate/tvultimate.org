@@ -173,6 +173,3 @@ export const adminPassword = 'This is a test password.';
 
 /** Remembers that this browser has unlocked the index. */
 export const adminUnlockKey = 'tvultimate:admin-unlocked';
-
-/** Remembers which rows this browser has hidden, as a JSON array of hrefs. */
-export const adminHiddenKey = 'tvultimate:admin-hidden';

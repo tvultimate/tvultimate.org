@@ -75,9 +75,9 @@ export const images = {
   sponsorBeeline: '/img/logo-beeline-sprinkler-repair.png',
 
   /**
-   * Altitude Physical Therapy. Supplied as vector artwork whose wordmark is
-   * white, so it is the one mark on the sponsor wall that needs a dark plate
-   * rather than the bright one the rest sit on.
+   * Altitude Physical Therapy. Supplied as vector artwork with a white
+   * wordmark, recoloured to the mark's own navy (#2A357A) so it sits on the
+   * same bright plate as every other sponsor.
    */
   sponsorAltitude: '/img/logo-altitude-pt.svg',
 

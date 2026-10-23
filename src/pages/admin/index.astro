@@ -7,8 +7,7 @@
  * authentication — see the note on `adminPassword` — so nothing here is
  * private, only tucked away.
  *
- * Rows can be hidden from this browser, which keeps the list short for whoever
- * uses it without changing what anyone else sees.
+ * The links come first and the teams snapshot sits at the foot.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -16,9 +15,9 @@ import Section from '../../components/ui/Section.astro';
 import Container from '../../components/ui/Container.astro';
 import Eyebrow from '../../components/ui/Eyebrow.astro';
 import Button from '../../components/ui/Button.astro';
+import TeamsSnapshot from '../../components/admin/TeamsSnapshot.astro';
 import {
   adminGroups,
-  adminHiddenKey,
   adminLinkCount,
   adminPassword,
   adminUnlockKey,
@@ -38,7 +37,7 @@ import {
           <h1 class="index__title">Site index</h1>
           <p class="index__lede">
             Every page and destination we run, including the ones deliberately kept
-            out of the sitemap. Hiding a row only changes this browser.
+            out of the sitemap, with the current team list at the foot.
           </p>
         </header>
 
@@ -64,11 +63,8 @@ import {
 
         <div class="panel" data-admin-panel tabindex="-1" hidden>
           <div class="panel__bar">
-            <p class="panel__count" data-admin-count>{adminLinkCount} links</p>
+            <p class="panel__count">{adminLinkCount} links</p>
             <div class="panel__controls">
-              <button class="panel__control" type="button" data-admin-restore hidden>
-                Show hidden
-              </button>
               <button class="panel__control" type="button" data-admin-lock>Lock</button>
             </div>
           </div>
@@ -85,86 +81,50 @@ import {
 
                 <ul class="links">
                   {group.links.map((link) => (
-                    <li class="link" data-admin-item data-href={link.href}>
-                      <div class="link__body">
-                        <a class="link__anchor" href={link.href}>
-                          {link.label}
-                        </a>
-                        <p class="link__path">{link.href}</p>
-                        {link.note && <p class="link__note">{link.note}</p>}
-                      </div>
-                      <button
-                        class="link__hide"
-                        type="button"
-                        data-admin-hide
-                        aria-label={`Hide ${link.label} from this list`}
-                      >
-                        Hide
-                      </button>
+                    <li class="link">
+                      <a class="link__anchor" href={link.href}>
+                        {link.label}
+                      </a>
+                      <p class="link__path">{link.href}</p>
+                      {link.note && <p class="link__note">{link.note}</p>}
                     </li>
                   ))}
                 </ul>
               </section>
             ))
           }
+
+          <TeamsSnapshot />
         </div>
       </div>
     </Container>
   </Section>
 </BaseLayout>
 
-<script is:inline define:vars={{ adminPassword, adminUnlockKey, adminHiddenKey }}>
+<script is:inline define:vars={{ adminPassword, adminUnlockKey }}>
   (() => {
     const gate = document.querySelector('[data-admin-gate]');
     const panel = document.querySelector('[data-admin-panel]');
     const input = document.querySelector('[data-admin-password]');
     const error = document.querySelector('[data-admin-error]');
-    const restore = document.querySelector('[data-admin-restore]');
     const lock = document.querySelector('[data-admin-lock]');
-    const count = document.querySelector('[data-admin-count]');
-    if (!gate || !panel || !input || !error || !restore || !lock || !count) return;
+    if (!gate || !panel || !input || !error || !lock) return;
 
-    const items = [...document.querySelectorAll('[data-admin-item]')];
-    let hidden = new Set();
-
-    const read = (key) => {
+    const read = () => {
       try {
-        return localStorage.getItem(key);
+        return localStorage.getItem(adminUnlockKey);
       } catch {
         return null;
       }
     };
 
-    const write = (key, value) => {
+    const remember = (value) => {
       try {
-        if (value === null) localStorage.removeItem(key);
-        else localStorage.setItem(key, value);
+        if (value === null) localStorage.removeItem(adminUnlockKey);
+        else localStorage.setItem(adminUnlockKey, value);
       } catch {
-        /* Storage blocked: the change lasts until the page is reloaded. */
+        /* Storage blocked: the unlock lasts until the page is reloaded. */
       }
-    };
-
-    const readHidden = () => {
-      try {
-        const parsed = JSON.parse(read(adminHiddenKey) ?? '[]');
-        return new Set(
-          Array.isArray(parsed) ? parsed.filter((value) => typeof value === 'string') : [],
-        );
-      } catch {
-        return new Set();
-      }
-    };
-
-    const paint = () => {
-      for (const item of items) {
-        item.hidden = hidden.has(item.dataset.href);
-      }
-      const visible = items.length - hidden.size;
-      count.textContent =
-        hidden.size === 0 ? `${items.length} links` : `${visible} of ${items.length} shown`;
-      restore.hidden = hidden.size === 0;
-      restore.textContent =
-        hidden.size === 0 ? 'Show hidden' : `Show ${hidden.size} hidden`;
     };
 
     const show = (focus) => {
@@ -177,7 +137,7 @@ import {
       event.preventDefault();
       if (input.value.trim() === adminPassword) {
         error.hidden = true;
-        write(adminUnlockKey, '1');
+        remember('1');
         show(true);
         return;
       }
@@ -186,7 +146,7 @@ import {
     });
 
     lock.addEventListener('click', () => {
-      write(adminUnlockKey, null);
+      remember(null);
       panel.hidden = true;
       gate.hidden = false;
       error.hidden = true;
@@ -194,32 +154,7 @@ import {
       input.focus();
     });
 
-    restore.addEventListener('click', () => {
-      hidden = new Set();
-      write(adminHiddenKey, null);
-      paint();
-    });
-
-    /*
-      One listener on the panel rather than one per row: the rows are static, but
-      delegation keeps the count of listeners independent of the list length.
-    */
-    panel.addEventListener('click', (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const button = target.closest('[data-admin-hide]');
-      if (!button) return;
-      const item = button.closest('[data-admin-item]');
-      if (!item) return;
-      hidden.add(item.dataset.href);
-      write(adminHiddenKey, JSON.stringify([...hidden]));
-      paint();
-    });
-
-    hidden = readHidden();
-    paint();
-
-    if (read(adminUnlockKey) === '1') show(false);
+    if (read() === '1') show(false);
   })();
 </script>
 
@@ -375,18 +310,10 @@ import {
 
   .link {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-3);
-    align-items: start;
+    gap: var(--space-1);
     padding-block: var(--space-3);
     margin: 0;
     border-block-end: var(--border-width) solid var(--line-subtle);
-  }
-
-  .link__body {
-    display: grid;
-    gap: var(--space-1);
-    min-inline-size: 0;
   }
 
   .link__anchor {
@@ -408,34 +335,6 @@ import {
     color: var(--text-secondary);
   }
 
-  /*
-    A 32px target that still reads as a small quiet control: the row already
-    supplies the vertical rhythm, so the button only needs to be big enough to
-    hit.
-  */
-  .link__hide {
-    min-block-size: 2rem;
-    min-inline-size: 2rem;
-    padding: var(--space-1) var(--space-2);
-    font: inherit;
-    font-size: var(--text-xs);
-    font-weight: 650;
-    color: var(--text-secondary);
-    background: transparent;
-    border: var(--border-width) solid var(--line-default);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition:
-      color var(--motion-fast) var(--ease-out-soft),
-      border-color var(--motion-fast) var(--ease-out-soft);
-  }
-
-  .link__hide:hover {
-    color: var(--text-primary);
-    border-color: var(--line-strong);
-  }
-
-  .panel__bar :global(.btn),
   .gate__row :global(.btn) {
     flex: none;
   }

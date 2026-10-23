@@ -22,10 +22,11 @@ Live reload is on via Vite HMR. Editing `src/data/*.ts` triggers a full reload;
 editing a component or stylesheet hot-updates in place.
 
 `npm test` builds, serves the build, and drives headless Chrome over every route
-at six viewport widths. It checks text contrast by sampling the pixels actually painted
-behind each run of text, then container overflow, text truncation, squished mobile
-columns, primary-nav popovers, document structure, image loading, tap targets, and
-console errors. See `scripts/test.mjs` for the details and
+at six viewport widths. It checks text contrast by sampling the pixels actually
+painted behind each run of text, then container overflow, text truncation,
+squished mobile columns, primary-nav popovers, document structure, image
+loading, tap targets, and console errors. See `scripts/test.mjs` for the details
+and
 `AGENTS.md` for the rules it enforces.
 
 ## Pages
@@ -96,16 +97,15 @@ entry and falsely highlighting it.
 `src/data/admin.ts` from the same modules the site renders from — the
 navigation, the policy list, the campaign landings, the registration links — so
 a new page appears there by existing rather than by being remembered twice. It
-is `noindex`, absent from the sitemap, and absent from the navigation.
+is `noindex`, absent from the sitemap, and absent from the navigation. The
+current team list and the directors' pending list sit at the foot of the page;
+pending teams are internal and never appear on `/battle-of-idaho/teams/`.
 
 The password is checked in the browser. That is a convenience gate, not
 authentication: the site is static files on a CDN, so the string ships in the
 bundle and every link behind it is already public. It keeps the index out of
 the way of someone who guesses the URL and protects nothing else. Do not put
 anything private there without a backend to check it.
-
-Hiding a row is remembered in `localStorage` for that browser only, the same
-per-device mechanism the site-wide notice uses for dismissal.
 
 ### Donation fund pages
 
@@ -188,16 +188,16 @@ same artwork that weighed ~920KB for 2636 flat-filled paths, had no `viewBox`,
 and left roughly the bottom third of its canvas empty. The PNG is 88% smaller and
 its edges are cleaner than the tracer's.
 
-`logo-altitude-pt.svg` is the one mark supplied with a white wordmark, so it is
-the one that cannot sit on the bright plate the others use: `plate: 'dark'` on
-its entry in `data/tournament.ts` swaps the ground for `--surface-inverse` and
-the hairline for `--line-inverse`. Supplied white-on-transparent artwork should
-be handled this way rather than recoloured, so the sponsor's own file stays the
-source of truth.
+`logo-altitude-pt.svg` arrived with a white wordmark, which cannot sit on the
+bright plate the others use. The 23 text paths were moved to their own class
+filled with the mark's own navy, `#2A357A`, so the supplied icon is untouched
+and the logo now reads on the same ground as every other sponsor. Recolour the
+text rather than recolouring `.st0`: that class also fills the icon's base
+shape, and changing it merges the icon into itself.
 
 `scripts/trim-svg-bounds.mjs` is what measured that empty margin. It rasterises
-an SVG and reports the inked bounds, which is the first thing to reach for when a
-supplied vector describes a canvas rather than a drawing:
+an SVG and reports the inked bounds, which is the first thing to reach for when
+a supplied vector describes a canvas rather than a drawing:
 
 ```sh
 node scripts/trim-svg-bounds.mjs public/img/logo-iccu.svg /tmp

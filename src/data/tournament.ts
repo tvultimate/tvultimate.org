@@ -63,16 +63,15 @@ export const tournament = {
     },
     {
       /*
-        Vector artwork supplied by the sponsor. Its wordmark is white, so it is
-        the only mark on the wall that needs a dark plate rather than the bright
-        one the rest sit on.
+        Vector artwork supplied by the sponsor. Its wordmark was supplied white;
+        it is recoloured to the mark's own navy so the logo can sit on the same
+        bright plate as every other sponsor rather than needing its own ground.
       */
       name: 'Altitude Physical Therapy',
       logo: images.sponsorAltitude,
       width: 807,
       height: 110,
       href: 'https://www.altitudept.com/',
-      plate: 'dark',
     },
   ],
   intro:
@@ -200,10 +199,11 @@ export const amenities = [
 export const foodVendors = [
   { name: 'Pizza Piou', detail: 'Wood-fired artisan pizza' },
   { name: 'Gyro Shack', detail: 'Greek gyros and Mediterranean' },
+  { name: 'Nanners', detail: 'Chocolate-dipped frozen bananas and banana bites' },
 ] as const;
 
 export const foodIntro =
-  'Food trucks are on site for the whole tournament, so you can buy breakfast, lunch, and dinner between games on any day of the weekend.';
+  'Food trucks are on site for the whole tournament, so you can buy food between games on any day of the weekend.';
 
 export const housing =
   'There are plenty of affordable Airbnbs and hotels in the Treasure Valley, and local traffic will be minimal. Anywhere in the valley works well. If you don’t mind floors, couches, or air mattresses, reach out to the tournament coordinators and we will do our best to match your team with a local host family.';

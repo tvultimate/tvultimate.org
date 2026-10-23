@@ -1,0 +1,193 @@
+---
+/**
+ * The team list at the foot of `/admin/`: the published field, plus the
+ * directors' pending list.
+ *
+ * A team that appears in both is shown once, under Pending — it has not
+ * entered yet, so listing it as registered would be wrong even here.
+ */
+
+import Card from '../ui/Card.astro';
+import { pendingTeamNames, pendingTeams, teamDivisions } from '../../data/teams';
+
+const registered = teamDivisions.map((division) => ({
+  ...division,
+  teams: division.teams.filter((team) => !pendingTeamNames.has(team)),
+}));
+
+const registeredCount = registered.reduce(
+  (total, division) => total + division.teams.length,
+  0,
+);
+
+const pendingCount = pendingTeams.reduce((total, group) => total + group.teams.length, 0);
+---
+
+<div class="snapshot">
+  <section class="block" aria-labelledby="teams-registered">
+    <div class="block__head">
+      <h2 class="block__title" id="teams-registered">Registered teams</h2>
+      <p class="block__count">{registeredCount} in</p>
+    </div>
+    <p class="block__lede">
+      Teams with a bid in. Anyone the directors are still tracking sits under
+      Pending instead, even where the public page still lists them as entered.
+    </p>
+
+    <div class="grid">
+      {
+        registered.map((division) => (
+          <Card class="division">
+            <div class="division__head">
+              <h3 class="division__name">{division.name}</h3>
+              <p class="division__count">{division.teams.length}</p>
+            </div>
+            <ul class="division__list">
+              {division.teams.map((team) => (
+                <li class="division__item">{team}</li>
+              ))}
+            </ul>
+          </Card>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="teams-pending">
+    <div class="block__head">
+      <h2 class="block__title" id="teams-pending">Pending</h2>
+      <p class="block__count">{pendingCount} tracked</p>
+    </div>
+    <p class="block__lede">
+      The directors&rsquo; working list. A name here is not a confirmed entry.
+    </p>
+
+    <div class="grid">
+      {
+        pendingTeams.map((group) => (
+          <Card class="division">
+            <div class="division__head">
+              <h3 class="division__name">{group.name}</h3>
+              <p class="division__count">{group.teams.length}</p>
+            </div>
+            {group.note && <p class="division__group-note">{group.note}</p>}
+            <ul class="division__list">
+              {group.teams.map((team) => (
+                <li class="division__item">
+                  <span class="division__team">{team.name}</span>
+                  {team.note && <span class="division__note">{team.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </Card>
+        ))
+      }
+    </div>
+  </section>
+</div>
+
+<style>
+  .snapshot {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .block {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .block__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .block__title {
+    font-size: var(--text-2xl);
+  }
+
+  .block__count {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .block__lede {
+    max-inline-size: var(--layout-measure);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-4);
+    margin-block-start: var(--space-2);
+  }
+
+  .division {
+    align-content: start;
+  }
+
+  .division__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .division__name {
+    font-size: var(--text-base);
+  }
+
+  .division__count {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--text-tertiary);
+  }
+
+  .division__group-note {
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .division__list {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .division__item {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0;
+    padding-block-end: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    border-block-end: var(--border-width) solid var(--line-subtle);
+  }
+
+  .division__item:last-child {
+    padding-block-end: 0;
+    border-block-end: 0;
+  }
+
+  .division__note {
+    font-size: var(--text-2xs);
+    font-weight: 500;
+    color: var(--text-tertiary);
+  }
+</style>

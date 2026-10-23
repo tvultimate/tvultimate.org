@@ -1,164 +1,185 @@
+# Project instructions
+
 ## Development
 
 When starting the dev server, use background mode:
 
-```
+```sh
 astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+Manage the background server with `astro dev stop`, `astro dev status`, and
+`astro dev logs`.
 
 ## Tests
 
-`npm test` is a gate, not a suggestion. **Run it before every commit** — a commit that
-fails it is not ready.
+`npm test` is a gate, not a suggestion. **Run it before every commit** — a
+commit that fails it is not ready.
 
-```
+```sh
 npm run build && npm test     # builds, serves the build, audits it
 npm run test:dev              # audit an already-running dev server instead
 ```
 
-It drives headless Chrome over every route at six viewport widths and checks four
-things:
+It drives headless Chrome over every route at six viewport widths and checks
+four things:
 
-1. **Contrast** — for each run of text it reads the pixels actually painted behind the
-   glyphs (it hides the text first, then samples the screenshot) and compares them to
-   the text's computed colour against WCAG AA. This is why it catches problems a
-   static review misses: text over photography, on gradients, inside translucent or
-   `oklab()` fills, and text that inherits a colour meant for a different ground.
-   Text a fixed overlay paints over is skipped, the same as text with `opacity: 0`:
-   the pixel there belongs to the overlay, so there is no honest ratio to report.
+1. **Contrast** — for each run of text it reads the pixels actually painted
+   behind the glyphs (it hides the text first, then samples the screenshot)
+   and compares them to the text's computed colour against WCAG AA. This is
+   why it catches problems a static review misses: text over photography, on
+   gradients, inside translucent or `oklab()` fills, and text that inherits a
+   colour meant for a different ground. Text a fixed overlay paints over is
+   skipped, the same as text with `opacity: 0`: the pixel there belongs to the
+   overlay, so there is no honest ratio to report.
 2. **Overflow** — elements escaping their parent, exempting anything inside a
    deliberate clip or scroll container.
-3. **Truncation** — any box that clips its own text, which silently drops words.
-   `text-overflow: ellipsis` is not an exemption; it is the reason the bug
-   survives review. A box that clips a *decorative* child is excluded, proven by
-   stripping the text and re-measuring. Opt out with `data-allow-truncation`.
-   Copy must wrap or shrink, never disappear. Do not elide the organisation's
-   name to fit.
+3. **Truncation** — any box that clips its own text, which silently drops
+   words. `text-overflow: ellipsis` is not an exemption; it is the reason the
+   bug survives review. A box that clips a *decorative* child is excluded,
+   proven by stripping the text and re-measuring. Opt out with
+   `data-allow-truncation`. Copy must wrap or shrink, never disappear. Do not
+   elide the organisation's name to fit.
 4. **Squished layout** (mobile only) — a block holding real copy that is far
-   narrower than the viewport, meaning a track collapsed rather than the design
-   intending a narrow column. A flex item's base size includes all of its
-   in-flow children, so a wide panel inside a flex row will squeeze its
+   narrower than the viewport, meaning a track collapsed rather than the
+   design intending a narrow column. A flex item's base size includes all of
+   its in-flow children, so a wide panel inside a flex row will squeeze its
    siblings; move it out of the row rather than capping its width.
 5. **Nav popover** (mobile only) — a primary navigation disclosure whose panel
    is positioned and narrower than the viewport. It should be a full-bleed
    block in normal flow that pushes the page down. Note this only behaves if
    the masthead is not sticky at that width.
-6. **Structure** — one `h1` per page, no skipped heading levels, no duplicate ids,
-   images sized and `alt`-tagged and actually loading, labelled controls, 24px
-   tap targets on small screens.
-7. **Console** — page and console errors, plus an assertion that a missing URL 404s.
+6. **Structure** — one `h1` per page, no skipped heading levels, no duplicate
+   ids, images sized and `alt`-tagged and actually loading, labelled
+   controls, 24px tap targets on small screens.
+7. **Console** — page and console errors, plus an assertion that a missing URL
+   404s.
 
-Four failure modes worth knowing, because they have already caused false confidence:
+Four failure modes worth knowing, because they have already caused false
+confidence:
 
-- **A stale preview server reports a confident PASS on an old build.** `npm test`
-  spawns `astro preview` to serve `dist/`, and in this Astro version that server
-  runs in the background and outlives the run that started it. The next run then
-  finds the port taken, silently audits whatever `dist/` that server was started
-  against, and prints a normal-looking result — which is how a whole new section
-  came to "pass" with an identical check count to the branch without it. Stop it
-  before a run you intend to trust: `npx astro preview stop`. If a check count
-  does not move when you add a page, suspect this before you trust the result.
+- **A stale preview server reports a confident PASS on an old build.**
+  `npm test` spawns `astro preview` to serve `dist/`, and in this Astro
+  version that server runs in the background and outlives the run that
+  started it. The next run then finds the port taken, silently audits
+  whatever `dist/` that server was started against, and prints a
+  normal-looking result — which is how a whole new section came to "pass"
+  with an identical check count to the branch without it. Stop it before a
+  run you intend to trust: `npx astro preview stop`. If a check count does
+  not move when you add a page, suspect this before you trust the result.
 
-- **A check that never runs is not a pass.** An early version reported `PASS` while
-  running zero contrast checks, because a helper detached its probe element on the
-  first call and returned `null` for every subsequent element. If you change
-  `scripts/test.mjs`, confirm the check count is plausible (~10,660 for the current
-  site) and deliberately break something to prove the check still fails.
+- **A check that never runs is not a pass.** An early version reported
+  `PASS` while running zero contrast checks, because a helper detached its
+  probe element on the first call and returned `null` for every subsequent
+  element. If you change `scripts/test.mjs`, confirm the check count is
+  plausible (~10,676 for the current site) and deliberately break something
+  to prove the check still fails.
 
-- **A screenshot must be taken at the scroll position its rects were measured at.**
-  `auditUses` scrolls each sprite into view to photograph it, and a fixed or sticky
-  element is painted at the current scroll position rather than at the document
-  coordinate its rect was read at. The contrast pass scrolls back to the captured
-  `scrollY` before it screenshots. Without that, every ratio over something that
-  floats — the masthead, the site notice — silently describes the wrong pixels and
-  still looks like a normal result.
-- **A dark background does not re-theme its contents.** Painting `background:
-  var(--surface-inverse)` leaves body copy, links, eyebrows and button inks on their
-  light-ground values. `Section tone="inverse"` and `PageHero` add `on-inverse` for
-  exactly this reason. Never hand-roll a dark panel without it.
+- **A screenshot must be taken at the scroll position its rects were
+  measured at.** `auditUses` scrolls each sprite into view to photograph it,
+  and a fixed or sticky element is painted at the current scroll position
+  rather than at the document coordinate its rect was read at. The contrast
+  pass scrolls back to the captured `scrollY` before it screenshots. Without
+  that, every ratio over something that floats — the masthead, the site
+  notice — silently describes the wrong pixels and still looks like a normal
+  result.
+- **A dark background does not re-theme its contents.** Painting
+  `background: var(--surface-inverse)` leaves body copy, links, eyebrows and
+  button inks on their light-ground values. `Section tone="inverse"` and
+  `PageHero` add `on-inverse` for exactly this reason. Never hand-roll a
+  dark panel without it.
 
 ## Code Standards
 
 ### Mobile first
 
-Every layout is designed for a small screen first. Use unstyled-by-default flow layouts that
-naturally stack, then layer on wider screens with `min-width` media queries. Never write a
-`max-width` media query. Test at 320px first; verify at `48rem` and `64rem`.
+Every layout is designed for a small screen first. Use unstyled-by-default
+flow layouts that naturally stack, then layer on wider screens with
+`min-width` media queries. Never write a `max-width` media query. Test at
+320px first; verify at `48rem` and `64rem`.
 
 ### Prefer relative units
 
 Never use `px` for lengths. Use:
 
-| Instead of        | Use                                  |
-| ----------------- | ------------------------------------ |
+| Instead of        | Use                                    |
+| ----------------- | -------------------------------------- |
 | `px`              | `rem` (or `em` for component-relative) |
-| `font-size: 16px` | relative or `rem`                   |
-| hard-coded steps  | `clamp()` for fluid type and spacing |
-| `%` widths only   | `ch` for text measure, `fr` for grid |
+| `font-size: 16px` | relative or `rem`                      |
+| hard-coded steps  | `clamp()` for fluid type and spacing   |
+| `%` widths only   | `ch` for text measure, `fr` for grid   |
 
-`px` is acceptable only for genuinely 1-unit things: hairline borders (`0.0625rem`),
-`background-size` sprites, and `box-shadow` offsets where sub-pixel matters.
+`px` is acceptable only for genuinely 1-unit things: hairline borders
+(`0.0625rem`), `background-size` sprites, and `box-shadow` offsets where
+sub-pixel matters.
 
 ### Design tokens live in one place
 
-All visual constants are CSS custom properties declared once in the root-level stylesheet
-(`src/styles/tokens.css`) and imported by the base layout. Components **must** consume those
-variables and **must not** hard-code a color, radius, shadow, spacing step, or font size.
+All visual constants are CSS custom properties declared once in the
+root-level stylesheet (`src/styles/tokens.css`) and imported by the base
+layout. Components **must** consume those variables and **must not**
+hard-code a color, radius, shadow, spacing step, or font size.
 
-The token scale is derived from a small set of primitives so it can be re-themed globally:
+The token scale is derived from a small set of primitives so it can be
+re-themed globally:
 
-- Color: `--color-*` primitives plus semantic aliases (`--surface`, `--text`, `--accent`) that
-  components reference. Semantic names over raw colors so a theme swap is a token edit.
-- Type: `--text-*` scale steps, `--font-*` families, `--leading-*`, `--tracking-*`.
+- Color: `--color-*` primitives plus semantic aliases (`--surface`, `--text`,
+  `--accent`) that components reference. Semantic names over raw colors so a
+  theme swap is a token edit.
+- Type: `--text-*` scale steps, `--font-*` families, `--leading-*`,
+  `--tracking-*`.
 - Space: `--space-1` through `--space-9`, built on one base unit.
 - Shape: `--radius-*`, `--shadow-*`, `--border-width`.
 
-Never introduce a one-off value. If a component needs a value that does not exist, add a token
-that generalizes rather than inlining a literal.
+Never introduce a one-off value. If a component needs a value that does not
+exist, add a token that generalizes rather than inlining a literal.
 
 ### Shared visual language for recurring elements
 
-If an element type appears more than once, it gets exactly one component. Headings, card
-subtitles, eyebrow labels, stat values, buttons, and badges must be styled in a single place so
-they cannot drift across sections. Semantic HTML elements (`h1`-`h4`, `p`, `ul`, `blockquote`)
-are styled globally from tokens; a component should not re-specify those styles.
+If an element type appears more than once, it gets exactly one component.
+Headings, card subtitles, eyebrow labels, stat values, buttons, and badges
+must be styled in a single place so they cannot drift across sections.
+Semantic HTML elements (`h1`-`h4`, `p`, `ul`, `blockquote`) are styled
+globally from tokens; a component should not re-specify those styles.
 
-Heading levels must follow document order. Do not jump levels to get a visual size — style size
-independently of level.
+Heading levels must follow document order. Do not jump levels to get a
+visual size — style size independently of level.
 
 ### Component decomposition
 
-Prefer many small, composable files over large monolithic ones. Each component should have one
-clear responsibility and be reusable at more than one call site.
+Prefer many small, composable files over large monolithic ones. Each
+component should have one clear responsibility and be reusable at more than
+one call site.
 
-- Target roughly 150 lines or less per component file. If a file grows past that, look for a
-  second responsibility to extract.
-- Data-driven, not copy-pasted. Repeating structures (feature grids, schedules, stat rows,
-  link lists) are rendered from arrays of objects with a single shared presentational component.
-- Content and presentation are separated: page-specific copy belongs in the page or a content
-  module, not inlined into layout components.
+- Target roughly 150 lines or less per component file. If a file grows past
+  that, look for a second responsibility to extract.
+- Data-driven, not copy-pasted. Repeating structures (feature grids,
+  schedules, stat rows, link lists) are rendered from arrays of objects with
+  a single shared presentational component.
+- Content and presentation are separated: page-specific copy belongs in the
+  page or a content module, not inlined into layout components.
 
 ### Astro and React boundaries
 
-Use Astro components by default — they render to zero client JavaScript. Add a React component
-only when it brings genuine interactivity or a library that removes real complexity, and pass
-`client:` directives deliberately (prefer `client:visible` or `client:idle` over `client:load`).
+Use Astro components by default — they render to zero client JavaScript. Add
+a React component only when it brings genuine interactivity or a library
+that removes real complexity, and pass `client:` directives deliberately
+(prefer `client:visible` or `client:idle` over `client:load`).
 
-Keep client-side state local to the smallest component that needs it. Do not introduce a global
-store for a page that has none.
+Keep client-side state local to the smallest component that needs it. Do not
+introduce a global store for a page that has none.
 
 ### Accessibility and semantics
 
-Use semantic elements, one `h1` per page, labelled form controls, visible focus rings that are
-never removed without a replacement, and `prefers-reduced-motion` fallbacks for animation.
+Use semantic elements, one `h1` per page, labelled form controls, visible
+focus rings that are never removed without a replacement, and
+`prefers-reduced-motion` fallbacks for animation.
 
 ---
 
 ## Documentation
 
-Full documentation: https://docs.astro.build
+Full documentation: <https://docs.astro.build>
 
 Consult these guides before working on related tasks:
 
