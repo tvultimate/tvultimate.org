@@ -111,16 +111,14 @@ export const pendingTeams: readonly PendingGroup[] = [
       { name: 'MTN View', note: 'Likely will need to combine' },
       { name: 'Rocky', note: 'Likely will need to combine' },
       { name: 'Centennial', note: 'Likely will need to combine' },
-    ],
-  },
-  {
-    id: 'not-coming',
-    name: 'Likely not coming',
-    teams: [
-      { name: 'Twin Falls Youth' },
-      { name: 'Timberline' },
-      { name: 'BBBK' },
-      { name: 'Riverstone' },
+      /*
+        Not expected, but still youth teams the directors are tracking rather
+        than counting on: the list belongs where they would enter.
+      */
+      { name: 'Twin Falls Youth', note: 'Likely won’t come' },
+      { name: 'Timberline', note: 'Likely won’t come' },
+      { name: 'BBBK', note: 'Likely won’t come' },
+      { name: 'Riverstone', note: 'Likely won’t come' },
     ],
   },
 ];
