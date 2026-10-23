@@ -149,6 +149,25 @@ export const documents = {
     file: '/documents/club-partnership-agreement.pdf',
     detail: '3 pages · PDF',
   },
+  /*
+    The food vendors' own menus, handed out at the truck and published here so
+    a team can plan before they arrive. No page counts: each is a single side.
+  */
+  pizzaPiouMenu: {
+    label: 'Pizza Piou menu',
+    file: '/documents/pizza-piou-menu.png',
+    detail: 'PNG',
+  },
+  gyroShackMenu: {
+    label: 'Gyro Shack menu',
+    file: '/documents/gyro-shack-menu.pdf',
+    detail: 'PDF',
+  },
+  nannersMenu: {
+    label: 'Nanners menu',
+    file: '/documents/nanners-menu.png',
+    detail: 'PNG',
+  },
 } as const;
 
 /**

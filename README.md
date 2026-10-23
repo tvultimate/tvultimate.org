@@ -252,11 +252,13 @@ case.
 
 ## Downloads
 
-`public/documents/` holds files a reader takes away rather than pages they visit.
-Their paths and labels are registered once in `documents` in `data/org.ts`, so
-the link text and the file it points at cannot drift apart. The club partnership
-agreement is the only document with a published original today; its page under
-`/policies/` and the Partner Clubs page both offer it as a download.
+`public/documents/` holds files a reader takes away rather than pages they
+visit. Their paths and labels are registered once in `documents` in
+`data/org.ts`, so the link text and the file it points at cannot drift apart.
+The club partnership agreement is offered under `/policies/` and on the Partner
+Clubs page. The three food-truck menus are offered beside their vendor on the
+Battle of Idaho page; the Nanners flyer arrived at 10954×16354 (3.3 MB), so the
+published copy is scaled to 1600 px on the long edge.
 
 ## Donations
 

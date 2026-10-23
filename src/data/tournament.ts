@@ -4,7 +4,7 @@
  * render from the same source without copy-paste drift.
  */
 
-import { images } from './org';
+import { documents, images } from './org';
 
 export const tournament = {
   name: 'Battle of Idaho',
@@ -194,12 +194,26 @@ export const amenities = [
 
 /**
  * Food vendors booked for the weekend. They are on site for the whole
- * tournament, so a team can buy a meal between games on any day.
+ * tournament, so a team can buy a meal between games on any day. Each one
+ * publishes its menu, registered in `documents` so the path and label live in
+ * one place.
  */
 export const foodVendors = [
-  { name: 'Pizza Piou', detail: 'Wood-fired artisan pizza' },
-  { name: 'Gyro Shack', detail: 'Greek gyros and Mediterranean' },
-  { name: 'Nanners', detail: 'Chocolate-dipped frozen bananas and banana bites' },
+  {
+    name: 'Pizza Piou',
+    detail: 'Wood-fired artisan pizza',
+    menu: documents.pizzaPiouMenu,
+  },
+  {
+    name: 'Gyro Shack',
+    detail: 'Greek gyros and Mediterranean',
+    menu: documents.gyroShackMenu,
+  },
+  {
+    name: 'Nanners',
+    detail: 'Chocolate-dipped frozen bananas and banana bites',
+    menu: documents.nannersMenu,
+  },
 ] as const;
 
 export const foodIntro =

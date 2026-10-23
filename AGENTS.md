@@ -72,7 +72,7 @@ confidence:
   `PASS` while running zero contrast checks, because a helper detached its
   probe element on the first call and returned `null` for every subsequent
   element. If you change `scripts/test.mjs`, confirm the check count is
-  plausible (~10,676 for the current site) and deliberately break something
+  plausible (~10,700 for the current site) and deliberately break something
   to prove the check still fails.
 
 - **A screenshot must be taken at the scroll position its rects were
