@@ -93,12 +93,6 @@ export interface CampaignLanding {
   rules: readonly string[];
   cta: CampaignCta;
   /**
-   * The Google Ads account this page reports to. Every landing page here is
-   * reached from the same ad campaign, so they share one account; a page that
-   * names none would carry no ads tag at all.
-   */
-  adsAccount?: string;
-  /**
    * Set on a page whose registration clicks should report a Google Ads
    * conversion. Only the free agent page is configured for this today.
    */
@@ -218,7 +212,6 @@ const daySchedule = (id: string) =>
 
 export const freeAgentLanding: CampaignLanding = {
   path: '/battle-of-idaho/free-agent/',
-  adsAccount: adsAccounts.battle,
   conversion: battleConversion,
   title: `${tournament.name} ${tournament.year} — Free Agent Signup`,
   description: `Sign up solo for the ${tournament.name} ${tournament.year} and get drafted onto a dedicated free agent squad — Mixed Adult (Sat–Sun) or Adult Open (Sat). Enter the raffle for a full refund.`,
@@ -317,7 +310,6 @@ const youthFreeAgentRules = [
 
 export const youthFreeAgentLanding: CampaignLanding = {
   path: '/battle-of-idaho/youth-free-agent/',
-  adsAccount: adsAccounts.battle,
   conversion: battleConversion,
   title: `${tournament.name} ${tournament.year} — Youth Free Agent Signup`,
   description: `Sign up solo for the ${tournament.name} ${tournament.year} Youth Open and get drafted onto a dedicated youth free agent squad — Friday Swiss rounds and Saturday bracket play, for players under 20. ${youthFreeAgentFee} to play.`,
@@ -386,7 +378,6 @@ export const youthFreeAgentLanding: CampaignLanding = {
 
 export const youthLanding: CampaignLanding = {
   path: '/battle-of-idaho/youth-open/',
-  adsAccount: adsAccounts.battle,
   title: `${tournament.name} ${tournament.year} — Youth Open (U20)`,
   description: `Youth Open ultimate at Heroes Park, Meridian: Swiss rounds Friday Nov 13, bracket play Saturday Nov 14, for players under 20.`,
   eyebrow: `${tournament.edition} · Youth Open · Under 20`,
@@ -459,7 +450,6 @@ export const youthLanding: CampaignLanding = {
 
 export const teamLanding: CampaignLanding = {
   path: '/battle-of-idaho/register-a-team/',
-  adsAccount: adsAccounts.battle,
   title: `${tournament.name} ${tournament.year} — Register a Team`,
   description: `Register your Mixed Adult team for the ${tournament.name} ${tournament.year} at Heroes Park: $200 team bid with a $50 discount, 16 spots per division, five games guaranteed.`,
   eyebrow: `${tournament.edition} · Mixed Adult · Team Registration`,

@@ -16,6 +16,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteNotice from '../components/SiteNotice.astro';
 import GoogleAdsTag from '../components/GoogleAdsTag.astro';
+import { adsAccounts } from '../data/ads';
 import { images } from '../data/org';
 import { notice, noticeDismissKey } from '../data/notice';
 
@@ -31,14 +32,21 @@ interface Props {
    */
   noindex?: boolean;
   /**
-   * The Google Ads account this page reports to. The tag is opt-in: a page
-   * that names no account carries no ads tag at all, so a visitor is only
-   * measured against the campaign that sent them there.
+   * The Google Ads account this page reports to. It defaults to the site's
+   * account, so every public page is measured and Ads can verify the tag from
+   * any URL. Pass `null` to opt a page out — `/admin/` does, so staff visits
+   * to the link index are not sent to Google or counted in remarketing
+   * audiences.
    */
-  adsAccount?: string;
+  adsAccount?: string | null;
 }
 
-const { title, description, noindex = false, adsAccount } = Astro.props;
+const {
+  title,
+  description,
+  noindex = false,
+  adsAccount = adsAccounts.battle,
+} = Astro.props;
 ---
 
 <!doctype html>

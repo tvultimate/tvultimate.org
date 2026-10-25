@@ -35,13 +35,11 @@ import {
   directors,
 } from '../../data/tournament';
 import { contact, links } from '../../data/org';
-import { adsAccounts } from '../../data/ads';
 ---
 
 <BaseLayout
   title={`${tournament.name} ${tournament.year} — Treasure Valley Ultimate`}
   description={`${tournament.tagline}. ${tournament.dates} at ${tournament.location}, ${tournament.address}.`}
-  adsAccount={adsAccounts.battle}
 >
   <PageHero
     eyebrow={`${tournament.edition} · ${tournament.year}`}

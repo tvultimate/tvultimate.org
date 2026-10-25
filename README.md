@@ -284,16 +284,15 @@ around it — see `src/styles/embed.css`.
 
 ### The Google tag
 
-The Google Ads global site tag is **opt-in per page**. `GoogleAdsTag.astro`
-renders the tag for one account, and a page names the account it reports to
-through the `adsAccount` prop on `BaseLayout`; a page that names none carries
-no ads tag at all. Account IDs live in `src/data/ads.ts`.
+The Google Ads global site tag is on every public page. `GoogleAdsTag.astro`
+renders the tag for one account, and `BaseLayout` defaults to the site account
+in `src/data/ads.ts`, so any URL a campaign sends someone to — and any page
+Google's verifier opens — carries the tag.
 
-The tag used to be hardcoded in `BaseLayout`, which put every page of the site
-into one account no matter which campaign sent the visitor there. It now sits
-only on the pages the Battle of Idaho campaign actually sends people to: the
-four ad landing pages under `/battle-of-idaho/` and the tournament page
-itself, which the landing pages link to.
+A page opts out by passing `adsAccount={null}`. Only `/admin/` does: it is the
+staff link index, so reporting staff visits there would put colleagues into the
+remarketing audience for no benefit. A future campaign with its own account can
+pass that ID instead of taking the default.
 
 ### Conversions
 

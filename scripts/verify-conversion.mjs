@@ -5,9 +5,9 @@
  * label, that a `_blank` link is not hijacked into a same-tab navigation, and
  * that a same-tab link waits for the beacon before navigating.
  *
- * It also asserts which Google Ads tag each page carries: the tag is opt-in
- * per page, so a page with no account must carry none at all, and the
- * retired account must not appear anywhere.
+ * It also asserts which Google Ads tag each page carries: the tag is on every
+ * public page, `/admin/` opts out, and the retired account must not appear
+ * anywhere.
  */
 
 import { chromium } from 'playwright-core';
@@ -17,7 +17,7 @@ const BASE = process.env.BASE_URL ?? 'http://localhost:4321';
 /** The account the Battle of Idaho campaign reports to. */
 const CAMPAIGN_ACCOUNT = 'AW-18501242003';
 
-/** The account the site used to report to, before the tag became opt-in. */
+/** The account the site used to report to, before the current account. */
 const RETIRED_ACCOUNT = 'AW-18508946300';
 
 const results = [];
@@ -205,15 +205,24 @@ check(
   page.url(),
 );
 
-// --- The tag is opt-in, page by page -------------------------------------
+// --- The tag is on every public page, with one deliberate exception ------
 await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
 const homeTags = await readTagAccounts();
-check('a page with no account carries no tag', homeTags.length === 0, JSON.stringify(homeTags));
+check(
+  'the home page carries the site tag',
+  homeTags.length === 1 && homeTags[0] === CAMPAIGN_ACCOUNT,
+  JSON.stringify(homeTags),
+);
+
+await page.goto(`${BASE}/admin/`, { waitUntil: 'networkidle' });
+const adminTags = await readTagAccounts();
+check('the staff index carries no tag', adminTags.length === 0, JSON.stringify(adminTags));
 
 // --- The retired account must be gone ------------------------------------
 let retiredOn = null;
 for (const path of [
   '/',
+  '/admin/',
   '/battle-of-idaho/',
   '/battle-of-idaho/free-agent/',
   '/battle-of-idaho/youth-free-agent/',

@@ -6,10 +6,10 @@
  * the two travel together as `AW-<account>/<label>` so Google can credit one
  * named action rather than the account as a whole.
  *
- * The tag is opt-in per page: a page names the account it reports to, and a
- * page that names none carries no ads tag at all. It used to be hardcoded
- * across the whole site, which meant every page reported to one account no
- * matter which campaign sent the visitor there.
+ * The account is the site default: every public page reports to it, so Google
+ * Ads can verify the tag from any URL and a remarketing audience covers the
+ * whole site. A page opts out with `adsAccount={null}` — `/admin/` does — and
+ * a future campaign with its own account can name that instead.
  */
 
 export const adsAccounts = {
