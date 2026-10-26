@@ -1,13 +1,13 @@
 /**
  * The site-wide notice strip.
  *
- * Ulticentral runs registration for every event we host, and it is currently
- * down. This is content, not presentation: the component that renders it is
- * generic, so ending one outage and starting another is an edit here.
+ * Ulticentral runs registration for every event we host. This is content, not
+ * presentation: the component that renders it is generic, so ending one
+ * outage and starting another is an edit here.
  *
- * The message does two jobs: it says what is broken, and it says what a reader
- * can still do about it. Both registration forms are ours, so the notice links
- * them directly rather than sending anyone to a site that is not answering.
+ * Off now that Ulticentral is answering again. The copy below is the last
+ * notice we ran; rewrite `title` and `body`, and bump `id`, before setting
+ * `enabled` again, or the strip will repeat a message that is no longer true.
  */
 
 import { links } from './org';
@@ -16,8 +16,8 @@ import { links } from './org';
 export type NoticePart = string | { label: string; href: string };
 
 export const notice = {
-  /** Flip to `false` once the platform is back. */
-  enabled: true,
+  /** Off: Ulticentral is answering again. */
+  enabled: false,
 
   /**
    * Dismissal is remembered per device under a key built from this id, so the
@@ -30,9 +30,9 @@ export const notice = {
   title: 'Ulticentral is down',
   body: [
     'All Ulticentral sites are down, possibly through the weekend. You can still register with us — as a ',
-    { label: 'team', href: links.battleTeamRegistration },
+    { label: 'team', href: links.battleRegistration },
     ', or as an ',
-    { label: 'individual', href: links.battleIndividualRegistration },
+    { label: 'individual', href: links.battleRegistration },
     '. Players joining an existing team have to wait for Ulticentral.',
   ] as readonly NoticePart[],
 } as const;

@@ -1,10 +1,10 @@
 /**
  * The field for the 2026 Battle of Idaho.
  *
- * Ulticentral is down, so this is a snapshot a director keeps by hand rather
- * than a live registration feed. Adding a team is one line here; the page
- * renders every division from this list, in the order given, and the counts
- * are derived rather than typed, so they cannot drift from the names.
+ * The site is static and has no registration feed, so this is a snapshot a
+ * director keeps by hand. Adding a team is one line here; the page renders
+ * every division from this list, in the order given, and the counts are derived
+ * rather than typed, so they cannot drift from the names.
  *
  * `teamDivisions` is the published field. `pendingTeams` is the directors'
  * working list and appears only in `/admin/`: a team that is still deciding

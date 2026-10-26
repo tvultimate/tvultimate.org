@@ -72,7 +72,7 @@ const stub = (pattern, contentType, body) =>
 await stub('**://www.googletagmanager.com/**', 'application/javascript', '');
 await stub('**://fonts.googleapis.com/**', 'text/css', '');
 await stub('**://fonts.gstatic.com/**', 'font/woff2', '');
-await stub('**://www.zeffy.com/**', 'text/html', '<!doctype html><title>Registration</title>');
+await stub('**://ultimatecentral.com/**', 'text/html', '<!doctype html><title>Registration</title>');
 
 const errors = [];
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));

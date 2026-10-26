@@ -123,18 +123,12 @@ export const links = {
   youtubeFilm: 'https://www.youtube.com/embed/47sKaHp_PuY',
   sawtoothTryout: 'https://tooth.s.gy/tryout',
   /**
-   * Battle of Idaho registration. Ulticentral is down, so both public flows
-   * are Zeffy forms we own: one to enter a team, one to register an individual
-   * (a free agent, or a youth player without a squad). The Ulticentral link is
-   * kept only for the roster step — once a team is entered, adding players to
-   * it still happens there when the platform is back.
+   * Battle of Idaho registration, back on Ulticentral now that the platform is
+   * up. Teams, free agents and youth players all start here: the event page
+   * asks which of those they are.
    */
-  battleTeamRegistration:
-    'https://www.zeffy.com/en-US/donation-form/battle-of-idaho-team-registration',
-  battleIndividualRegistration:
-    'https://www.zeffy.com/en-US/donation-form/battle-of-idaho-individual-registration',
-  battleRoster:
-    'https://ultimatecentral.com/en_au/e/2026-battle-of-idaho/register?new=new',
+  battleRegistration:
+    'https://ultimatecentral.com/en_us/e/2026-battle-of-idaho/register',
   maps: 'https://maps.google.com/?q=Heroes+Park+Meridian+Idaho',
 } as const;
 

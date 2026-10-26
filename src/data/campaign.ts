@@ -8,10 +8,10 @@
  * registration form and the full tournament page) are fixed by the ad
  * campaigns.
  *
- * Registration is split by who is signing up: a team captain goes to the team
- * form, a solo player to the individual form. Both are Zeffy forms we run
- * ourselves while Ulticentral is unavailable, so the `href` lives on each
- * page's `cta` rather than being shared.
+ * Registration all happens on Ulticentral: the event page asks whether the
+ * visitor is entering a team or signing up as an individual. The `href` still
+ * lives on each page's `cta` because the ad copy differs per audience, even
+ * though the destination does not.
  *
  * Facts are drawn from `data/tournament`; nothing here restates a date, a fee,
  * or a venue that the tournament module already owns unless the campaign
@@ -99,12 +99,10 @@ export interface CampaignLanding {
   conversion?: CampaignConversion;
 }
 
-/** Shared by all four pages: the "full info" link and the address to reply to. */
+/** Shared by all four pages: the registration link and the "full info" link. */
 export const campaignLinks = {
-  teamRegister: links.battleTeamRegistration,
-  individualRegister: links.battleIndividualRegistration,
+  register: links.battleRegistration,
   info: 'https://tvultimate.org/battle-of-idaho/',
-  email: contact.battle.email,
 } as const;
 
 /**
@@ -281,7 +279,7 @@ export const freeAgentLanding: CampaignLanding = {
     title: 'Take the field with a team that needs you',
     lede: 'Register as a free agent, then email us to enter the raffle. We will take care of the rest.',
     primary: 'Register as a Free Agent',
-    href: campaignLinks.individualRegister,
+    href: campaignLinks.register,
     note: `Free agents are ${freeAgentFee}. Email ${contact.battle.email} after you register to lock in your raffle entry.`,
   },
 };
@@ -367,7 +365,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
     title: 'Take the field with a team that needs you',
     lede: 'Register as a youth free agent, then email us if you have any questions about the division.',
     primary: 'Register as a Youth Free Agent',
-    href: campaignLinks.individualRegister,
+    href: campaignLinks.register,
     note: `Youth free agents are ${youthFreeAgentFee}. Players under 20 — email ${contact.youth.email} if you need help registering.`,
   },
 };
@@ -439,7 +437,7 @@ export const youthLanding: CampaignLanding = {
     title: 'Give them a weekend worth talking about',
     lede: 'Register your player for the Youth Open, or bring the whole squad and enter a team.',
     primary: 'Register for the Youth Division',
-    href: campaignLinks.teamRegister,
+    href: campaignLinks.register,
     note: 'Youth teams register for $200. Players without a squad can sign up as a youth free agent at tvultimate.org/battle-of-idaho/youth-free-agent/.',
   },
 };
@@ -511,7 +509,7 @@ export const teamLanding: CampaignLanding = {
     title: 'Sixteen spots. No waitlist if you move now.',
     lede: 'Register your team, or reply to us first to lock in the $50 discount.',
     primary: "Secure Your Team's Spot",
-    href: campaignLinks.teamRegister,
+    href: campaignLinks.register,
     note: `Reply to ${contact.battle.email} to claim the $50 discount and we will confirm your $200 rate.`,
   },
 };

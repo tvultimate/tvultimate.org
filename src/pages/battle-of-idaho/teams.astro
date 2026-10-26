@@ -2,10 +2,10 @@
 /**
  * 2026 Battle of Idaho — the entered teams.
  *
- * A snapshot page rather than a live feed: Ulticentral is down, so the field is
- * maintained in `data/teams.ts`. It exists so a captain can check who is
- * already in before entering, and so the individual registration links have a
- * public home outside the ad landing pages.
+ * A snapshot page rather than a live feed: the site is static, so the field is
+ * maintained in `data/teams.ts` by a director. It exists so a captain can
+ * check who is already in before entering, and so the registration links have
+ * a public home outside the ad landing pages.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -33,11 +33,11 @@ const cap = 16;
     lede={`${teamCount} teams are in so far for ${tournament.dates} at ${tournament.location}.`}
   >
     <div class="hero-actions">
-      <Button href={links.battleTeamRegistration} variant="solid" size="lg" external>
+      <Button href={links.battleRegistration} variant="solid" size="lg" external>
         Register a Team
       </Button>
       <Button
-        href={links.battleIndividualRegistration}
+        href={links.battleRegistration}
         variant="quiet"
         size="lg"
         external
@@ -77,9 +77,9 @@ const cap = 16;
       </div>
 
       <p class="teams__note">
-        Already on a team? Adding yourself to a roster still runs through
-        Ulticentral, which is down right now. New teams and free agents can
-        register today.
+        Already on a team? Joining its roster runs through{' '}
+        <a href={links.battleRegistration}>Ulticentral</a> too — the same
+        platform that handles new teams and free agents.
       </p>
     </Container>
   </Section>
@@ -93,11 +93,11 @@ const cap = 16;
           free agent team.
         </p>
         <div class="cta__actions">
-          <Button href={links.battleTeamRegistration} variant="solid" size="lg" external>
+          <Button href={links.battleRegistration} variant="solid" size="lg" external>
             Register a Team
           </Button>
           <Button
-            href={links.battleIndividualRegistration}
+            href={links.battleRegistration}
             variant="quiet"
             size="lg"
             external

@@ -75,9 +75,9 @@ const policyGroup: AdminGroup = {
 };
 
 /**
- * Off-site destinations. While Ulticentral is down this is the group that
- * matters: the first two are the registration forms, and the third is the one
- * that is not answering.
+ * Off-site destinations: the registration page and the tools we point people
+ * at. Ulticentral runs registration again, so one link covers teams, free
+ * agents and players joining a roster.
  */
 const destinationGroup: AdminGroup = {
   id: 'destinations',
@@ -85,19 +85,9 @@ const destinationGroup: AdminGroup = {
   summary: 'The forms and platforms our buttons send people to.',
   links: [
     {
-      label: 'Team registration (Zeffy)',
-      href: links.battleTeamRegistration,
-      note: 'Enter a team in the Battle of Idaho',
-    },
-    {
-      label: 'Individual registration (Zeffy)',
-      href: links.battleIndividualRegistration,
-      note: 'Free agents, youth and adult',
-    },
-    {
-      label: 'Ulticentral roster entry',
-      href: links.battleRoster,
-      note: 'Down — a player joining an existing team still needs this',
+      label: 'Battle of Idaho registration',
+      href: links.battleRegistration,
+      note: 'Teams, free agents, youth and adult — all start here',
     },
     { label: 'Discord', href: links.discord },
     { label: 'YouTube', href: links.youtube },
