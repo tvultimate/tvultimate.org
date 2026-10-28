@@ -26,6 +26,12 @@ export default defineConfig({
           'https://tvultimate.org/battle-of-idaho/youth-open/',
           'https://tvultimate.org/battle-of-idaho/register-a-team/',
           /*
+            The player packet page is an unlisted archive. The tournament page
+            links to the living Google Doc handbook instead, and this page is
+            noindex so it does not compete with that link in search.
+          */
+          'https://tvultimate.org/battle-of-idaho/player-packet/',
+          /*
             The staff index is noindex and unlisted: it is a convenience page,
             not something to hand a search engine.
           */

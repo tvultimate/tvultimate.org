@@ -40,7 +40,6 @@ continue to work.
 | `/partner-clubs/`                               | Partner Information                |
 | `/partner-clubs/sawtooth-ultimate/`             | Sawtooth Ultimate                  |
 | `/battle-of-idaho/`                             | 2026 Battle of Idaho               |
-| `/battle-of-idaho/player-packet/`               | 2026 Player Packet                 |
 | `/battle-of-idaho/teams/`                       | 2026 Battle of Idaho Teams         |
 | `/battle-of-idaho/battle-of-idaho-sponsorship/` | Battle of Idaho Sponsorship        |
 | `/youth-community/`                             | Youth & Community                  |

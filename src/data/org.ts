@@ -136,6 +136,13 @@ export const links = {
    */
   battleRegistration:
     'https://ultimatecentral.com/en_us/e/2026-battle-of-idaho/register',
+  /**
+   * The living player handbook, maintained as a Google Doc so the tournament
+   * director can update it without a site deploy. The site's tournament page
+   * links here; the older on-site packet page is unlisted.
+   */
+  playerHandbook:
+    'https://docs.google.com/document/d/1zv5i6J52WtBqtTKxaavoATaKbedJOy8a5SBVwAYoVkQ/edit?usp=sharing',
   maps: 'https://maps.google.com/?q=Heroes+Park+Meridian+Idaho',
 } as const;
 

@@ -1,0 +1,66 @@
+---
+/**
+ * The tournament page's pointer to the living player handbook. The handbook is
+ * a Google Doc rather than a page on this site so the tournament director can
+ * update it without a deploy, and so players always get the current version.
+ */
+
+import Button from '../../ui/Button.astro';
+import Card from '../../ui/Card.astro';
+import Eyebrow from '../../ui/Eyebrow.astro';
+import { links } from '../../../data/org';
+---
+
+<Card as="section" class="handbook-callout">
+  <div class="handbook-callout__body">
+    <Eyebrow>Player handbook</Eyebrow>
+    <h2 class="handbook-callout__title">2026 Player Handbook</h2>
+    <p class="handbook-callout__text">
+      The weekend’s schedule, rules, score reporting, medical support, parking,
+      and venue logistics — in one living document.
+    </p>
+  </div>
+
+  <div class="handbook-callout__actions">
+    <Button href={links.playerHandbook} variant="solid" size="lg" external>
+      Open the 2026 Player Handbook
+    </Button>
+    <p class="handbook-callout__meta">Opens in Google Docs</p>
+  </div>
+</Card>
+
+<style>
+  .handbook-callout {
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+    border-color: var(--line-accent);
+  }
+
+  .handbook-callout__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .handbook-callout__title {
+    font-size: var(--text-xl);
+  }
+
+  .handbook-callout__text {
+    max-inline-size: var(--layout-measure);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .handbook-callout__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .handbook-callout__meta {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+  }
+</style>

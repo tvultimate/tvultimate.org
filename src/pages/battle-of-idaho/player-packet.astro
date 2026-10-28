@@ -2,10 +2,10 @@
 /**
  * 2026 Battle of Idaho player packet.
  *
- * The web edition of the printed packet. Every section mirrors the PDF's table
- * of contents, in the same order, so a reader can move between the two without
- * relearning the document. Shared facts come from `data/tournament.ts`; the
- * packet-specific copy lives in `data/playerPacket.ts`.
+ * Unlisted archive. The tournament now points players at the living Google Doc
+ * handbook instead (see `links.playerHandbook`), so this page is noindex,
+ * absent from the sitemap, and not linked from the navigation. It is kept as a
+ * readable record of the printed packet and its field map.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -44,6 +44,7 @@ const { pdf } = playerPacket;
 <BaseLayout
   title={`${playerPacket.title} — Battle of Idaho — Treasure Valley Ultimate`}
   description={`The ${playerPacket.title} for the 2026 Battle of Idaho: schedule, rules, score reporting, medical support, parking, and venue logistics at Heroes Park in Meridian, Idaho.`}
+  noindex
 >
   <PageHero
     eyebrow={playerPacket.eyebrow}
