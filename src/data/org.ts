@@ -81,7 +81,14 @@ export const images = {
    */
   sponsorAltitude: '/img/logo-altitude-pt.svg',
 
-    /** A Battle of Idaho team on grass. Tournament context, not Sawtooth. */
+  /**
+   * Aerial field map of Heroes Park, supplied by the tournament director for
+   * the 2026 player packet. Shows field numbering, Tournament Central, the
+   * medical tent, AEDs, restrooms, food truck, water stations, and parking.
+   */
+  fieldMap: '/img/heroes-park-field-map.jpg',
+
+  /** A Battle of Idaho team on grass. Tournament context, not Sawtooth. */
   boiTeam: '/img/team-roster.jpg',
   /** Sawtooth roster with the Boise foothills behind. Club-team context. */
   rosterBoise: '/img/team-roster-boise.jpg',
@@ -138,6 +145,16 @@ export const links = {
  * that describes it; the bytes live in `public/documents/`.
  */
 export const documents = {
+  /**
+   * The printed player packet handed to captains and published on the
+   * tournament site. Kept as a PDF so the version a player downloaded on
+   * Friday is the same document the tournament staff are working from.
+   */
+  battlePlayerPacket: {
+    label: 'Battle of Idaho 2026 Player Packet PDF',
+    file: '/documents/battle-of-idaho-2026-player-packet.pdf',
+    detail: '5 pages · PDF',
+  },
   clubPartnershipAgreement: {
     label: 'Club Partnership Agreement PDF',
     file: '/documents/club-partnership-agreement.pdf',

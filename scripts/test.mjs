@@ -39,6 +39,7 @@ const ROUTES = [
   '/battle-of-idaho/',
   '/battle-of-idaho/battle-of-idaho-sponsorship/',
   '/battle-of-idaho/teams/',
+  '/battle-of-idaho/player-packet/',
   // Google Ads landing pages. Unlinked from the navigation, audited like any
   // other route.
   '/battle-of-idaho/free-agent/',

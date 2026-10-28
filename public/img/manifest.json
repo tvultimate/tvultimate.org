@@ -352,6 +352,21 @@
       "height": 109.8,
       "bytes": 4867,
       "derivation": "Supplied by the sponsor as the vector original, 'logo-horizontal-white-text.svg', copied unchanged except for the wordmark fill: the 23 text paths were moved from `.st0` (white) to a new `.st4` class carrying the mark's own navy, #2A357A, so the logo reads on the bright plate every other sponsor sits on. The icon keeps its original fills (white base, navy, teal, lime), and the 7.3:1 aspect ratio is the artwork's own."
+    },
+    "heroes-park-field-map.jpg": {
+      "file": "heroes-park-field-map.jpg",
+      "role": "map",
+      "alt": "Aerial field map of Heroes Park showing Fields 1 through 10, possible Fields 11 and 12, Tournament Central, the medical tent, AED locations, restrooms, the food truck, water stations, and parking.",
+      "describes": "Aerial photograph of the Heroes Park fields with the 2026 tournament layout overlaid. Fields 1-5 run along the bottom row and Fields 6-10 along the top, with possible Fields 11 and 12 marked in dashed outlines on the right. Tournament Central and the medical tent sit between the lower fields and the parking lot, with AEDs marked at the north edge, between the field rows, and beside the medical tent. Restrooms, the food truck, and water stations are also marked, and the parking rows are visible along the bottom of the image.",
+      "sourcePage": "/battle-of-idaho/player-packet/",
+      "sourceId": "new artwork supplied by the tournament director",
+      "contexts": [
+        "/battle-of-idaho/player-packet/"
+      ],
+      "width": 1600,
+      "height": 1554,
+      "bytes": 721855,
+      "derivation": "Supplied as a 1824x1772 PNG (6.8 MB). Converted to a 1600x1554 JPEG at quality 75, which keeps the field labels and legend legible while cutting the download to about 700 KB."
     }
   },
   "unrecovered": {

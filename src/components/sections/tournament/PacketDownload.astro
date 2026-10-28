@@ -1,0 +1,82 @@
+---
+/**
+ * The take-away version of the packet. The page is the readable copy; this is
+ * the printable PDF a captain can save to a phone before leaving for the
+ * fields.
+ */
+
+import Button from '../../ui/Button.astro';
+import Card from '../../ui/Card.astro';
+import Icon from '../../ui/Icon.astro';
+import { playerPacket } from '../../../data/playerPacket';
+
+const { pdf } = playerPacket;
+---
+
+<Card as="section" class="download">
+  <div class="download__body">
+    <p class="download__eyebrow">Printable copy</p>
+    <h3 class="download__title">Take the packet with you</h3>
+    <p class="download__text">
+      Save the official PDF to your phone or print it for the sideline. It has
+      the same schedule, rules, and venue details as this page.
+    </p>
+  </div>
+
+  <div class="download__actions">
+    <Button href={pdf.file} download variant="solid" size="lg">
+      Download the PDF
+    </Button>
+    <p class="download__meta">
+      <Icon name="document" />
+      {pdf.detail}
+    </p>
+  </div>
+</Card>
+
+<style>
+  .download {
+    gap: var(--space-5);
+  }
+
+  .download__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .download__eyebrow {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .download__title {
+    font-size: var(--text-xl);
+  }
+
+  .download__text {
+    max-inline-size: var(--layout-measure);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .download__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .download__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    /* A long label must wrap rather than push the button off the row. */
+    overflow-wrap: anywhere;
+  }
+</style>

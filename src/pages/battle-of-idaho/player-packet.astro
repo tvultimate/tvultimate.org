@@ -1,0 +1,521 @@
+---
+/**
+ * 2026 Battle of Idaho player packet.
+ *
+ * The web edition of the printed packet. Every section mirrors the PDF's table
+ * of contents, in the same order, so a reader can move between the two without
+ * relearning the document. Shared facts come from `data/tournament.ts`; the
+ * packet-specific copy lives in `data/playerPacket.ts`.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import FoodVendors from '../../components/sections/tournament/FoodVendors.astro';
+import PacketContents from '../../components/sections/tournament/PacketContents.astro';
+import PacketDetails from '../../components/sections/tournament/PacketDetails.astro';
+import PacketSchedule from '../../components/sections/tournament/PacketSchedule.astro';
+import PacketDetailList from '../../components/sections/tournament/PacketDetailList.astro';
+import PacketDownload from '../../components/sections/tournament/PacketDownload.astro';
+import {
+  playerPacket,
+  welcomeNote,
+  packetSponsors,
+  packetRules,
+  communications,
+  scoreReporting,
+  tournamentCentral,
+  medical,
+  venueRules,
+  fieldMap,
+  parkingAndCleanup,
+  communitySupport,
+  competitionNote,
+  packetClosing,
+} from '../../data/playerPacket';
+
+const { pdf } = playerPacket;
+---
+
+<BaseLayout
+  title={`${playerPacket.title} — Battle of Idaho — Treasure Valley Ultimate`}
+  description={`The ${playerPacket.title} for the 2026 Battle of Idaho: schedule, rules, score reporting, medical support, parking, and venue logistics at Heroes Park in Meridian, Idaho.`}
+>
+  <PageHero
+    eyebrow={playerPacket.eyebrow}
+    title={playerPacket.title}
+    lede={playerPacket.lede}
+  >
+    <div class="packet-hero__actions">
+      <Button href={pdf.file} download variant="solid" size="lg">
+        Download the PDF
+      </Button>
+      <Button href="#contents" variant="quiet" size="lg">
+        Jump to contents
+      </Button>
+    </div>
+    <p class="packet-hero__meta">{pdf.detail} · Print it or save it to your phone</p>
+  </PageHero>
+
+  <Section id="contents" tone="sunken">
+    <Container>
+      <SectionHeader
+        eyebrow="Contents"
+        title="What’s in the packet"
+        lede="Thirteen sections, in the order the printed packet presents them."
+      />
+      <PacketContents />
+    </Container>
+  </Section>
+
+  <Section id="welcome" tone="page">
+    <Container narrow>
+      <SectionHeader eyebrow="01 · Welcome" title="Welcome Note" />
+      <div class="prose">
+        <p>{welcomeNote}</p>
+      </div>
+    </Container>
+  </Section>
+
+  <Section id="sponsors" tone="raised">
+    <Container>
+      <SectionHeader
+        eyebrow="02 · Thank you"
+        title="Sponsor Info"
+        lede="Our tournament runs on the support of these local businesses."
+      />
+      <ul class="sponsors">
+        {
+          packetSponsors.map((sponsor) => (
+            <Card as="li" class="sponsor">
+              <span class="sponsor__name">{sponsor.name}</span>
+              {sponsor.note && <span class="sponsor__note">{sponsor.note}</span>}
+            </Card>
+          ))
+        }
+      </ul>
+    </Container>
+  </Section>
+
+  <Section id="details" tone="page">
+    <Container>
+      <SectionHeader eyebrow="03 · The weekend" title="Tournament Details" />
+      <PacketDetails />
+    </Container>
+  </Section>
+
+  <Section id="schedule" tone="sunken">
+    <Container>
+      <SectionHeader
+        eyebrow="04 · Schedule"
+        title="Schedule & Divisions"
+        lede="Three divisions across the weekend. Youth starts Friday afternoon; the adult divisions play Saturday and Sunday."
+      />
+      <PacketSchedule />
+    </Container>
+  </Section>
+
+  <Section id="rules" tone="page">
+    <Container narrow>
+      <SectionHeader eyebrow="05 · Rules" title="Rules of Play & Format" />
+      <PacketDetailList items={packetRules} />
+    </Container>
+  </Section>
+
+  <Section id="communications" tone="raised">
+    <Container>
+      <SectionHeader
+        eyebrow="06 · Communications"
+        title="Communications"
+        lede={communications.intro}
+      />
+      <Button href={communications.href} variant="solid" size="lg" external>
+        Join the Battle of Idaho Discord
+      </Button>
+    </Container>
+  </Section>
+
+  <Section id="scores" tone="page">
+    <Container>
+      <SectionHeader
+        eyebrow="07 · Score reporting"
+        title="Score Reporting"
+        lede={scoreReporting.intro}
+      />
+      <ol class="scores">
+        {
+          scoreReporting.methods.map((method) => (
+            <li>
+              <Card as="div" class="score">
+                <p class="score__label">{method.label}</p>
+                <p class="score__detail">{method.detail}</p>
+                {method.href && (
+                  <a
+                    class="score__action"
+                    href={method.href}
+                    target={method.href.startsWith('http') ? '_blank' : undefined}
+                    rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  >
+                    {method.action}
+                  </a>
+                )}
+              </Card>
+            </li>
+          ))
+        }
+      </ol>
+    </Container>
+  </Section>
+
+  <Section id="tournament-central" tone="sunken">
+    <Container>
+      <SectionHeader
+        eyebrow="08 · On site"
+        title="Tournament Central (TC)"
+        lede="The hub for scores, gear, water, snacks, and help all weekend."
+      />
+      <div class="split">
+        <div class="prose">
+          <p><strong>Location:</strong> {tournamentCentral.location}</p>
+          <p><strong>Services:</strong> {tournamentCentral.services}</p>
+        </div>
+        <div>
+          <h3 class="split__heading">Food trucks on site</h3>
+          <FoodVendors vendors={tournamentCentral.food} intro={tournamentCentral.foodIntro} />
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  <Section id="medical" tone="page">
+    <Container>
+      <SectionHeader
+        eyebrow="09 · Safety"
+        title="On-Site Injury Triage & Medical"
+        lede="A trainer is on site during gameplay. For a head contact or collision, get screened before returning to play."
+      />
+      <PacketDetailList
+        items={[
+          { label: 'Trainer & recovery', detail: medical.trainer },
+          { label: 'Emergency', detail: medical.emergency },
+          { label: 'Cold packs', detail: medical.coldPacks },
+        ]}
+      />
+
+      <h3 class="care__heading">Closest care</h3>
+      <ul class="care">
+        {
+          [
+            { label: 'Urgent care', place: medical.urgentCare },
+            { label: 'Emergency room', place: medical.emergencyRoom },
+          ].map((entry) => (
+            <li>
+              <Card as="div" class="care__card">
+                <p class="care__label">{entry.label}</p>
+                <p class="care__name">{entry.place.name}</p>
+                <a class="care__address" href={entry.place.href}>
+                  {entry.place.address}
+                </a>
+              </Card>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </Section>
+
+  <Section id="venue" tone="raised">
+    <Container narrow>
+      <SectionHeader eyebrow="10 · Venue" title="Field Map & Venue Rules" />
+      <figure class="field-map">
+        <img
+          class="field-map__image"
+          src={fieldMap.src}
+          alt={fieldMap.alt}
+          width="1600"
+          height="1554"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption class="field-map__caption">
+          {fieldMap.caption}
+          <a class="field-map__open" href={fieldMap.src} target="_blank" rel="noopener noreferrer">
+            Open the full-size field map
+          </a>
+        </figcaption>
+      </figure>
+      <PacketDetailList items={venueRules} />
+    </Container>
+  </Section>
+
+  <Section id="parking" tone="page">
+    <Container narrow>
+      <SectionHeader eyebrow="11 · Parking" title="Parking & Site Cleanup" />
+      <PacketDetailList items={parkingAndCleanup} />
+    </Container>
+  </Section>
+
+  <Section id="donations" tone="inverse">
+    <Container>
+      <SectionHeader
+        eyebrow="12 · Community support"
+        title="Community Support & Donations"
+        lede={communitySupport.body}
+      />
+      <Button href={communitySupport.href} variant="solid" size="lg" external>
+        {communitySupport.label}
+      </Button>
+    </Container>
+  </Section>
+
+  <Section id="competition" tone="raised">
+    <Container narrow>
+      <SectionHeader eyebrow="13 · Spirit of the Game" title="A Note on Competition and Growth" />
+      <div class="prose">
+        <p>{competitionNote}</p>
+        <p>
+          {packetClosing.feedback}{' '}
+          <a href={`mailto:${packetClosing.feedbackEmail}`}>
+            {packetClosing.feedbackEmail}
+          </a>.
+        </p>
+        <p>{packetClosing.thanks}</p>
+        <p class="signature">{packetClosing.signature}</p>
+      </div>
+    </Container>
+  </Section>
+
+  <Section tone="page">
+    <Container narrow>
+      <PacketDownload />
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .packet-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+
+  .packet-hero__meta {
+    margin-block-start: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+
+  /* -------------------------------------------------------------
+   * Sponsors
+   * ----------------------------------------------------------- */
+
+  .sponsors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .sponsors > li {
+    margin: 0;
+  }
+
+  .sponsor {
+    gap: var(--space-1);
+  }
+
+  .sponsor__name {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .sponsor__note {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-warm);
+  }
+
+  /* -------------------------------------------------------------
+   * Score reporting
+   * ----------------------------------------------------------- */
+
+  .scores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: score;
+  }
+
+  .scores > li {
+    margin: 0;
+    counter-increment: score;
+  }
+
+  .score {
+    gap: var(--space-1);
+  }
+
+  .score__label {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .score__label::before {
+    content: counter(score, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--text-warm);
+  }
+
+  .score__detail {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  .score__action {
+    display: inline-block;
+    justify-self: start;
+    min-block-size: 1.75rem;
+    padding-block: var(--space-1);
+    font-size: var(--text-xs);
+    font-weight: 650;
+    color: var(--text-link);
+  }
+
+  /* -------------------------------------------------------------
+   * Tournament Central
+   * ----------------------------------------------------------- */
+
+  .split {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .split__heading {
+    font-size: var(--text-lg);
+    margin-block-end: var(--space-3);
+  }
+
+  /* -------------------------------------------------------------
+   * Medical
+   * ----------------------------------------------------------- */
+
+  .care__heading {
+    font-size: var(--text-lg);
+    margin-block: var(--space-6) var(--space-4);
+  }
+
+  .care {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .care > li {
+    margin: 0;
+  }
+
+  .care__card {
+    gap: var(--space-1);
+  }
+
+  .care__label {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .care__name {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .care__address {
+    display: inline-block;
+    justify-self: start;
+    min-block-size: 1.75rem;
+    padding-block: var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--text-link);
+    overflow-wrap: anywhere;
+  }
+
+  /* -------------------------------------------------------------
+   * Field map
+   * ----------------------------------------------------------- */
+
+  .field-map {
+    margin: 0 0 var(--space-6);
+  }
+
+  .field-map__image {
+    inline-size: 100%;
+    block-size: auto;
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-lg);
+  }
+
+  .field-map__caption {
+    margin-block-start: var(--space-3);
+    max-inline-size: var(--layout-measure);
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .field-map__open {
+    display: block;
+    inline-size: fit-content;
+    min-block-size: 1.75rem;
+    margin-block-start: var(--space-2);
+    padding-block: var(--space-1);
+    font-size: var(--text-xs);
+    font-weight: 650;
+    color: var(--text-link);
+  }
+
+  /* -------------------------------------------------------------
+   * Closing
+   * ----------------------------------------------------------- */
+
+  .signature {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 48rem) {
+    .split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+  }
+</style>

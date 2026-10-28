@@ -1,0 +1,72 @@
+---
+/**
+ * A label/detail list for the player packet. Used by the rules, venue, and
+ * parking sections, where the PDF prints a short bold label followed by a
+ * sentence. A description list keeps the pairing explicit for screen readers
+ * instead of faking it with two spans.
+ */
+
+interface Item {
+  label: string;
+  detail: string;
+}
+
+interface Props {
+  items: readonly Item[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<dl class:list={['details', className]}>
+  {
+    items.map((item) => (
+      <div class="details__row">
+        <dt class="details__label">{item.label}</dt>
+        <dd class="details__value">{item.detail}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .details {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-block-start: var(--border-width) solid var(--line-subtle);
+  }
+
+  .details__row {
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-4);
+    border-block-end: var(--border-width) solid var(--line-subtle);
+  }
+
+  .details__label {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .details__value {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    /* Addresses and long venue names wrap rather than widen the page. */
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 48rem) {
+    .details__row {
+      grid-template-columns: minmax(0, 0.4fr) minmax(0, 1fr);
+      gap: var(--space-5);
+      align-items: start;
+    }
+  }
+</style>

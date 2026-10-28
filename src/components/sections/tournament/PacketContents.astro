@@ -1,0 +1,85 @@
+---
+/**
+ * The packet's table of contents. Rendered from `packetSections` so every
+ * anchor is guaranteed to match a section id on the page, and so adding a
+ * section means adding one entry rather than editing a hand-written list.
+ */
+
+import Icon from '../../ui/Icon.astro';
+import { packetSections } from '../../../data/playerPacket';
+---
+
+<nav class="contents" aria-label="Player packet contents">
+  <ol class="contents__list">
+    {
+      packetSections.map((section, index) => (
+        <li class="contents__item">
+          <a class="contents__link" href={`#${section.id}`}>
+            <span class="contents__number" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span class="contents__label">{section.title}</span>
+            <Icon name="arrow" class="contents__arrow" />
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .contents__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .contents__item {
+    margin: 0;
+  }
+
+  .contents__link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+    min-block-size: 2.75rem;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    background: var(--surface-raised);
+    border: var(--border-width) solid var(--line-subtle);
+    border-radius: var(--radius-md);
+    transition:
+      border-color var(--motion-fast) var(--ease-out-soft),
+      background-color var(--motion-fast) var(--ease-out-soft);
+  }
+
+  .contents__link:hover {
+    background: var(--surface-accent-soft);
+    border-color: var(--line-accent);
+  }
+
+  .contents__number {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    color: var(--text-warm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .contents__label {
+    /* Titles wrap; they are never shortened to fit the card. */
+    overflow-wrap: anywhere;
+  }
+
+  :global(.contents__arrow) {
+    color: var(--text-tertiary);
+    rotate: 90deg;
+  }
+</style>

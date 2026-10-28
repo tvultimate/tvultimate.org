@@ -52,6 +52,11 @@ export const navSections: NavSection[] = [
         summary: 'Dates, divisions, schedule, and registration.',
       },
       {
+        href: '/battle-of-idaho/player-packet/',
+        label: '2026 Player Packet',
+        summary: 'Schedule, rules, medical, and venue logistics.',
+      },
+      {
         href: '/battle-of-idaho/teams/',
         label: 'Teams',
         summary: 'The teams signed up so far.',

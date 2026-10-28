@@ -1,0 +1,106 @@
+---
+/**
+ * Tournament details from the packet: the weekend's dates, venue, start
+ * times, and the four directors a team can contact over the weekend.
+ */
+
+import Card from '../../ui/Card.astro';
+import PacketDetailList from './PacketDetailList.astro';
+import { packetDetails, packetDirectors } from '../../../data/playerPacket';
+
+const facts = [
+  { label: 'Dates', detail: packetDetails.dates },
+  { label: 'Location', detail: `${packetDetails.location}, ${packetDetails.address}` },
+  { label: 'Game start time', detail: packetDetails.startTime },
+];
+---
+
+<div class="packet-details">
+  <PacketDetailList items={facts} />
+
+  <div class="directors">
+    <h3 class="directors__title">Tournament directors</h3>
+    <ul class="directors__list">
+      {
+        packetDirectors.map((director) => (
+          <li>
+            <Card as="div" class="director">
+              <p class="director__name">{director.name}</p>
+              <p class="director__role">
+                {director.role} · {director.detail}
+              </p>
+              <div class="director__contact">
+                {director.phone && (
+                  <a class="director__link" href={`tel:+1${director.phone.replace(/\D/g, '')}`}>
+                    {director.phone}
+                  </a>
+                )}
+                <a class="director__link" href={`mailto:${director.email}`}>
+                  {director.email}
+                </a>
+              </div>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .packet-details {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .directors__title {
+    font-size: var(--text-lg);
+    margin-block-end: var(--space-4);
+  }
+
+  .directors__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .directors__list li {
+    margin: 0;
+  }
+
+  .director {
+    gap: var(--space-1);
+  }
+
+  .director__name {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .director__role {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+  }
+
+  .director__contact {
+    display: grid;
+    gap: var(--space-1);
+    margin-block-start: var(--space-2);
+  }
+
+  .director__link {
+    display: inline-block;
+    justify-self: start;
+    padding-block: var(--space-1);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-link);
+    /* Long addresses wrap instead of escaping a narrow card. */
+    overflow-wrap: anywhere;
+  }
+</style>
