@@ -19,7 +19,6 @@ import Icon from '../../components/ui/Icon.astro';
 import PricingTiers from '../../components/sections/tournament/PricingTiers.astro';
 import FoodVendors from '../../components/sections/tournament/FoodVendors.astro';
 import SponsorWall from '../../components/sections/tournament/SponsorWall.astro';
-import FieldMap from '../../components/sections/tournament/FieldMap.astro';
 import DivisionTabs from '../../components/react/DivisionTabs';
 import {
   tournament,
@@ -84,11 +83,7 @@ import { contact, links } from '../../data/org';
   <!-- Divisions, schedules, and the living documents -->
   <Section id="divisions" tone="page">
     <Container>
-      <SectionHeader
-        eyebrow="Divisions"
-        title="Choose your division"
-        lede="Open to all skill levels. We limit each division to 16 teams and maintain a waitlist once a division reaches capacity. Every team is guaranteed five games, whatever the results."
-      />
+      <SectionHeader title="Division Information" />
 
       <div class="boi__divisions">
         <DivisionTabs
@@ -125,17 +120,6 @@ import { contact, links } from '../../data/org';
           </Button>
         </Card>
 
-        <Card as="section" class="boi__resource">
-          <p class="boi__resource-eyebrow">Field map</p>
-          <h3 class="boi__resource-title">Heroes Park layout</h3>
-          <p class="boi__resource-text">
-            Fields 1–10, Tournament Central, medical, restrooms, the food truck,
-            water stations, and parking.
-          </p>
-          <Button href="#field-map" variant="outline" size="md">
-            View the field map
-          </Button>
-        </Card>
       </div>
 
       <ul class="boi__stats">
@@ -155,7 +139,7 @@ import { contact, links } from '../../data/org';
   <!-- Cost & registration -->
   <Section tone="raised">
     <Container>
-      <SectionHeader eyebrow="Cost & registration" title="Bring your own team, fund the future" />
+      <SectionHeader eyebrow="Cost & registration" title="Bring your own team, support Idaho Ultimate" />
       <p class="boi__lede">{fundraising}</p>
       <PricingTiers tiers={[...pricing]} />
       <p class="boi__pricing-note">{youthPricingNote}</p>
@@ -195,18 +179,6 @@ import { contact, links } from '../../data/org';
           <p class="boi__lede">{housing}</p>
         </div>
       </div>
-    </Container>
-  </Section>
-
-  <!-- Field map -->
-  <Section id="field-map" tone="page">
-    <Container>
-      <SectionHeader
-        eyebrow="Venue"
-        title="Field map"
-        lede={`${tournament.location} in Meridian. Every field, Tournament Central, medical support, restrooms, food, water, and parking on one map.`}
-      />
-      <FieldMap />
     </Container>
   </Section>
 
@@ -607,7 +579,7 @@ import { contact, links } from '../../data/org';
     }
 
     .boi__resources {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .split {
