@@ -156,6 +156,41 @@
   color: var(--color-pine-200);
 }
 
+/*
+ * Structured timing detail for the day: a label and the sentence that explains
+ * it. The labelled rows keep a bye or a final from disappearing inside one
+ * long paragraph.
+ */
+.tabs__schedule-items {
+  flex-basis: 100%;
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-1) 0 0;
+}
+
+.tabs__schedule-item {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0;
+}
+
+.tabs__schedule-item dt {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-sunset-300);
+}
+
+.tabs__schedule-item dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-pine-100);
+  max-inline-size: var(--layout-measure);
+  text-wrap: pretty;
+}
+
 /* A bye, a final, or another timing detail, beneath the day's headline time. */
 .tabs__schedule-note {
   flex-basis: 100%;

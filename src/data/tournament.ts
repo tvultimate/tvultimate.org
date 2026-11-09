@@ -127,10 +127,18 @@ export const youthPricingNote = 'Youth Open teams register for $200 per team.';
 export const freeAgentPolicy =
   'Don’t have a team? Sign up as a free agent and you will be placed on a dedicated free agent team. If there aren’t enough players to fill a roster, we will notify you by the Wednesday before the tournament and issue a full refund.';
 
+export interface ScheduleItem {
+  label: string;
+  detail: string;
+}
+
 export interface ScheduleSlot {
   day: string;
-  detail: string;
-  /** Additional timing detail, such as a bye or a final. */
+  /** A one-line summary, used when the day does not need labelled detail. */
+  detail?: string;
+  /** Labelled timing details, such as a bye or a championship final. */
+  items?: ScheduleItem[];
+  /** Additional context that sits below the day's detail. */
   note?: string;
 }
 
@@ -150,9 +158,9 @@ export interface Division {
  * times. Order is the order they are presented in, which is the order a
  * captain reads them in: youth first, then the two adult divisions.
  *
- * Saturday is shared by every division. Youth and Adult Open start at 9:30 AM;
- * Mixed starts at 10:00 AM. The two 2:00 PM finals — Youth Open and Adult Open —
- * run on Fields 2 and 3 and finish by 3:30 PM.
+ * Saturday is shared by every division and starts at 9:30 AM. Only Adult Mixed
+ * plays on Sunday, beginning at 10:00 AM. The two 2:00 PM finals — Youth Open and
+ * Adult Open — run on Fields 2 and 3 and finish by 3:30 PM.
  */
 export const divisions: Division[] = [
   {
@@ -162,7 +170,7 @@ export const divisions: Division[] = [
     who: 'Open to players under 20 years of age. Open format, but mixed roster composition is preferred.',
     rules: 'Gender ratios are discussed and agreed upon by captains and coaches prior to games.',
     format:
-      'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday. The final is at 2:00 PM.',
+      'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday. The final is at 2:00 PM on Field 2.',
     schedule: [
       {
         day: 'Friday',
@@ -171,8 +179,22 @@ export const divisions: Division[] = [
       },
       {
         day: 'Saturday',
-        detail: 'Play begins at 9:30 AM',
-        note: 'All other games finish by 2:00 PM. Final at 2:00 PM on Field 2 or 3, finishing by 3:30 PM. Finalists have a bye from 12:30 PM to 2:00 PM.',
+        items: [
+          { label: 'Play Begins', detail: '9:30 AM start' },
+          {
+            label: 'Finals Bye',
+            detail:
+              'Finalists in the Youth Open division receive a bye from 12:30 PM to 2:00 PM.',
+          },
+          {
+            label: 'General Wrap-Up',
+            detail: 'All other tournament games conclude by 2:00 PM.',
+          },
+          {
+            label: 'Championship Final',
+            detail: 'The final starts at 2:00 PM on Field 2 and ends at 3:30 PM.',
+          },
+        ],
       },
     ],
   },
@@ -187,9 +209,13 @@ export const divisions: Division[] = [
     schedule: [
       {
         day: 'Saturday',
-        detail: 'Play begins at 10:00 AM and finishes by 2:30 PM',
+        detail: 'Play begins at 9:30 AM and finishes by 2:30 PM',
       },
-      { day: 'Sunday', detail: 'Bracket play begins at 10:00 AM' },
+      {
+        day: 'Sunday',
+        detail: 'Bracket play begins at 10:00 AM',
+        note: 'Adult Mixed is the only division playing on Sunday.',
+      },
     ],
   },
   {
@@ -199,12 +225,26 @@ export const divisions: Division[] = [
     who: 'Open to players of any age and any gender composition.',
     rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
     format:
-      'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead. The final is at 2:00 PM.',
+      'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead. The final is at 2:00 PM on Field 3.',
     schedule: [
       {
         day: 'Saturday',
-        detail: 'Play begins at 9:30 AM',
-        note: 'All other games finish by 2:00 PM. Final at 2:00 PM on Field 2 or 3, finishing by 3:30 PM. Finalists have a bye from 12:30 PM to 2:00 PM.',
+        items: [
+          { label: 'Play Begins', detail: '9:30 AM start' },
+          {
+            label: 'Finals Bye',
+            detail:
+              'Finalists in the Open division receive a bye from 12:30 PM to 2:00 PM.',
+          },
+          {
+            label: 'General Wrap-Up',
+            detail: 'All other tournament games conclude by 2:00 PM.',
+          },
+          {
+            label: 'Championship Final',
+            detail: 'The final starts at 2:00 PM on Field 3 and ends at 3:30 PM.',
+          },
+        ],
       },
     ],
   },
