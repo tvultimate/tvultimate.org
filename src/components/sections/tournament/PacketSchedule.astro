@@ -23,6 +23,7 @@ import { packetSchedule } from '../../../data/playerPacket';
               <li class="division__round">
                 <span class="division__day">{round.day}</span>
                 <span class="division__detail">{round.detail}</span>
+                {round.note && <span class="division__note">{round.note}</span>}
               </li>
             ))}
           </ul>

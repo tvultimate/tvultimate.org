@@ -2,8 +2,9 @@
 /**
  * 2026 Battle of Idaho — the flagship tournament.
  *
- * Copy follows the original site. The divisions selector is a React island
- * because it keeps one division's detail in the DOM at a time.
+ * Divisions lead the page: a captain arrives knowing their division, their
+ * schedule, and where the living documents are. The divisions selector is a
+ * React island because it keeps one division's detail in the DOM at a time.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -12,13 +13,13 @@ import Section from '../../components/ui/Section.astro';
 import Container from '../../components/ui/Container.astro';
 import SectionHeader from '../../components/ui/SectionHeader.astro';
 import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
 import Eyebrow from '../../components/ui/Eyebrow.astro';
 import Icon from '../../components/ui/Icon.astro';
-import TournamentFacts from '../../components/sections/tournament/TournamentFacts.astro';
 import PricingTiers from '../../components/sections/tournament/PricingTiers.astro';
 import FoodVendors from '../../components/sections/tournament/FoodVendors.astro';
 import SponsorWall from '../../components/sections/tournament/SponsorWall.astro';
-import PlayerHandbookCallout from '../../components/sections/tournament/PlayerHandbookCallout.astro';
+import FieldMap from '../../components/sections/tournament/FieldMap.astro';
 import DivisionTabs from '../../components/react/DivisionTabs';
 import {
   tournament,
@@ -28,6 +29,7 @@ import {
   youthPricingNote,
   freeAgentPolicy,
   gameRules,
+  scheduleNote,
   amenities,
   foodVendors,
   foodIntro,
@@ -45,8 +47,23 @@ import { contact, links } from '../../data/org';
   <PageHero
     eyebrow={`${tournament.edition} · ${tournament.year}`}
     title={tournament.name}
-    lede={tournament.tagline}
+    lede={tournament.intro}
   >
+    <ul class="boi__hero-meta">
+      <li class="boi__hero-meta-item">
+        <span class="boi__hero-meta-icon"><Icon name="calendar" /></span>
+        {tournament.dates}
+      </li>
+      <li class="boi__hero-meta-item">
+        <span class="boi__hero-meta-icon"><Icon name="pin" /></span>
+        {tournament.location}, Meridian
+      </li>
+      <li class="boi__hero-meta-item">
+        <span class="boi__hero-meta-icon"><Icon name="users" /></span>
+        Youth Open · Adult Mixed · Adult Open
+      </li>
+    </ul>
+
     <div class="boi__hero-actions">
       <Button href={links.battleRegistration} variant="solid" size="lg" external>
         Register a Team
@@ -59,6 +76,9 @@ import { contact, links } from '../../data/org';
       >
         Register as a Free Agent
       </Button>
+      <Button href={links.discord} variant="quiet" size="lg" external>
+        Join the Discord for updates
+      </Button>
       <Button
         href="/battle-of-idaho/battle-of-idaho-sponsorship/"
         variant="quiet"
@@ -69,46 +89,62 @@ import { contact, links } from '../../data/org';
     </div>
   </PageHero>
 
-  <!-- Intro + key facts -->
-  <Section tone="page">
+  <!-- Divisions, schedules, and the living documents -->
+  <Section id="divisions" tone="page">
     <Container>
-      {/*
-        No photography on this page. The four images that appeared here on the
-        old site were lost with the archive capture, and the recovered team
-        photograph is presented on the home page's tournament panel instead,
-        where its caption can name the team. See public/img/manifest.json.
-      */}
-      <p class="boi__intro">{tournament.intro}</p>
-
-      <TournamentFacts
-        facts={[
-          {
-            icon: 'calendar',
-            label: 'When',
-            value: tournament.dates,
-            note: 'Youth Open · Adult Mixed · Adult Open',
-          },
-          {
-            icon: 'clock',
-            label: 'Start time',
-            value: '9:30 AM',
-            note: 'Saturday, every division',
-          },
-          {
-            icon: 'pin',
-            label: 'Where',
-            value: tournament.location,
-            note: tournament.address,
-            href: links.maps,
-          },
-          {
-            icon: 'users',
-            label: 'Capacity',
-            value: '16 teams',
-            note: 'per division, waitlist after',
-          },
-        ]}
+      <SectionHeader
+        eyebrow="Divisions"
+        title="Choose your division"
+        lede="Open to all skill levels. We limit each division to 16 teams and maintain a waitlist once a division reaches capacity. Every team is guaranteed five games, whatever the results."
       />
+
+      <div class="boi__divisions">
+        <DivisionTabs
+          client:visible
+          divisions={divisions}
+          gameRules={gameRules}
+          scheduleHref={links.battleSchedule}
+          scheduleNote={scheduleNote}
+        />
+      </div>
+
+      <div class="boi__resources">
+        <Card as="section" class="boi__resource">
+          <p class="boi__resource-eyebrow">Game schedule</p>
+          <h3 class="boi__resource-title">Not final until Wednesday at 11:59 PM</h3>
+          <p class="boi__resource-text">
+            The draw is live while teams are still registering. Check back after
+            registration closes for the final schedule.
+          </p>
+          <Button href={links.battleSchedule} variant="outline" size="md" external>
+            View the game schedule
+          </Button>
+        </Card>
+
+        <Card as="section" class="boi__resource">
+          <p class="boi__resource-eyebrow">Player packet</p>
+          <h3 class="boi__resource-title">Everything for the weekend</h3>
+          <p class="boi__resource-text">
+            Schedule, rules, score reporting, medical support, parking, and venue
+            logistics in one living document.
+          </p>
+          <Button href={links.playerHandbook} variant="outline" size="md" external>
+            Open the player packet
+          </Button>
+        </Card>
+
+        <Card as="section" class="boi__resource">
+          <p class="boi__resource-eyebrow">Field map</p>
+          <h3 class="boi__resource-title">Heroes Park layout</h3>
+          <p class="boi__resource-text">
+            Fields 1–10, Tournament Central, medical, restrooms, the food truck,
+            water stations, and parking.
+          </p>
+          <Button href="#field-map" variant="outline" size="md">
+            View the field map
+          </Button>
+        </Card>
+      </div>
 
       <ul class="boi__stats">
         {
@@ -121,8 +157,6 @@ import { contact, links } from '../../data/org';
           ))
         }
       </ul>
-
-      <PlayerHandbookCallout />
     </Container>
   </Section>
 
@@ -134,21 +168,6 @@ import { contact, links } from '../../data/org';
       <PricingTiers tiers={[...pricing]} />
       <p class="boi__pricing-note">{youthPricingNote}</p>
       <p class="boi__footnote">{freeAgentPolicy}</p>
-    </Container>
-  </Section>
-
-  <!-- Divisions -->
-  <Section tone="page">
-    <Container>
-      <SectionHeader eyebrow="Divisions" title="Choose your division" />
-      <p class="boi__lede">
-        Open to all skill levels. We limit each division to 16 teams and maintain a
-        waitlist once a division reaches capacity. Every team is guaranteed five
-        games, whatever the results.
-      </p>
-      <div class="boi__divisions">
-        <DivisionTabs client:visible divisions={divisions} gameRules={gameRules} />
-      </div>
     </Container>
   </Section>
 
@@ -184,6 +203,18 @@ import { contact, links } from '../../data/org';
           <p class="boi__lede">{housing}</p>
         </div>
       </div>
+    </Container>
+  </Section>
+
+  <!-- Field map -->
+  <Section id="field-map" tone="page">
+    <Container>
+      <SectionHeader
+        eyebrow="Venue"
+        title="Field map"
+        lede={`${tournament.location} in Meridian. Every field, Tournament Central, medical support, restrooms, food, water, and parking on one map.`}
+      />
+      <FieldMap />
     </Container>
   </Section>
 
@@ -271,6 +302,28 @@ import { contact, links } from '../../data/org';
 </BaseLayout>
 
 <style>
+  .boi__hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    list-style: none;
+  }
+
+  .boi__hero-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-pine-200);
+  }
+
+  .boi__hero-meta-icon {
+    color: var(--color-sunset-300);
+  }
+
   .boi__hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -278,20 +331,12 @@ import { contact, links } from '../../data/org';
     margin-block-start: var(--space-4);
   }
 
-  .boi__intro {
-    font-size: var(--text-md);
-    line-height: var(--leading-relaxed);
-    color: var(--text-secondary);
-    max-inline-size: var(--layout-measure);
-    margin-block-end: var(--space-6);
-  }
-
   .boi__stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
     padding: 0;
-    margin: var(--space-5) 0 0;
+    margin: var(--space-6) 0 0;
     list-style: none;
   }
 
@@ -359,11 +404,40 @@ import { contact, links } from '../../data/org';
   }
 
   /*
- * Spacer so the tab island sits far enough down the page that `client:visible`
- * only hydrates it once a reader actually reaches the divisions.
- */
+   * Spacer so the tab island sits far enough down the page that `client:visible`
+   * only hydrates it once a reader actually reaches the divisions.
+   */
   .boi__divisions {
     margin-block-start: var(--space-5);
+  }
+
+  .boi__resources {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+
+  .boi__resource {
+    align-content: start;
+    block-size: 100%;
+  }
+
+  .boi__resource-eyebrow {
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-warm);
+  }
+
+  .boi__resource-title {
+    font-size: var(--text-lg);
+  }
+
+  .boi__resource-text {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
   }
 
   .split {
@@ -538,6 +612,10 @@ import { contact, links } from '../../data/org';
   @media (min-width: 48rem) {
     .boi__stats {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .boi__resources {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .split {

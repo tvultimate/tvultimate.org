@@ -15,9 +15,18 @@ interface Props {
   divisions: Division[];
   /** Rules that apply in every division, not just the one being read. */
   gameRules: readonly string[];
+  /** The living Google Sheet with the full draw. */
+  scheduleHref: string;
+  /** Why the published draw may still change. */
+  scheduleNote: string;
 }
 
-export default function DivisionTabs({ divisions, gameRules }: Props) {
+export default function DivisionTabs({
+  divisions,
+  gameRules,
+  scheduleHref,
+  scheduleNote,
+}: Props) {
   const [active, setActive] = useState(0);
   const baseId = useId();
   const current = divisions[active];
@@ -86,9 +95,22 @@ export default function DivisionTabs({ divisions, gameRules }: Props) {
               <li key={slot.day}>
                 <span className="tabs__day">{slot.day}</span>
                 <span className="tabs__time">{slot.detail}</span>
+                {slot.note && <span className="tabs__schedule-note">{slot.note}</span>}
               </li>
             ))}
           </ul>
+
+          <div className="tabs__schedule-actions">
+            <p className="tabs__schedule-status">{scheduleNote}</p>
+            <a
+              className="tabs__schedule-link"
+              href={scheduleHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open the full game schedule
+            </a>
+          </div>
         </div>
 
         <div className="tabs__rules">

@@ -8,7 +8,7 @@
  * web page and the PDF cannot drift apart on the details that matter.
  */
 
-import { contact, documents, funds, images, links } from './org';
+import { contact, documents, funds, links } from './org';
 import { directors, divisions, foodVendors, tournament } from './tournament';
 
 /** The sections of the packet, in the order the PDF presents them. */
@@ -210,13 +210,6 @@ export const venueRules = [
       'Since youth players and youth divisions are at the event, Meridian Parks and Recreation strictly requires that no alcohol be brought or consumed at the venue.',
   },
 ];
-
-export const fieldMap = {
-  src: images.fieldMap,
-  alt: 'Aerial field map of Heroes Park showing Fields 1 through 10, possible Fields 11 and 12, Tournament Central, the medical tent, AED locations, restrooms, the food truck, water stations, and parking.',
-  caption:
-    'Heroes Park field layout: Fields 1–10, with possible Fields 11 and 12 on the east side. Tournament Central, the medical tent, AEDs, restrooms, the food truck, and water stations are marked, with parking along the south edge.',
-} as const;
 
 export const parkingAndCleanup = [
   {

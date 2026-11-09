@@ -87,6 +87,14 @@ export const stats = [
 ] as const;
 
 /**
+ * The full game schedule is a living Google Sheet. It cannot be final until
+ * team registration closes, so the page says so plainly rather than presenting
+ * a provisional draw as settled.
+ */
+export const scheduleNote =
+  'The full game schedule is live, but it is not final until Wednesday at 11:59 PM while teams are still registering.';
+
+/**
  * Entry fees.
  *
  * The early-bird tier ran to the end of September and is gone now that we are
@@ -119,6 +127,13 @@ export const youthPricingNote = 'Youth Open teams register for $200 per team.';
 export const freeAgentPolicy =
   'Don’t have a team? Sign up as a free agent and you will be placed on a dedicated free agent team. If there aren’t enough players to fill a roster, we will notify you by the Wednesday before the tournament and issue a full refund.';
 
+export interface ScheduleSlot {
+  day: string;
+  detail: string;
+  /** Additional timing detail, such as a bye or a final. */
+  note?: string;
+}
+
 export interface Division {
   id: string;
   name: string;
@@ -127,13 +142,17 @@ export interface Division {
   rules: string;
   /** How this division is run, which differs from division to division. */
   format: string;
-  schedule: { day: string; detail: string }[];
+  schedule: ScheduleSlot[];
 }
 
 /**
  * Three divisions, each with its own eligibility rules, format, and start
  * times. Order is the order they are presented in, which is the order a
  * captain reads them in: youth first, then the two adult divisions.
+ *
+ * Saturday is shared by every division. Youth and Adult Open start at 9:30 AM;
+ * Mixed starts at 10:00 AM. The two 2:00 PM finals — Youth Open and Adult Open —
+ * run on Fields 2 and 3 and finish by 3:30 PM.
  */
 export const divisions: Division[] = [
   {
@@ -143,10 +162,18 @@ export const divisions: Division[] = [
     who: 'Open to players under 20 years of age. Open format, but mixed roster composition is preferred.',
     rules: 'Gender ratios are discussed and agreed upon by captains and coaches prior to games.',
     format:
-      'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday.',
+      'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday. The final is at 2:00 PM.',
     schedule: [
-      { day: 'Friday', detail: 'Swiss rounds begin at 2:00 PM' },
-      { day: 'Saturday', detail: 'Bracket play begins at 9:30 AM' },
+      {
+        day: 'Friday',
+        detail: 'Games run from 2:00 PM to 5:00 PM',
+        note: 'Two to three games are played on Friday.',
+      },
+      {
+        day: 'Saturday',
+        detail: 'Play begins at 9:30 AM',
+        note: 'All other games finish by 2:00 PM. Final at 2:00 PM on Field 2 or 3, finishing by 3:30 PM. Finalists have a bye from 12:30 PM to 2:00 PM.',
+      },
     ],
   },
   {
@@ -158,7 +185,10 @@ export const divisions: Division[] = [
     format:
       'Swiss rounds on Saturday seed the division, then play moves into a single-elimination bracket on Sunday.',
     schedule: [
-      { day: 'Saturday', detail: 'Swiss rounds begin at 9:30 AM' },
+      {
+        day: 'Saturday',
+        detail: 'Play begins at 10:00 AM and finishes by 2:30 PM',
+      },
       { day: 'Sunday', detail: 'Bracket play begins at 10:00 AM' },
     ],
   },
@@ -169,8 +199,14 @@ export const divisions: Division[] = [
     who: 'Open to players of any age and any gender composition.',
     rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
     format:
-      'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead.',
-    schedule: [{ day: 'Saturday', detail: 'Play begins at 9:30 AM' }],
+      'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead. The final is at 2:00 PM.',
+    schedule: [
+      {
+        day: 'Saturday',
+        detail: 'Play begins at 9:30 AM',
+        note: 'All other games finish by 2:00 PM. Final at 2:00 PM on Field 2 or 3, finishing by 3:30 PM. Finalists have a bye from 12:30 PM to 2:00 PM.',
+      },
+    ],
   },
 ];
 
@@ -224,6 +260,20 @@ export const housing =
 
 export const fundraising =
   'The Battle of Idaho is a bring-your-own-team, fundraising tournament where all proceeds are reinvested directly into the Idaho ultimate frisbee community. Your team fee covers tournament costs, and any additional amount helps local clubs and provides resources to make the sport more accessible.';
+
+/**
+ * The Heroes Park field layout, shared by the tournament page and the printed
+ * packet. Intrinsic dimensions are carried here so every rendering reserves the
+ * right space before the image lands.
+ */
+export const fieldMap = {
+  src: images.fieldMap,
+  width: 1600,
+  height: 1554,
+  alt: 'Aerial field map of Heroes Park showing Fields 1 through 10, possible Fields 11 and 12, Tournament Central, the medical tent, AED locations, restrooms, the food truck, water stations, and parking.',
+  caption:
+    'Heroes Park field layout: Fields 1–10, with possible Fields 11 and 12 on the east side. Tournament Central, the medical tent, AEDs, restrooms, the food truck, and water stations are marked, with parking along the south edge.',
+} as const;
 
 /**
  * The four tournament directors, with the address a captain should use for

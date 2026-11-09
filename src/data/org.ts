@@ -130,19 +130,25 @@ export const links = {
   youtubeFilm: 'https://www.youtube.com/embed/47sKaHp_PuY',
   sawtoothTryout: 'https://tooth.s.gy/tryout',
   /**
-   * Battle of Idaho registration, back on Ulticentral now that the platform is
-   * up. Teams, free agents and youth players all start here: the event page
-   * asks which of those they are.
+   * Battle of Idaho registration. Teams and free agents use the same form:
+   * Ulticentral asks which of the two a visitor is when they arrive.
    */
   battleRegistration:
-    'https://ultimatecentral.com/en_us/e/2026-battle-of-idaho/register',
+    'https://ultimatecentral.com/en_us/e/2026-battle-of-idaho/register?new=1',
   /**
-   * The living player handbook, maintained as a Google Doc so the tournament
+   * The living game schedule, maintained as a Google Sheet so the tournament
+   * director can update it without a site deploy. It is not final until the
+   * Wednesday before the tournament, once team registration closes.
+   */
+  battleSchedule:
+    'https://docs.google.com/spreadsheets/d/1TtXGAUF_-lvo8GHItHB3lEI-Itm6_WgANRiM9hBAabw/edit?gid=29841961#gid=29841961',
+  /**
+   * The living player packet, maintained as a Google Doc so the tournament
    * director can update it without a site deploy. The site's tournament page
    * links here; the older on-site packet page is unlisted.
    */
   playerHandbook:
-    'https://docs.google.com/document/d/1zv5i6J52WtBqtTKxaavoATaKbedJOy8a5SBVwAYoVkQ/edit?usp=sharing',
+    'https://docs.google.com/document/d/1zv5i6J52WtBqtTKxaavoATaKbedJOy8a5SBVwAYoVkQ/edit?tab=t.0',
   maps: 'https://maps.google.com/?q=Heroes+Park+Meridian+Idaho',
 } as const;
 
