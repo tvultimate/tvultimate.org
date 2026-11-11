@@ -22,20 +22,14 @@ import { packetSchedule } from '../../../data/playerPacket';
             {division.schedule.map((round) => (
               <li class="division__round">
                 <span class="division__day">{round.day}</span>
-                {round.detail && !round.items && (
-                  <span class="division__detail">{round.detail}</span>
-                )}
-                {round.items && (
-                  <dl class="division__items">
-                    {round.items.map((item) => (
-                      <div class="division__item">
-                        <dt>{item.label}</dt>
-                        <dd>{item.detail}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-                {round.note && <span class="division__note">{round.note}</span>}
+                <dl class="division__items">
+                  {round.items.map((item) => (
+                    <div class="division__item">
+                      <dt>{item.label}</dt>
+                      <dd>{item.detail}</dd>
+                    </div>
+                  ))}
+                </dl>
               </li>
             ))}
           </ul>
@@ -128,12 +122,6 @@ import { packetSchedule } from '../../../data/playerPacket';
     font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
     color: var(--text-secondary);
-  }
-
-  .division__detail {
-    font-size: var(--text-sm);
-    line-height: var(--leading-normal);
-    color: var(--text-primary);
   }
 
   .division__note {

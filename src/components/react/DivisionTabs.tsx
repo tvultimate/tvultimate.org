@@ -93,21 +93,15 @@ export default function DivisionTabs({
           <ul className="tabs__schedule-list">
             {current.schedule.map((slot) => (
               <li key={slot.day}>
-                <span className="tabs__day">{slot.day}</span>
-                {slot.detail && !slot.items && (
-                  <span className="tabs__time">{slot.detail}</span>
-                )}
-                {slot.items && (
-                  <dl className="tabs__schedule-items">
-                    {slot.items.map((item) => (
-                      <div className="tabs__schedule-item" key={item.label}>
-                        <dt>{item.label}</dt>
-                        <dd>{item.detail}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-                {slot.note && <span className="tabs__schedule-note">{slot.note}</span>}
+                <p className="tabs__day">{slot.day}</p>
+                <dl className="tabs__details">
+                  {slot.items.map((item) => (
+                    <div className="tabs__row" key={item.label}>
+                      <dt>{item.label}</dt>
+                      <dd>{item.detail}</dd>
+                    </div>
+                  ))}
+                </dl>
               </li>
             ))}
           </ul>

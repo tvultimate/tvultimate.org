@@ -134,12 +134,10 @@ export interface ScheduleItem {
 
 export interface ScheduleSlot {
   day: string;
-  /** A one-line summary, used when the day does not need labelled detail. */
+  /** A compact summary for campaign cards that do not render the item list. */
   detail?: string;
   /** Labelled timing details, such as a bye or a championship final. */
-  items?: ScheduleItem[];
-  /** Additional context that sits below the day's detail. */
-  note?: string;
+  items: ScheduleItem[];
 }
 
 export interface Division {
@@ -168,15 +166,18 @@ export const divisions: Division[] = [
     id: 'youth',
     name: 'Youth Open',
     dates: 'Friday, Nov 13 – Saturday, Nov 14',
-    who: 'Open to players under 20 years of age. Open format, but mixed roster composition is preferred.',
-    rules: 'Gender ratios are discussed and agreed upon by captains and coaches prior to games.',
+    who: 'Open to players under 20. Open format; mixed rosters are preferred.',
+    rules: 'Captains and coaches agree on gender ratios before games.',
     format:
-      'Friday is set-schedule pool play, then play moves into a championship bracket with consolation brackets on Saturday. Every team is guaranteed six games. The final is at 2:00 PM on Field 2.',
+      'Friday is set-schedule pool play. Saturday is a championship bracket with consolation brackets. Every team is guaranteed six games; the final is at 2:00 PM on Field 2.',
     schedule: [
       {
         day: 'Friday',
         detail: 'Pool play runs from 2:00 PM to 5:00 PM',
-        note: 'Two to three games are played on Friday.',
+        items: [
+          { label: 'Pool Play', detail: '2:00 PM–5:00 PM' },
+          { label: 'Games', detail: 'Two to three games.' },
+        ],
       },
       {
         day: 'Saturday',
@@ -185,16 +186,15 @@ export const divisions: Division[] = [
           { label: 'Play Begins', detail: '9:30 AM start' },
           {
             label: 'Finals Bye',
-            detail:
-              'Finalists in the Youth Open division receive a bye from 12:30 PM to 2:00 PM.',
+            detail: 'Finalists receive a bye from 12:30 PM to 2:00 PM.',
           },
           {
             label: 'General Wrap-Up',
-            detail: 'All other tournament games conclude by 2:00 PM.',
+            detail: 'All other games finish by 2:00 PM.',
           },
           {
             label: 'Championship Final',
-            detail: 'The final starts at 2:00 PM on Field 2 and ends at 3:30 PM.',
+            detail: 'Starts at 2:00 PM on Field 2; ends by 3:30 PM.',
           },
         ],
       },
@@ -204,19 +204,23 @@ export const divisions: Division[] = [
     id: 'mixed',
     name: 'Adult Mixed',
     dates: 'Saturday, Nov 14 – Sunday, Nov 15',
-    who: 'Open to all skill levels at any age.',
-    rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
+    who: 'All skill levels, any age.',
+    rules: 'Standard ABBA ratio, or a ratio the captains agree on before play.',
     format:
-      'Swiss rounds on Saturday seed the division, then play moves into a single-elimination bracket on Sunday. Every team is guaranteed five games.',
+      'Saturday’s Swiss rounds seed the division; Sunday is a single-elimination bracket. Every team is guaranteed five games, and Adult Mixed is the only division playing on Sunday.',
     schedule: [
       {
         day: 'Saturday',
         detail: 'Play begins at 9:30 AM and finishes by 2:30 PM',
+        items: [
+          { label: 'Play Begins', detail: '9:30 AM start' },
+          { label: 'General Wrap-Up', detail: 'Games finish by 2:30 PM.' },
+        ],
       },
       {
         day: 'Sunday',
         detail: 'Bracket play begins at 10:00 AM',
-        note: 'Adult Mixed is the only division playing on Sunday.',
+        items: [{ label: 'Bracket Play', detail: '10:00 AM start' }],
       },
     ],
   },
@@ -224,25 +228,18 @@ export const divisions: Division[] = [
     id: 'open',
     name: 'Adult Open',
     dates: 'Saturday, Nov 14',
-    who: 'Open to players of any age and any gender composition.',
+    who: 'All ages, any gender composition.',
     rules:
-      'Any gender ratio is allowed. Captains may agree on a ratio before a game if they choose to set one.',
+      'Any gender ratio is allowed. Captains may agree on a ratio before each game.',
     format:
-      'Single-elimination bracket with consolation games. Each team plays three games total, and the last game finishes at 2:00 PM.',
+      'Single-elimination bracket with consolation games. Each team plays three games, with the last game finishing by 2:00 PM.',
     schedule: [
       {
         day: 'Saturday',
         detail: 'Bracket play begins at 9:30 AM and the last game ends at 2:00 PM',
         items: [
           { label: 'Play Begins', detail: '9:30 AM start' },
-          {
-            label: 'Format',
-            detail: 'Single-elimination bracket with consolation games.',
-          },
-          {
-            label: 'Wrap-Up',
-            detail: 'The last game finishes at 2:00 PM.',
-          },
+          { label: 'General Wrap-Up', detail: 'The last game finishes by 2:00 PM.' },
         ],
       },
     ],
