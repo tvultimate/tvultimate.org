@@ -82,7 +82,7 @@ export const tournament = {
 export const stats = [
   { value: '16', unit: 'teams', label: 'Max per division' },
   { value: '3', unit: 'divisions', label: 'Youth, Open, Mixed' },
-  { value: '5', unit: 'games', label: 'Guaranteed per team' },
+  { value: '3–6', unit: 'games', label: 'Adult Open 3 · Mixed 5 · Youth 6' },
   { value: '$250', unit: 'per team', label: 'Registration' },
 ] as const;
 
@@ -159,8 +159,9 @@ export interface Division {
  * captain reads them in: youth first, then the two adult divisions.
  *
  * Saturday is shared by every division and starts at 9:30 AM. Only Adult Mixed
- * plays on Sunday, beginning at 10:00 AM. The two 2:00 PM finals — Youth Open and
- * Adult Open — run on Fields 2 and 3 and finish by 3:30 PM.
+ * plays on Sunday, beginning at 10:00 AM. The Youth Open final is at 2:00 PM on
+ * Field 2 and finishes by 3:30 PM. Adult Open plays a single-elimination bracket
+ * with consolation games and wraps up by 2:00 PM.
  */
 export const divisions: Division[] = [
   {
@@ -170,15 +171,16 @@ export const divisions: Division[] = [
     who: 'Open to players under 20 years of age. Open format, but mixed roster composition is preferred.',
     rules: 'Gender ratios are discussed and agreed upon by captains and coaches prior to games.',
     format:
-      'Swiss rounds on Friday seed the division, then play moves into a single-elimination bracket on Saturday. The final is at 2:00 PM on Field 2.',
+      'Friday is set-schedule pool play, then play moves into a championship bracket with consolation brackets on Saturday. Every team is guaranteed six games. The final is at 2:00 PM on Field 2.',
     schedule: [
       {
         day: 'Friday',
-        detail: 'Games run from 2:00 PM to 5:00 PM',
+        detail: 'Pool play runs from 2:00 PM to 5:00 PM',
         note: 'Two to three games are played on Friday.',
       },
       {
         day: 'Saturday',
+        detail: 'Bracket play begins at 9:30 AM',
         items: [
           { label: 'Play Begins', detail: '9:30 AM start' },
           {
@@ -205,7 +207,7 @@ export const divisions: Division[] = [
     who: 'Open to all skill levels at any age.',
     rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
     format:
-      'Swiss rounds on Saturday seed the division, then play moves into a single-elimination bracket on Sunday.',
+      'Swiss rounds on Saturday seed the division, then play moves into a single-elimination bracket on Sunday. Every team is guaranteed five games.',
     schedule: [
       {
         day: 'Saturday',
@@ -223,26 +225,23 @@ export const divisions: Division[] = [
     name: 'Adult Open',
     dates: 'Saturday, Nov 14',
     who: 'Open to players of any age and any gender composition.',
-    rules: 'Standard ABBA gender ratio system, or ratio rules agreed by captains prior to games.',
+    rules:
+      'Any gender ratio is allowed. Captains may agree on a ratio before a game if they choose to set one.',
     format:
-      'Round robin, so every team meets every other team. If the division fills to eight teams, play goes straight to a single-elimination bracket instead. The final is at 2:00 PM on Field 3.',
+      'Single-elimination bracket with consolation games. Each team plays three games total, and the last game finishes at 2:00 PM.',
     schedule: [
       {
         day: 'Saturday',
+        detail: 'Bracket play begins at 9:30 AM and the last game ends at 2:00 PM',
         items: [
           { label: 'Play Begins', detail: '9:30 AM start' },
           {
-            label: 'Finals Bye',
-            detail:
-              'Finalists in the Open division receive a bye from 12:30 PM to 2:00 PM.',
+            label: 'Format',
+            detail: 'Single-elimination bracket with consolation games.',
           },
           {
-            label: 'General Wrap-Up',
-            detail: 'All other tournament games conclude by 2:00 PM.',
-          },
-          {
-            label: 'Championship Final',
-            detail: 'The final starts at 2:00 PM on Field 3 and ends at 3:30 PM.',
+            label: 'Wrap-Up',
+            detail: 'The last game finishes at 2:00 PM.',
           },
         ],
       },
@@ -257,7 +256,7 @@ export const divisions: Division[] = [
  */
 export const gameRules = [
   'Regular games: 75-minute rounds, games to 13 points, hard cap in effect.',
-  'Semi-finals and finals: 75-minute rounds, games to 13 points, hard cap in effect.',
+  'Grand finals: 90-minute rounds, games to 15 points, hard cap in effect.',
   'Between rounds: 15 minutes built in for rest and field transition.',
 ] as const;
 

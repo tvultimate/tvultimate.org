@@ -22,7 +22,9 @@ import { packetSchedule } from '../../../data/playerPacket';
             {division.schedule.map((round) => (
               <li class="division__round">
                 <span class="division__day">{round.day}</span>
-                {round.detail && <span class="division__detail">{round.detail}</span>}
+                {round.detail && !round.items && (
+                  <span class="division__detail">{round.detail}</span>
+                )}
                 {round.items && (
                   <dl class="division__items">
                     {round.items.map((item) => (

@@ -154,7 +154,7 @@ const division = (id: string) => divisions.find((entry) => entry.id === id);
 const scheduleFor = (id: string) => division(id)?.schedule ?? [];
 
 /**
- * The clock time out of a schedule detail: "Swiss rounds begin at 2:00 PM"
+ * The clock time out of a schedule detail: "Pool play begins at 2:00 PM"
  * becomes "2:00 PM". Used where the landing page repeats a time the schedule
  * already spells out in full.
  */
@@ -193,7 +193,7 @@ const shortDates = (id: string) => shorten(division(id)?.dates ?? '');
 /** The Mixed Adult date range, spelled out in the benefit copy. */
 const mixedDates = division('mixed')?.dates ?? '';
 
-/** The youth Swiss and bracket start times, for the highlight copy. */
+/** The youth pool-play and bracket start times, for the highlight copy. */
 const youthStart = timeOf(scheduleFor('youth')[0]?.detail);
 const youthBracket = timeOf(scheduleFor('youth')[1]?.detail);
 
@@ -258,7 +258,7 @@ export const freeAgentLanding: CampaignLanding = {
     {
       label: 'Divisions',
       value: 'Mixed Adult or Adult Open',
-      note: 'ABBA ratio in Mixed · any composition in Open',
+      note: 'ABBA ratio in Mixed · any gender ratio in Open',
     },
     { label: 'Dates', value: shortDates('mixed'), note: 'Open plays Saturday only' },
     { label: 'Where', value: tournament.location, note: tournament.address },
@@ -270,8 +270,9 @@ export const freeAgentLanding: CampaignLanding = {
   ],
   rules: [
     'Mixed Adult plays Saturday and Sunday, to a standard ABBA gender ratio.',
-    'Adult Open plays Saturday only, open to any gender composition.',
-    '75-minute rounds, games to 13, hard cap in effect.',
+    'Adult Open plays Saturday only, three games total, open to any gender composition.',
+    'Regular games: 75-minute rounds, games to 13, hard cap in effect.',
+    'Grand finals: 90-minute rounds, games to 15, hard cap in effect.',
     '15 minutes between rounds for rest and field transition.',
   ],
   cta: {
@@ -300,8 +301,10 @@ const youthFreeAgentFee =
  * the division's own eligibility rule, and what is on site for the weekend.
  */
 const youthFreeAgentRules = [
-  '75-minute rounds, games to 13, hard cap in effect.',
+  'Regular games: 75-minute rounds, games to 13, hard cap in effect.',
+  'Grand finals: 90-minute rounds, games to 15, hard cap in effect.',
   '15 minutes between rounds for rest and field transition.',
+  'Six games guaranteed for every Youth Open team.',
   division('youth')?.rules ?? '',
   ...amenities,
 ].filter(Boolean);
@@ -310,10 +313,10 @@ export const youthFreeAgentLanding: CampaignLanding = {
   path: '/battle-of-idaho/youth-free-agent/',
   conversion: battleConversion,
   title: `${tournament.name} ${tournament.year} — Youth Free Agent Signup`,
-  description: `Sign up solo for the ${tournament.name} ${tournament.year} Youth Open and get drafted onto a dedicated youth free agent squad — Friday Swiss rounds and Saturday bracket play, for players under 20. ${youthFreeAgentFee} to play.`,
+  description: `Sign up solo for the ${tournament.name} ${tournament.year} Youth Open and get drafted onto a dedicated youth free agent squad — Friday pool play and Saturday bracket play, for players under 20. ${youthFreeAgentFee} to play.`,
   eyebrow: `${tournament.edition} · Youth Free Agents · Under 20`,
   heading: 'Play the Tourney — No Team Needed',
-  lede: 'No team? No problem. Register solo and the directors draft you onto a dedicated Youth Open squad — Friday Swiss rounds, Saturday bracket play, for players under 20.',
+  lede: 'No team? No problem. Register solo and the directors draft you onto a dedicated Youth Open squad — Friday pool play, Saturday bracket play, for players under 20.',
   intro:
     'One of the best weekends of the fall happens at Heroes Park, and you do not need a roster to be part of it. Sign up as a youth free agent and we will place you on a squad built for players who came without one.',
   benefits: {
@@ -339,7 +342,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
       {
         icon: 'calendar',
         title: 'Friday and Saturday',
-        body: `Swiss rounds Friday at ${youthStart}, then single-elimination bracket play Saturday at ${youthBracket}.`,
+        body: `Pool play Friday at ${youthStart}, then championship and consolation bracket play Saturday at ${youthBracket}.`,
       },
     ],
   },
@@ -354,7 +357,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
   },
   details: [
     { label: 'Division', value: 'Youth Open', note: 'Open to players under 20' },
-    { label: 'Dates', value: shortDates('youth'), note: 'Friday Swiss · Saturday bracket' },
+    { label: 'Dates', value: shortDates('youth'), note: 'Friday pool play · Saturday bracket' },
     { label: 'Where', value: tournament.location, note: tournament.address },
     { label: 'Entry', value: youthFreeAgentFee, note: 'per youth free agent' },
   ],
@@ -377,7 +380,7 @@ export const youthFreeAgentLanding: CampaignLanding = {
 export const youthLanding: CampaignLanding = {
   path: '/battle-of-idaho/youth-open/',
   title: `${tournament.name} ${tournament.year} — Youth Open (U20)`,
-  description: `Youth Open ultimate at Heroes Park, Meridian: Swiss rounds Friday Nov 13, bracket play Saturday Nov 14, for players under 20.`,
+  description: `Youth Open ultimate at Heroes Park, Meridian: pool play Friday Nov 13, bracket play Saturday Nov 14, for players under 20.`,
   eyebrow: `${tournament.edition} · Youth Open · Under 20`,
   heading: 'Level Up Their Frisbee Game',
   lede: 'A fun, competitive weekend dedicated to growing youth sports in Idaho — and a place where young players level up in front of a real crowd.',
@@ -391,7 +394,7 @@ export const youthLanding: CampaignLanding = {
       {
         icon: 'trophy',
         title: 'Real tournament play',
-        body: 'Friday’s Swiss rounds seed the field. Saturday is a single-elimination bracket, because earning a Saturday spot should mean something.',
+        body: 'Friday’s pool play sets the schedule. Saturday is a championship bracket with consolation brackets, so every team keeps playing through the weekend.',
       },
       {
         icon: 'shield',
@@ -413,7 +416,7 @@ export const youthLanding: CampaignLanding = {
   highlight: {
     eyebrow: 'Weekend schedule',
     title: 'Friday afternoon in, Saturday morning out',
-    body: `Swiss rounds start at ${youthStart} on Friday. Bracket play starts at ${youthBracket} on Saturday. Two days that fit a school weekend.`,
+    body: `Pool play starts at ${youthStart} on Friday. Championship and consolation bracket play starts at ${youthBracket} on Saturday. Two days that fit a school weekend.`,
     link: {
       label: 'Ask us about the youth division',
       href: `mailto:${contact.youth.email}?subject=${encodeURIComponent('Youth Open — 2026 Battle of Idaho')}`,
@@ -423,12 +426,14 @@ export const youthLanding: CampaignLanding = {
     { label: 'Division', value: 'Youth Open', note: 'Open to players under 20' },
     { label: 'Dates', value: shortDates('youth'), note: 'Two days' },
     { label: 'Where', value: tournament.location, note: tournament.address },
-    { label: 'Start times', value: startTimes('youth'), note: 'Swiss · Bracket' },
+    { label: 'Start times', value: startTimes('youth'), note: 'Pool play · Bracket' },
   ],
   schedule: daySchedule('youth'),
   rules: [
-    '75-minute rounds, games to 13, hard cap in effect.',
+    'Regular games: 75-minute rounds, games to 13, hard cap in effect.',
+    'Grand finals: 90-minute rounds, games to 15, hard cap in effect.',
     '15 minutes between rounds for rest and field transition.',
+    'Six games guaranteed for every Youth Open team.',
     'Water and field snacks provided for every player.',
     'Bathrooms and trained recovery staff on site all weekend.',
   ],
@@ -499,7 +504,8 @@ export const teamLanding: CampaignLanding = {
   ],
   schedule: daySchedule('mixed'),
   rules: [
-    '75-minute rounds, games to 13, hard cap in effect.',
+    'Regular games: 75-minute rounds, games to 13, hard cap in effect.',
+    'Grand finals: 90-minute rounds, games to 15, hard cap in effect.',
     '15 minutes between rounds for rest and field transition.',
     'Five games guaranteed for every team.',
     '16 teams max per division, waitlist after.',

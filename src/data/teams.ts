@@ -36,13 +36,13 @@ export const teamDivisions: readonly TeamDivision[] = [
   {
     id: 'open',
     name: 'Open Teams',
-    summary: 'Saturday only, any roster composition.',
+    summary: 'Saturday only, three games, any roster composition.',
     teams: ["Brandle's Targets", 'Twin Falls', 'Montana', 'Meridian B Team', 'Pocatello Pangz'],
   },
   {
     id: 'youth',
     name: 'Youth Teams',
-    summary: 'Under 20 — Friday Swiss rounds, Saturday bracket play.',
+    summary: 'Under 20 — six games: Friday pool play, Saturday bracket play.',
     teams: ['SkyView High School', 'Lone Peak High School', 'Sage International', 'Angels'],
   },
 ];

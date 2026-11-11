@@ -73,7 +73,7 @@ export const packetDetails = {
   dates: 'Friday, November 13 – Sunday, November 15, 2026',
   location: tournament.location,
   address: tournament.address,
-  startTime: '9:30 AM (Saturday & Sunday) / 2:00 PM (Friday Youth)',
+  startTime: '9:30 AM (Saturday) / 10:00 AM (Sunday) / 2:00 PM (Friday Youth)',
 } as const;
 
 /**
@@ -119,9 +119,13 @@ export const packetSchedule = divisions.map((division) => ({
 
 export const packetRules = [
   { label: 'Governing rules', detail: 'USAU Official Rules apply.' },
-  { label: 'Round length', detail: '75-minute rounds.' },
-  { label: 'Game target', detail: 'Games to 13 points.' },
-  { label: 'Caps', detail: 'Hard cap in effect at 75 minutes.' },
+  { label: 'Regular rounds', detail: '75-minute rounds, games to 13 points.' },
+  { label: 'Grand finals', detail: '90-minute rounds, games to 15 points.' },
+  {
+    label: 'Caps',
+    detail:
+      'Hard cap in effect at the end of the round: 75 minutes for regular rounds, 90 minutes for the grand final.',
+  },
   {
     label: 'Between rounds',
     detail: '15 minutes built in for rest and field transition.',
@@ -130,6 +134,11 @@ export const packetRules = [
     label: 'Gender ratios (Mixed & Youth)',
     detail:
       'Standard ABBA gender ratio system, or ratio rules agreed upon by captains and coaches prior to games.',
+  },
+  {
+    label: 'Gender ratios (Adult Open)',
+    detail:
+      'Any gender ratio is allowed. Captains may agree on a ratio before a game if they choose to set one.',
   },
 ];
 

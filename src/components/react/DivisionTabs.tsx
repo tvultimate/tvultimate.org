@@ -94,7 +94,9 @@ export default function DivisionTabs({
             {current.schedule.map((slot) => (
               <li key={slot.day}>
                 <span className="tabs__day">{slot.day}</span>
-                {slot.detail && <span className="tabs__time">{slot.detail}</span>}
+                {slot.detail && !slot.items && (
+                  <span className="tabs__time">{slot.detail}</span>
+                )}
                 {slot.items && (
                   <dl className="tabs__schedule-items">
                     {slot.items.map((item) => (
