@@ -12,6 +12,12 @@ export default defineConfig({
   // fully-qualified URLs. Keep in sync with `domain` in src/data/org.ts.
   site: 'https://tvultimate.org',
 
+  // The tournament URL was once shortened to /battleofidaho. Keep that legacy
+  // address working for links, printed material, and old ad destinations.
+  redirects: {
+    '/battleofidaho': '/battle-of-idaho/',
+  },
+
   integrations: [
     react(),
     sitemap({
@@ -21,7 +27,8 @@ export default defineConfig({
       // 404 is excluded by the integration itself.
       filter: (page) =>
         ![
-          'https://tvultimate.org/battle-of-idaho/free-agent/',
+          'https://tvultimate.org/battleofidaho/',
+          'https://tvultimate.org/battleof-idaho/free-agent/',
           'https://tvultimate.org/battle-of-idaho/youth-free-agent/',
           'https://tvultimate.org/battle-of-idaho/youth-open/',
           'https://tvultimate.org/battle-of-idaho/register-a-team/',

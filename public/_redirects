@@ -1,0 +1,3 @@
+# Legacy short address for the Battle of Idaho tournament page.
+# The trailing-slash form is emitted from the redirect in astro.config.mjs.
+/battleofidaho  /battle-of-idaho/  301
